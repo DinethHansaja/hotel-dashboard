@@ -21,7 +21,7 @@ const HotelMapClient = dynamic(
     ssr: false,
 
     loading: () => (
-      <div className="flex h-full items-center justify-center bg-slate-100">
+      <div className="flex h-full w-full items-center justify-center bg-slate-100">
         <div className="text-sm text-slate-500">
           Loading map...
         </div>
@@ -34,7 +34,7 @@ export default function HotelMap({
   hotels,
 }: HotelMapProps) {
   return (
-    <div className="h-[500px] w-full overflow-hidden rounded-xl">
+    <div className="h-full w-full overflow-hidden rounded-[18px]">
       <HotelMapClient hotels={hotels} />
     </div>
   );

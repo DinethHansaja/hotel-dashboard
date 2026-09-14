@@ -44,7 +44,6 @@ const hotelIcon = L.icon({
 export default function HotelMapClient({
   hotels,
 }: HotelMapClientProps) {
-
   const validHotels = hotels.filter(
     (hotel) =>
       hotel.latitude !== null &&
@@ -60,7 +59,6 @@ export default function HotelMapClient({
       scrollWheelZoom={true}
       className="h-full w-full"
     >
-
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -75,14 +73,11 @@ export default function HotelMapClient({
           ]}
           icon={hotelIcon}
         >
-
           <Popup>
-
             <div className="w-[280px] overflow-hidden rounded-xl">
 
               {/* Hotel Image */}
               <div className="h-36 w-full overflow-hidden bg-slate-100">
-
                 {hotel.image_url ? (
                   <img
                     src={hotel.image_url}
@@ -94,13 +89,12 @@ export default function HotelMapClient({
                     No image available
                   </div>
                 )}
-
               </div>
 
               {/* Content */}
               <div className="p-4">
 
-                <div className="mb-2 inline-flex rounded-full bg-amber-500 px-3 py-1 text-xs font-semibold text-white">
+                <div className="mb-2 inline-flex rounded-full bg-[#c79a45] px-3 py-1 text-xs font-semibold text-white">
                   Hotel
                 </div>
 
@@ -127,14 +121,10 @@ export default function HotelMapClient({
                 </Link>
 
               </div>
-
             </div>
-
           </Popup>
-
         </Marker>
       ))}
-
     </MapContainer>
   );
 }

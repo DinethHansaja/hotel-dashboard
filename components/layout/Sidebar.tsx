@@ -16,8 +16,6 @@ import {
   Info,
   Settings,
   Landmark,
-  PanelLeftClose,
-  PanelLeftOpen,
 } from "lucide-react";
 
 const menuItems = [
@@ -90,14 +88,26 @@ export default function Sidebar() {
       {/* Logo */}
       <div
         className={`flex shrink-0 items-center py-7 ${
-          collapsed ? "justify-center px-3" : "px-6"
+          collapsed ? "justify-center px-3" : "justify-start px-6"
         }`}
       >
         {!collapsed ? (
-          <Link href="/" className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#c79a45]">
+          <Link
+            href="/"
+            className="flex items-center gap-3"
+          >
+            {/* Home / Logo Icon */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                setCollapsed(true);
+              }}
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[#c79a45] transition hover:bg-white/10"
+              aria-label="Collapse sidebar"
+            >
               <Landmark className="h-6 w-6 text-[#d2a64d]" />
-            </div>
+            </button>
 
             <div>
               <h1 className="font-serif text-[24px] leading-tight">
@@ -110,11 +120,14 @@ export default function Sidebar() {
             </div>
           </Link>
         ) : (
-          <Link href="/">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#c79a45]">
-              <Landmark className="h-6 w-6 text-[#d2a64d]" />
-            </div>
-          </Link>
+          <button
+            type="button"
+            onClick={() => setCollapsed(false)}
+            className="flex h-12 w-12 items-center justify-center rounded-full border border-[#c79a45] transition hover:bg-white/10"
+            aria-label="Expand sidebar"
+          >
+            <Landmark className="h-6 w-6 text-[#d2a64d]" />
+          </button>
         )}
       </div>
 
@@ -135,6 +148,16 @@ export default function Sidebar() {
                 key={item.label}
                 href={item.href}
                 title={collapsed ? item.label : undefined}
+                onClick={(e) => {
+                  // Home icon controls sidebar collapse/expand
+                  if (item.href === "/") {
+                    if (!collapsed) {
+                      setCollapsed(true);
+                    } else {
+                      setCollapsed(false);
+                    }
+                  }
+                }}
                 className={`group flex items-center rounded-xl transition ${
                   collapsed
                     ? "justify-center px-3 py-3.5"
@@ -192,19 +215,6 @@ export default function Sidebar() {
           )}
         </Link>
       </div>
-
-      {/* Collapse */}
-      <button
-        onClick={() => setCollapsed(!collapsed)}
-        aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-        className="absolute bottom-5 right-[-14px] z-50 flex h-8 w-8 items-center justify-center rounded-full border border-slate-300 bg-[#0c1725] text-slate-200 shadow-md transition hover:bg-[#1a293b] hover:text-white"
-      >
-        {collapsed ? (
-          <PanelLeftOpen className="h-4 w-4" />
-        ) : (
-          <PanelLeftClose className="h-4 w-4" />
-        )}
-      </button>
     </aside>
   );
 }
