@@ -55,10 +55,10 @@ export default function BuffetCard({
           </div>
         )}
 
-        {/* Overlay */}
+        {/* Image overlay */}
         <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/30 to-transparent" />
 
-        {/* Popular */}
+        {/* Popular badge */}
         <div className="absolute left-3 top-3 rounded-full bg-[#c79a45] px-3 py-1 text-xs font-semibold text-white shadow-md">
           Popular
         </div>
@@ -78,7 +78,9 @@ export default function BuffetCard({
 
         {/* Hotel information */}
         <div>
-          <div className="flex items-start justify-between gap-3">
+          <div className="flex items-start justify-between gap-4">
+
+            {/* Hotel name */}
             <div className="min-w-0">
               <h3 className="line-clamp-1 text-lg font-bold text-slate-900">
                 {hotelName}
@@ -90,10 +92,14 @@ export default function BuffetCard({
               </p>
             </div>
 
-            {/* Price */}
+            {/* Starting price */}
             <div className="shrink-0 text-right">
-              {price ? (
+              {price !== null && price !== undefined ? (
                 <>
+                  <div className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
+                    From
+                  </div>
+
                   <div className="text-base font-bold text-slate-900">
                     LKR {price.toLocaleString()}
                   </div>
@@ -134,20 +140,29 @@ export default function BuffetCard({
           )}
         </div>
 
-        {/* Bottom */}
+        {/* Bottom section */}
         <div className="mt-auto pt-6">
 
           <div className="space-y-2">
+
+            {/* Buffet time */}
             {buffetTime && (
               <div className="flex items-center gap-2 text-sm text-slate-500">
-                <Clock3 className="h-4 w-4 text-[#c79a45]" />
-                <span>{buffetTime}</span>
+                <Clock3 className="h-4 w-4 shrink-0 text-[#c79a45]" />
+
+                <span>
+                  {buffetTime}
+                </span>
               </div>
             )}
 
+            {/* Buffet type */}
             <div className="flex items-center gap-2 text-sm text-slate-500">
-              <CalendarDays className="h-4 w-4 text-[#c79a45]" />
-              <span>Buffet Experience</span>
+              <CalendarDays className="h-4 w-4 shrink-0 text-[#c79a45]" />
+
+              <span>
+                Buffet Experience
+              </span>
             </div>
           </div>
 

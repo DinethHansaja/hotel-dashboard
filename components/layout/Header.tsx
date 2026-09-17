@@ -23,19 +23,28 @@ export default function Header() {
         </button>
 
         {/* Search */}
-        <div className="relative flex-1">
+        <form
+          action="/buffet"
+          method="GET"
+          className="relative flex-1"
+        >
           <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
           <input
             type="text"
+            name="search"
             placeholder="Search for hotels, restaurants, cuisines..."
             className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-12 pr-12 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#c79a45] focus:bg-white focus:ring-2 focus:ring-[#c79a45]/20"
           />
 
-          <button className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100">
+          <button
+            type="submit"
+            aria-label="Search"
+            className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-[#9a742e]"
+          >
             <Search className="h-5 w-5" />
           </button>
-        </div>
+        </form>
 
         {/* Notifications */}
         <button
