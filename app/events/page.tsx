@@ -7,7 +7,6 @@ import {
   MapPin,
   Phone,
   ExternalLink,
-  Users,
   CheckCircle2,
   CalendarDays,
 } from "lucide-react";
@@ -522,7 +521,7 @@ const filters = [
   "Outdoor Events",
 ];
 
-function normalizeName(name?: string) {
+function normalizeName(name?: string): string {
   return (name || "")
     .toLowerCase()
     .replace(/&/g, "and")
@@ -531,7 +530,7 @@ function normalizeName(name?: string) {
     .trim();
 }
 
-function getProfile(hotelName?: string) {
+function getProfile(hotelName?: string): EventProfile | null {
   const normalized = normalizeName(hotelName);
 
   if (eventProfiles[normalized]) {
@@ -549,29 +548,39 @@ function getProfile(hotelName?: string) {
 
 export default function EventsPage() {
   const [hotels, setHotels] = useState<Hotel[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
-  const [activeFilter, setActiveFilter] = useState("All");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [search, setSearch] = useState<string>("");
+  const [activeFilter, setActiveFilter] = useState<string>("All");
   const [favourites, setFavourites] = useState<string[]>([]);
 
   useEffect(() => {
+    let mounted = true;
+
     async function loadHotels() {
+      setLoading(true);
+
       const { data, error } = await supabase
         .from("hotels")
         .select("*")
         .order("hotel_name", { ascending: true });
 
+      if (!mounted) return;
+
       if (error) {
         console.error("Error loading hotels:", error);
         setHotels([]);
       } else {
-        setHotels(data || []);
+        setHotels((data as Hotel[]) || []);
       }
 
       setLoading(false);
     }
 
     loadHotels();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const hotelsWithEvents = useMemo(() => {
@@ -603,19 +612,19 @@ export default function EventsPage() {
 
       const matchesFilter =
         activeFilter === "All" ||
-        profile?.types.includes(activeFilter);
+        Boolean(profile?.types.includes(activeFilter));
 
       return matchesSearch && matchesFilter;
     });
   }, [hotelsWithEvents, search, activeFilter]);
 
-  const toggleFavourite = (hotelId: string) => {
+  function toggleFavourite(hotelId: string): void {
     setFavourites((current) =>
       current.includes(hotelId)
         ? current.filter((id) => id !== hotelId)
         : [...current, hotelId]
     );
-  };
+  }
 
   return (
     <main className="min-h-screen bg-[#f7f8fa] text-[#101828]">
@@ -623,7 +632,6 @@ export default function EventsPage() {
       {/* HERO */}
       <section className="bg-[#091423]">
         <div className="mx-auto max-w-[1500px] px-6 py-12 lg:px-10 lg:py-16">
-
           <div className="max-w-3xl">
 
             <div className="mb-5 inline-flex items-center rounded-full border border-[#d1a044]/40 bg-[#d1a044]/10 px-4 py-2 text-sm font-semibold text-[#e2b85d]">
@@ -645,32 +653,27 @@ export default function EventsPage() {
             {/* SEARCH */}
             <div className="mt-8 max-w-3xl">
               <div className="flex items-center rounded-2xl bg-white px-4 py-2 shadow-xl">
-
                 <Search
                   size={21}
                   className="shrink-0 text-slate-400"
                 />
 
                 <input
+                  type="text"
                   value={search}
-                  onChange={(e) =>
-                    setSearch(e.target.value)
-                  }
+                  onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search hotels, venues or event types..."
                   className="w-full bg-transparent px-4 py-3 text-sm outline-none placeholder:text-slate-400"
                 />
-
               </div>
             </div>
 
           </div>
-
         </div>
       </section>
 
       {/* FILTER / HEADER */}
       <section className="border-b border-slate-200 bg-white">
-
         <div className="mx-auto max-w-[1500px] px-6 py-5 lg:px-10">
 
           <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
@@ -686,17 +689,14 @@ export default function EventsPage() {
             </div>
 
             <div className="flex flex-wrap gap-2">
-
               {filters.map((filter) => {
-                const active =
-                  activeFilter === filter;
+                const active = activeFilter === filter;
 
                 return (
                   <button
                     key={filter}
-                    onClick={() =>
-                      setActiveFilter(filter)
-                    }
+                    type="button"
+                    onClick={() => setActiveFilter(filter)}
                     className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
                       active
                         ? "border-[#091423] bg-[#091423] text-white"
@@ -707,13 +707,10 @@ export default function EventsPage() {
                   </button>
                 );
               })}
-
             </div>
 
           </div>
-
         </div>
-
       </section>
 
       {/* CONTENT */}
@@ -721,29 +718,25 @@ export default function EventsPage() {
 
         {loading ? (
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {[1, 2, 3, 4, 5, 6].map((item) => (
+              <div
+                key={item}
+                className="overflow-hidden rounded-2xl border border-slate-200 bg-white"
+              >
+                <div className="h-56 animate-pulse bg-slate-200" />
 
-            {[1, 2, 3, 4, 5, 6].map(
-              (item) => (
-                <div
-                  key={item}
-                  className="overflow-hidden rounded-2xl border border-slate-200 bg-white"
-                >
-                  <div className="h-56 animate-pulse bg-slate-200" />
-
-                  <div className="space-y-4 p-6">
-                    <div className="h-6 animate-pulse rounded bg-slate-200" />
-                    <div className="h-4 animate-pulse rounded bg-slate-200" />
-                    <div className="h-20 animate-pulse rounded bg-slate-200" />
-                  </div>
+                <div className="space-y-4 p-6">
+                  <div className="h-6 animate-pulse rounded bg-slate-200" />
+                  <div className="h-4 animate-pulse rounded bg-slate-200" />
+                  <div className="h-20 animate-pulse rounded bg-slate-200" />
                 </div>
-              )
-            )}
-
+              </div>
+            ))}
           </div>
+
         ) : filteredHotels.length === 0 ? (
 
           <div className="rounded-2xl border border-slate-200 bg-white py-20 text-center">
-
             <Search
               size={36}
               className="mx-auto text-slate-300"
@@ -756,294 +749,261 @@ export default function EventsPage() {
             <p className="mt-2 text-sm text-slate-500">
               Try another hotel name or event category.
             </p>
-
           </div>
 
         ) : (
 
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
 
-            {filteredHotels.map(
-              ({ hotel, profile }) => {
+            {filteredHotels.map(({ hotel, profile }) => {
 
-                const hotelId = String(
-                  hotel.hotel_id ??
-                    hotel.hotel_name ??
-                    ""
-                );
+              const hotelId = String(
+                hotel.hotel_id ??
+                  hotel.hotel_name ??
+                  ""
+              );
 
-                const rating =
-                  hotel.rating ??
-                  hotel.Rating ??
-                  null;
+              const rating =
+                hotel.rating ??
+                hotel.Rating ??
+                null;
 
-                const phone =
-                  hotel.contact_number ??
-                  hotel.phone ??
-                  "";
+              const phone =
+                hotel.contact_number ??
+                hotel.phone ??
+                "";
 
-                const isFavourite =
-                  favourites.includes(hotelId);
+              const isFavourite =
+                favourites.includes(hotelId);
 
-                return (
-                  <article
-                    key={hotelId}
-                    className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-                  >
+              return (
+                <article
+                  key={hotelId}
+                  className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                >
 
-                    {/* IMAGE */}
-                    <div className="relative h-60 overflow-hidden bg-slate-200">
+                  {/* IMAGE */}
+                  <div className="relative h-60 overflow-hidden bg-slate-200">
 
-                      {hotel.image_url ? (
-                        <img
-                          src={hotel.image_url}
-                          alt={
-                            hotel.hotel_name ||
-                            "Hotel"
+                    {hotel.image_url ? (
+                      <img
+                        src={hotel.image_url}
+                        alt={hotel.hotel_name || "Hotel"}
+                        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center bg-[#091423] text-sm text-slate-400">
+                        No hotel image
+                      </div>
+                    )}
+
+                    <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/70 to-transparent" />
+
+                    <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between">
+
+                      <span className="rounded-full bg-[#d1a044] px-3 py-1 text-xs font-semibold text-[#091423]">
+                        Events & Weddings
+                      </span>
+
+                      <button
+                        type="button"
+                        onClick={() => toggleFavourite(hotelId)}
+                        className="flex h-10 w-10 items-center justify-center rounded-full bg-white/95 shadow-md transition hover:scale-105"
+                        aria-label={
+                          isFavourite
+                            ? "Remove from favourites"
+                            : "Add to favourites"
+                        }
+                      >
+                        <Heart
+                          size={18}
+                          className={
+                            isFavourite
+                              ? "fill-red-500 text-red-500"
+                              : "text-slate-600"
                           }
-                          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                         />
-                      ) : (
-                        <div className="flex h-full items-center justify-center bg-[#091423] text-sm text-slate-400">
-                          No hotel image
+                      </button>
+
+                    </div>
+                  </div>
+
+                  {/* BODY */}
+                  <div className="p-6">
+
+                    {/* TITLE */}
+                    <div className="flex items-start justify-between gap-4">
+
+                      <div className="min-w-0">
+
+                        <h3 className="text-xl font-bold leading-tight text-[#091423]">
+                          {hotel.hotel_name}
+                        </h3>
+
+                        {hotel.address && (
+                          <div className="mt-2 flex items-start gap-1.5 text-sm text-slate-500">
+                            <MapPin
+                              size={15}
+                              className="mt-0.5 shrink-0"
+                            />
+
+                            <span className="line-clamp-2">
+                              {hotel.address}
+                            </span>
+                          </div>
+                        )}
+
+                      </div>
+
+                      {rating !== null && rating !== undefined && (
+                        <div className="shrink-0 rounded-lg bg-[#fff8e8] px-2.5 py-1.5 text-sm font-semibold text-[#966d22]">
+                          ★ {rating}
                         </div>
                       )}
 
-                      <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/70 to-transparent" />
+                    </div>
 
-                      <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between">
+                    {/* DESCRIPTION */}
+                    {hotel.description && (
+                      <p className="mt-4 line-clamp-3 text-sm leading-6 text-slate-600">
+                        {hotel.description}
+                      </p>
+                    )}
 
-                        <div>
-                          <span className="rounded-full bg-[#d1a044] px-3 py-1 text-xs font-semibold text-[#091423]">
-                            Events & Weddings
+                    {/* TYPES */}
+                    {profile && (
+                      <div className="mt-5 flex flex-wrap gap-2">
+                        {profile.types.map((type) => (
+                          <span
+                            key={type}
+                            className="rounded-full bg-[#f4f5f7] px-3 py-1.5 text-xs font-medium text-slate-600"
+                          >
+                            {type}
                           </span>
-                        </div>
-
-                        <button
-                          onClick={() =>
-                            toggleFavourite(
-                              hotelId
-                            )
-                          }
-                          className="flex h-10 w-10 items-center justify-center rounded-full bg-white/95 shadow-md transition hover:scale-105"
-                          aria-label="Favourite hotel"
-                        >
-                          <Heart
-                            size={18}
-                            className={
-                              isFavourite
-                                ? "fill-red-500 text-red-500"
-                                : "text-slate-600"
-                            }
-                          />
-                        </button>
-
+                        ))}
                       </div>
+                    )}
 
-                    </div>
+                    {/* EVENT INFORMATION */}
+                    {profile ? (
+                      <div className="mt-5 border-t border-slate-100 pt-5">
 
-                    {/* BODY */}
-                    <div className="p-6">
+                        <div className="flex items-start gap-3">
 
-                      {/* TITLE */}
-                      <div className="flex items-start justify-between gap-4">
-
-                        <div className="min-w-0">
-
-                          <h3 className="text-xl font-bold leading-tight text-[#091423]">
-                            {hotel.hotel_name}
-                          </h3>
-
-                          {hotel.address && (
-                            <div className="mt-2 flex items-start gap-1.5 text-sm text-slate-500">
-                              <MapPin
-                                size={15}
-                                className="mt-0.5 shrink-0"
-                              />
-
-                              <span className="line-clamp-2">
-                                {hotel.address}
-                              </span>
-                            </div>
-                          )}
-
-                        </div>
-
-                        {rating && (
-                          <div className="shrink-0 rounded-lg bg-[#fff8e8] px-2.5 py-1.5 text-sm font-semibold text-[#966d22]">
-                            ★ {rating}
+                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#091423] text-[#d1a044]">
+                            <CalendarDays size={17} />
                           </div>
-                        )}
 
-                      </div>
+                          <div className="min-w-0">
 
-                      {/* DESCRIPTION */}
-                      {hotel.description && (
-                        <p className="mt-4 line-clamp-3 text-sm leading-6 text-slate-600">
-                          {hotel.description}
+                            <p className="text-xs font-semibold uppercase tracking-wider text-[#a77c2c]">
+                              Featured venue
+                            </p>
+
+                            <p className="mt-1 font-semibold text-[#091423]">
+                              {profile.venue}
+                            </p>
+
+                            <p className="mt-1 text-sm font-medium text-slate-700">
+                              {profile.capacity}
+                            </p>
+
+                          </div>
+
+                        </div>
+
+                        <p className="mt-3 text-sm leading-6 text-slate-500">
+                          {profile.venueDescription}
                         </p>
-                      )}
-
-                      {/* TYPES */}
-                      {profile && (
-                        <div className="mt-5 flex flex-wrap gap-2">
-
-                          {profile.types.map(
-                            (type) => (
-                              <span
-                                key={type}
-                                className="rounded-full bg-[#f4f5f7] px-3 py-1.5 text-xs font-medium text-slate-600"
-                              >
-                                {type}
-                              </span>
-                            )
-                          )}
-
-                        </div>
-                      )}
-
-                      {/* EVENT INFORMATION */}
-                      {profile ? (
-                        <div className="mt-5 border-t border-slate-100 pt-5">
-
-                          <div className="flex items-start gap-3">
-
-                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#091423] text-[#d1a044]">
-                              <CalendarDays
-                                size={17}
-                              />
-                            </div>
-
-                            <div className="min-w-0">
-
-                              <p className="text-xs font-semibold uppercase tracking-wider text-[#a77c2c]">
-                                Featured venue
-                              </p>
-
-                              <p className="mt-1 font-semibold text-[#091423]">
-                                {profile.venue}
-                              </p>
-
-                              <p className="mt-1 text-sm font-medium text-slate-700">
-                                {profile.capacity}
-                              </p>
-
-                            </div>
-
-                          </div>
-
-                          <p className="mt-3 text-sm leading-6 text-slate-500">
-                            {profile.venueDescription}
-                          </p>
-
-                        </div>
-                      ) : (
-                        <div className="mt-5 rounded-xl bg-slate-50 p-4">
-
-                          <p className="text-sm font-semibold text-[#091423]">
-                            Event information
-                          </p>
-
-                          <p className="mt-1 text-sm leading-5 text-slate-500">
-                            Contact the hotel directly for current
-                            wedding and event venue information.
-                          </p>
-
-                        </div>
-                      )}
-
-                      {/* SERVICES */}
-                      {profile && (
-                        <div className="mt-5">
-
-                          <p className="mb-3 text-sm font-semibold text-[#091423]">
-                            What they provide
-                          </p>
-
-                          <div className="grid grid-cols-2 gap-2">
-
-                            {profile.services.map(
-                              (service) => (
-                                <div
-                                  key={service}
-                                  className="flex items-center gap-2 text-sm text-slate-600"
-                                >
-                                  <CheckCircle2
-                                    size={15}
-                                    className="shrink-0 text-[#bd8d31]"
-                                  />
-
-                                  <span>
-                                    {service}
-                                  </span>
-                                </div>
-                              )
-                            )}
-
-                          </div>
-
-                        </div>
-                      )}
-
-                      {/* ACTIONS */}
-                      <div className="mt-6 flex gap-2 border-t border-slate-100 pt-5">
-
-                        {hotel.website ? (
-                          <a
-                            href={
-                              hotel.website
-                            }
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#091423] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#16263a]"
-                          >
-                            Official Website
-                            <ExternalLink
-                              size={15}
-                            />
-                          </a>
-                        ) : profile?.source ? (
-                          <a
-                            href={
-                              profile.source
-                            }
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#091423] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#16263a]"
-                          >
-                            Event Details
-                            <ExternalLink
-                              size={15}
-                            />
-                          </a>
-                        ) : (
-                          <div className="flex flex-1 items-center justify-center rounded-xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-500">
-                            Contact Hotel
-                          </div>
-                        )}
-
-                        {phone && (
-                          <a
-                            href={`tel:${phone.replace(
-                              /\s/g,
-                              ""
-                            )}`}
-                            className="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 text-[#091423] transition hover:border-[#d1a044] hover:bg-[#fff9ed]"
-                            aria-label={`Call ${hotel.hotel_name}`}
-                          >
-                            <Phone
-                              size={17}
-                            />
-                          </a>
-                        )}
 
                       </div>
+                    ) : (
+                      <div className="mt-5 rounded-xl bg-slate-50 p-4">
+
+                        <p className="text-sm font-semibold text-[#091423]">
+                          Event information
+                        </p>
+
+                        <p className="mt-1 text-sm leading-5 text-slate-500">
+                          Contact the hotel directly for current
+                          wedding and event venue information.
+                        </p>
+
+                      </div>
+                    )}
+
+                    {/* SERVICES */}
+                    {profile && (
+                      <div className="mt-5">
+
+                        <p className="mb-3 text-sm font-semibold text-[#091423]">
+                          What they provide
+                        </p>
+
+                        <div className="grid grid-cols-2 gap-2">
+                          {profile.services.map((service) => (
+                            <div
+                              key={service}
+                              className="flex items-center gap-2 text-sm text-slate-600"
+                            >
+                              <CheckCircle2
+                                size={15}
+                                className="shrink-0 text-[#bd8d31]"
+                              />
+
+                              <span>{service}</span>
+                            </div>
+                          ))}
+                        </div>
+
+                      </div>
+                    )}
+
+                    {/* ACTIONS */}
+                    <div className="mt-6 flex gap-2 border-t border-slate-100 pt-5">
+
+                      {hotel.website ? (
+                        <a
+                          href={hotel.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#091423] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#16263a]"
+                        >
+                          Official Website
+                          <ExternalLink size={15} />
+                        </a>
+                      ) : profile?.source ? (
+                        <a
+                          href={profile.source}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#091423] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#16263a]"
+                        >
+                          Event Details
+                          <ExternalLink size={15} />
+                        </a>
+                      ) : (
+                        <div className="flex flex-1 items-center justify-center rounded-xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-500">
+                          Contact Hotel
+                        </div>
+                      )}
+
+                      {phone && (
+                        <a
+                          href={`tel:${phone.replace(/\s/g, "")}`}
+                          className="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 text-[#091423] transition hover:border-[#d1a044] hover:bg-[#fff9ed]"
+                          aria-label={`Call ${hotel.hotel_name || "hotel"}`}
+                        >
+                          <Phone size={17} />
+                        </a>
+                      )}
 
                     </div>
-                  </article>
-                );
-              }
-            )}
+
+                  </div>
+                </article>
+              );
+            })}
 
           </div>
         )}
