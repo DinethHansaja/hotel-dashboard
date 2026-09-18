@@ -2,946 +2,675 @@
 
 import { useEffect, useMemo, useState } from "react";
 import {
-  ArrowRight,
-  Check,
-  ChevronDown,
-  Globe,
+  Star,
   MapPin,
   Phone,
-  Star,
+  Globe,
+  ChevronDown,
   X,
 } from "lucide-react";
 
 import { supabase } from "@/lib/supabase";
 
 type Hotel = {
-  [key: string]: any;
-
   hotel_id: number;
-  hotel_name?: string | null;
-  restaurant_name?: string | null;
-  image_url?: string | null;
-  description?: string | null;
+  hotel_name: string | null;
+  restaurant_name: string | null;
+  image_url: string | null;
+  description: string | null;
 
-  rating?: number | string | null;
-  review_count?: number | string | null;
+  rating: number | string | null;
+  review_count: number | string | null;
+  price: number | string | null;
 
-  buffet_time?: string | null;
-  price?: number | string | null;
+  buffet_time: string | null;
 
-  website?: string | null;
-  website_url?: string | null;
-  phone?: string | null;
-  telephone?: string | null;
-  address?: string | null;
-  location?: string | null;
+  address: string | null;
+  location: string | null;
+
+  phone: string | null;
+  telephone: string | null;
+
+  website: string | null;
+  website_url: string | null;
 };
 
-/* -------------------------------------------------------
-   HELPER: Find the first available value
-------------------------------------------------------- */
-
-function getValue(
-  hotel: Hotel,
-  possibleColumns: string[]
-): any {
-  for (const column of possibleColumns) {
-    const value = hotel[column];
-
-    if (
-      value !== undefined &&
-      value !== null &&
-      String(value).trim() !== ""
-    ) {
-      return value;
-    }
-  }
-
-  return null;
-}
-
-/* -------------------------------------------------------
-   RATING
-------------------------------------------------------- */
-
-function getRating(hotel: Hotel) {
-  const value = getValue(hotel, [
-    "rating",
-    "ratings",
-    "hotel_rating",
-    "average_rating",
-    "star_rating",
-  ]);
-
-  if (value === null) {
-    return null;
-  }
-
-  const rating = Number(value);
-
-  if (Number.isNaN(rating)) {
-    return null;
-  }
-
-  return rating;
-}
-
-/* -------------------------------------------------------
-   REVIEW COUNT
-------------------------------------------------------- */
-
-function getReviewCount(hotel: Hotel) {
-  const value = getValue(hotel, [
-    "review_count",
-    "reviews_count",
-    "number_of_reviews",
-    "reviewcount",
-  ]);
-
-  if (value === null) {
-    return null;
-  }
-
-  const count = Number(value);
-
-  return Number.isNaN(count) ? null : count;
-}
-
-/* -------------------------------------------------------
-   PRICE
-------------------------------------------------------- */
-
-function getPrice(hotel: Hotel) {
-  const value = getValue(hotel, [
-    "price",
-    "buffet_price",
-    "price_range",
-    "buffet_price_lkr",
-    "price_lkr",
-  ]);
-
-  if (value === null) {
-    return null;
-  }
-
-  return value;
-}
-
-/* -------------------------------------------------------
-   BUFFET TIME
-------------------------------------------------------- */
-
-function getBuffetTime(hotel: Hotel) {
-  const value = getValue(hotel, [
-    "buffet_time",
-    "buffet_times",
-    "buffet_schedule",
-    "time",
-  ]);
-
-  if (value === null) {
-    return null;
-  }
-
-  return String(value);
-}
-
-/* -------------------------------------------------------
-   WEBSITE
-------------------------------------------------------- */
-
-function getWebsite(hotel: Hotel) {
-  return getValue(hotel, [
-    "website",
-    "website_url",
-    "hotel_website",
-    "official_website",
-  ]);
-}
-
-/* -------------------------------------------------------
-   PHONE
-------------------------------------------------------- */
-
-function getPhone(hotel: Hotel) {
-  return getValue(hotel, [
-    "phone",
-    "telephone",
-    "phone_number",
-    "telephone_number",
-    "contact_number",
-  ]);
-}
-
-/* -------------------------------------------------------
-   LOCATION
-------------------------------------------------------- */
-
-function getLocation(hotel: Hotel) {
-  return getValue(hotel, [
-    "address",
-    "location",
-    "hotel_address",
-  ]);
-}
-
-/* -------------------------------------------------------
-   PRICE FORMAT
-------------------------------------------------------- */
-
-function formatPrice(value: any) {
-  if (value === null || value === undefined) {
-    return "Not available";
-  }
-
-  const stringValue = String(value).trim();
-
-  if (!stringValue) {
-    return "Not available";
-  }
-
-  // If already contains LKR
-  if (stringValue.toLowerCase().includes("lkr")) {
-    return stringValue;
-  }
-
-  // Numeric price
-  const numericValue = Number(value);
-
-  if (!Number.isNaN(numericValue)) {
-    return `LKR ${numericValue.toLocaleString()}`;
-  }
-
-  return stringValue;
-}
-
-/* -------------------------------------------------------
-   WEBSITE FORMAT
-------------------------------------------------------- */
-
-function formatWebsite(url: string) {
-  try {
-    return new URL(url).hostname.replace("www.", "");
-  } catch {
-    return url;
-  }
-}
-
-/* -------------------------------------------------------
-   MAIN PAGE
-------------------------------------------------------- */
+type BuffetSchedule = {
+  hotel_id: number;
+  buffet_time: string | null;
+};
 
 export default function ComparePage() {
   const [hotels, setHotels] = useState<Hotel[]>([]);
+  const [buffetSchedules, setBuffetSchedules] = useState<BuffetSchedule[]>([]);
 
-  const [selectedHotels, setSelectedHotels] = useState<
-    (number | null)[]
-  >([null, null, null]);
+  const [selectedHotels, setSelectedHotels] = useState<Hotel[]>([]);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  /* -----------------------------------------------------
-     LOAD HOTELS FROM SUPABASE
-  ----------------------------------------------------- */
+  const [selectorOpen, setSelectorOpen] = useState(false);
 
   useEffect(() => {
-    async function loadHotels() {
-      setLoading(true);
-      setError("");
+    loadCompareData();
+  }, []);
 
-      const { data, error } = await supabase
+  async function loadCompareData() {
+    setLoading(true);
+    setError("");
+
+    try {
+      // ------------------------------------------
+      // 1. Get hotel information
+      // ------------------------------------------
+      const { data: hotelData, error: hotelError } = await supabase
         .from("hotels")
         .select("*")
         .order("hotel_name", { ascending: true });
 
-      if (error) {
-        console.error("Supabase hotel error:", error);
-
-        setError(
-          "Unable to load hotel information from Supabase."
-        );
-
-        setLoading(false);
-        return;
+      if (hotelError) {
+        throw hotelError;
       }
 
-      console.log("Hotels loaded from Supabase:", data);
+      // ------------------------------------------
+      // 2. Get buffet schedule information
+      // ------------------------------------------
+      const { data: buffetData, error: buffetError } = await supabase
+        .from("buffet_schedules")
+        .select("hotel_id, buffet_time");
 
-      if (data) {
-        setHotels(data as Hotel[]);
+      if (buffetError) {
+        console.warn("Buffet schedule error:", buffetError);
       }
 
+      const hotelsList = (hotelData || []) as Hotel[];
+      const buffetList = (buffetData || []) as BuffetSchedule[];
+
+      setHotels(hotelsList);
+      setBuffetSchedules(buffetList);
+
+      // ------------------------------------------
+      // Select first 3 hotels initially
+      // ------------------------------------------
+      setSelectedHotels(hotelsList.slice(0, 3));
+    } catch (err) {
+      console.error("Compare page error:", err);
+
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to load comparison data."
+      );
+    } finally {
       setLoading(false);
     }
-
-    loadHotels();
-  }, []);
-
-  /* -----------------------------------------------------
-     SELECTED HOTEL OBJECTS
-  ----------------------------------------------------- */
-
-  const selectedHotelObjects = useMemo(() => {
-    return selectedHotels.map((hotelId) => {
-      if (hotelId === null) {
-        return null;
-      }
-
-      return (
-        hotels.find(
-          (hotel) =>
-            Number(hotel.hotel_id) === Number(hotelId)
-        ) || null
-      );
-    });
-  }, [selectedHotels, hotels]);
-
-  /* -----------------------------------------------------
-     SELECT HOTEL
-  ----------------------------------------------------- */
-
-  function selectHotel(
-    index: number,
-    hotelId: string
-  ) {
-    setSelectedHotels((previous) => {
-      const updated = [...previous];
-
-      if (!hotelId) {
-        updated[index] = null;
-      } else {
-        updated[index] = Number(hotelId);
-      }
-
-      return updated;
-    });
   }
 
-  /* -----------------------------------------------------
-     REMOVE HOTEL
-  ----------------------------------------------------- */
+  // ------------------------------------------
+  // Get buffet time for hotel
+  // ------------------------------------------
+  function getBuffetTime(hotel: Hotel) {
+    // First check buffet_time directly in hotels
+    if (hotel.buffet_time) {
+      return hotel.buffet_time;
+    }
 
-  function removeHotel(index: number) {
-    setSelectedHotels((previous) => {
-      const updated = [...previous];
+    // Otherwise check buffet_schedules
+    const schedules = buffetSchedules.filter(
+      (item) => Number(item.hotel_id) === Number(hotel.hotel_id)
+    );
 
-      updated[index] = null;
+    if (schedules.length === 0) {
+      return null;
+    }
 
-      return updated;
-    });
+    const times = schedules
+      .map((item) => item.buffet_time)
+      .filter(Boolean);
+
+    if (times.length === 0) {
+      return null;
+    }
+
+    return times.join(" • ");
   }
 
-  const hasSelectedHotels =
-    selectedHotelObjects.some(Boolean);
+  // ------------------------------------------
+  // Get rating
+  // ------------------------------------------
+  function getRating(hotel: Hotel) {
+    if (
+      hotel.rating === null ||
+      hotel.rating === undefined ||
+      hotel.rating === ""
+    ) {
+      return null;
+    }
 
-  /* -----------------------------------------------------
-     PAGE
-  ----------------------------------------------------- */
+    const rating = Number(hotel.rating);
+
+    if (Number.isNaN(rating)) {
+      return null;
+    }
+
+    return rating;
+  }
+
+  // ------------------------------------------
+  // Get price
+  // ------------------------------------------
+  function getPrice(hotel: Hotel) {
+    if (
+      hotel.price === null ||
+      hotel.price === undefined ||
+      hotel.price === ""
+    ) {
+      return null;
+    }
+
+    return String(hotel.price);
+  }
+
+  // ------------------------------------------
+  // Get location
+  // ------------------------------------------
+  function getLocation(hotel: Hotel) {
+    return hotel.address || hotel.location || null;
+  }
+
+  // ------------------------------------------
+  // Get phone
+  // ------------------------------------------
+  function getPhone(hotel: Hotel) {
+    return hotel.phone || hotel.telephone || null;
+  }
+
+  // ------------------------------------------
+  // Get website
+  // ------------------------------------------
+  function getWebsite(hotel: Hotel) {
+    return hotel.website || hotel.website_url || null;
+  }
+
+  // ------------------------------------------
+  // Format website
+  // ------------------------------------------
+  function formatWebsite(url: string) {
+    try {
+      const cleanUrl = url.startsWith("http")
+        ? url
+        : `https://${url}`;
+
+      return new URL(cleanUrl).hostname.replace("www.", "");
+    } catch {
+      return url;
+    }
+  }
+
+  // ------------------------------------------
+  // Add hotel
+  // ------------------------------------------
+  function addHotel(hotel: Hotel) {
+    if (selectedHotels.some((item) => item.hotel_id === hotel.hotel_id)) {
+      return;
+    }
+
+    if (selectedHotels.length >= 3) {
+      return;
+    }
+
+    setSelectedHotels([...selectedHotels, hotel]);
+    setSelectorOpen(false);
+  }
+
+  // ------------------------------------------
+  // Remove hotel
+  // ------------------------------------------
+  function removeHotel(hotelId: number) {
+    setSelectedHotels(
+      selectedHotels.filter((hotel) => hotel.hotel_id !== hotelId)
+    );
+  }
+
+  // ------------------------------------------
+  // Available hotels for selector
+  // ------------------------------------------
+  const availableHotels = useMemo(() => {
+    return hotels.filter(
+      (hotel) =>
+        !selectedHotels.some(
+          (selected) => selected.hotel_id === hotel.hotel_id
+        )
+    );
+  }, [hotels, selectedHotels]);
+
+  // ------------------------------------------
+  // Loading
+  // ------------------------------------------
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-[#f7f8fa] px-6 py-8">
+        <div className="mx-auto max-w-[1500px]">
+          <div className="rounded-3xl border border-slate-200 bg-white p-10 shadow-sm">
+            <div className="animate-pulse">
+              <div className="h-5 w-32 rounded bg-slate-200" />
+              <div className="mt-3 h-8 w-64 rounded bg-slate-200" />
+
+              <div className="mt-10 grid grid-cols-4">
+                <div className="h-64 bg-slate-100" />
+                <div className="h-64 bg-slate-100" />
+                <div className="h-64 bg-slate-100" />
+                <div className="h-64 bg-slate-100" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  // ------------------------------------------
+  // Error
+  // ------------------------------------------
+  if (error) {
+    return (
+      <main className="min-h-screen bg-[#f7f8fa] px-6 py-8">
+        <div className="mx-auto max-w-[1500px]">
+          <div className="rounded-3xl border border-red-200 bg-white p-8">
+            <h2 className="text-xl font-bold text-red-600">
+              Unable to load comparison data
+            </h2>
+
+            <p className="mt-3 text-slate-600">{error}</p>
+
+            <button
+              onClick={loadCompareData}
+              className="mt-6 rounded-xl bg-[#091423] px-5 py-3 font-semibold text-white"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
-    <main className="min-h-screen bg-[#f7f8fa] text-[#0b1625]">
+    <main className="min-h-screen bg-[#f7f8fa] px-4 py-6 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1500px]">
 
-      {/* HERO */}
-      <section className="bg-[#091423] px-6 py-14 text-white md:px-10 lg:px-14">
-        <div className="mx-auto max-w-7xl">
-          <div className="max-w-3xl">
+        {/* =========================================
+            HEADER
+        ========================================= */}
+        <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
 
-            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#d1a044]">
-              Compare Hotels
+          <div className="border-b border-slate-200 px-6 py-7 sm:px-8">
+            <p className="text-sm font-bold uppercase tracking-wider text-[#b1842f]">
+              Comparison
             </p>
 
-            <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">
-              Compare your hotel options
-            </h1>
+            <div className="mt-1 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h1 className="text-3xl font-bold tracking-tight text-[#091423]">
+                  Hotel details
+                </h1>
 
-            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-300 md:text-lg">
-              Compare hotel ratings, reviews, buffet
-              information, pricing and other available
-              details in one place.
-            </p>
+                <p className="mt-2 text-sm text-slate-500">
+                  Compare dining, buffet, pricing and hotel information.
+                </p>
+              </div>
 
+              {/* ADD HOTEL */}
+              {selectedHotels.length < 3 && (
+                <div className="relative">
+                  <button
+                    onClick={() => setSelectorOpen(!selectorOpen)}
+                    className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-[#091423] shadow-sm transition hover:border-[#c79a45]"
+                  >
+                    Add hotel
+                    <ChevronDown size={17} />
+                  </button>
+
+                  {selectorOpen && (
+                    <div className="absolute right-0 z-30 mt-2 w-72 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
+                      <div className="border-b border-slate-100 px-4 py-3">
+                        <p className="text-sm font-semibold text-[#091423]">
+                          Select a hotel
+                        </p>
+                      </div>
+
+                      <div className="max-h-72 overflow-y-auto">
+                        {availableHotels.map((hotel) => (
+                          <button
+                            key={hotel.hotel_id}
+                            onClick={() => addHotel(hotel)}
+                            className="block w-full px-4 py-3 text-left text-sm text-slate-700 transition hover:bg-[#f7f8fa]"
+                          >
+                            {hotel.hotel_name}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      </section>
 
-      {/* CONTENT */}
-      <section className="mx-auto max-w-7xl px-5 py-10 md:px-8 lg:px-10">
+          {/* =========================================
+              COMPARISON TABLE
+          ========================================= */}
+          <div className="overflow-x-auto">
+            <div
+              className="grid min-w-[1100px]"
+              style={{
+                gridTemplateColumns: `220px repeat(${Math.max(
+                  selectedHotels.length,
+                  1
+                )}, minmax(280px, 1fr))`,
+              }}
+            >
 
-        {/* HEADER */}
-        <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+              {/* =====================================
+                  HOTEL HEADER
+              ===================================== */}
 
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-wider text-[#b48632]">
-              Hotel comparison
-            </p>
+              <div className="border-r border-slate-200 bg-[#f9fafb] p-6">
+                <p className="text-lg font-bold text-slate-500">
+                  Hotels
+                </p>
+              </div>
 
-            <h2 className="mt-1 text-2xl font-semibold text-[#0b1625]">
-              Choose up to three hotels
-            </h2>
-          </div>
-
-          <p className="text-sm text-slate-500">
-            {loading
-              ? "Loading hotels..."
-              : `${hotels.length} hotels available`}
-          </p>
-
-        </div>
-
-        {/* ERROR */}
-        {error && (
-          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
-            {error}
-          </div>
-        )}
-
-        {/* HOTEL SELECTORS */}
-        <div className="grid gap-5 md:grid-cols-3">
-
-          {[0, 1, 2].map((index) => {
-            const selectedHotel =
-              selectedHotelObjects[index];
-
-            return (
-              <div
-                key={index}
-                className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
-              >
-
-                <div className="mb-4 flex items-center justify-between">
-
-                  <p className="text-sm font-semibold text-slate-500">
-                    Hotel {index + 1}
-                  </p>
-
-                  {selectedHotel && (
+              {selectedHotels.map((hotel) => (
+                <div
+                  key={hotel.hotel_id}
+                  className="relative border-r border-slate-200 p-6"
+                >
+                  {/* Remove */}
+                  {selectedHotels.length > 1 && (
                     <button
-                      onClick={() => removeHotel(index)}
-                      className="rounded-full p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+                      onClick={() => removeHotel(hotel.hotel_id)}
+                      className="absolute right-4 top-4 z-10 rounded-full bg-white p-2 text-slate-400 shadow-sm transition hover:text-red-500"
+                      title="Remove hotel"
                     >
                       <X size={17} />
                     </button>
                   )}
 
-                </div>
-
-                {/* SELECT */}
-                <div className="relative">
-
-                  <select
-                    value={
-                      selectedHotels[index] ?? ""
-                    }
-                    onChange={(event) =>
-                      selectHotel(
-                        index,
-                        event.target.value
-                      )
-                    }
-                    className="w-full appearance-none rounded-xl border border-slate-200 bg-white px-4 py-3.5 pr-10 text-sm font-medium text-[#0b1625] outline-none transition focus:border-[#d1a044] focus:ring-2 focus:ring-[#d1a044]/20"
-                  >
-
-                    <option value="">
-                      Select a hotel
-                    </option>
-
-                    {hotels.map((hotel) => {
-
-                      const alreadySelected =
-                        selectedHotels.includes(
-                          Number(hotel.hotel_id)
-                        ) &&
-                        selectedHotels[index] !==
-                          Number(hotel.hotel_id);
-
-                      return (
-                        <option
-                          key={hotel.hotel_id}
-                          value={hotel.hotel_id}
-                          disabled={alreadySelected}
-                        >
-                          {hotel.hotel_name ||
-                            "Unnamed Hotel"}
-                        </option>
-                      );
-                    })}
-
-                  </select>
-
-                  <ChevronDown
-                    size={18}
-                    className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400"
-                  />
-
-                </div>
-
-                {/* SELECTED HOTEL PREVIEW */}
-                {selectedHotel && (
-                  <div className="mt-4 overflow-hidden rounded-xl border border-slate-100">
-
-                    <div className="relative h-40">
-
-                      {selectedHotel.image_url ? (
-                        <img
-                          src={selectedHotel.image_url}
-                          alt={
-                            selectedHotel.hotel_name ||
-                            "Hotel"
-                          }
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <div className="flex h-full items-center justify-center bg-slate-100 text-sm text-slate-400">
-                          No image available
-                        </div>
-                      )}
-
-                    </div>
-
-                    <div className="p-4">
-
-                      <h3 className="line-clamp-2 text-base font-semibold text-[#0b1625]">
-                        {selectedHotel.hotel_name ||
-                          "Unnamed Hotel"}
-                      </h3>
-
-                      {selectedHotel.restaurant_name && (
-                        <p className="mt-1 text-sm text-slate-500">
-                          {selectedHotel.restaurant_name}
-                        </p>
-                      )}
-
-                    </div>
-
-                  </div>
-                )}
-
-              </div>
-            );
-          })}
-
-        </div>
-
-        {/* EMPTY */}
-        {!hasSelectedHotels && !loading && (
-          <div className="mt-8 rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
-
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#d1a044]/10">
-              <ArrowRight
-                className="text-[#b48632]"
-                size={24}
-              />
-            </div>
-
-            <h3 className="mt-5 text-lg font-semibold text-[#0b1625]">
-              Start comparing hotels
-            </h3>
-
-            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
-              Select two or three hotels above to see
-              their available information side by side.
-            </p>
-
-          </div>
-        )}
-
-        {/* COMPARISON */}
-        {hasSelectedHotels && (
-          <div className="mt-10 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-
-            {/* TITLE */}
-            <div className="border-b border-slate-200 px-6 py-5">
-
-              <p className="text-sm font-semibold uppercase tracking-wider text-[#b48632]">
-                Comparison
-              </p>
-
-              <h2 className="mt-1 text-xl font-semibold text-[#0b1625]">
-                Hotel details
-              </h2>
-
-            </div>
-
-            {/* TABLE */}
-            <div className="overflow-x-auto">
-
-              <div className="min-w-[850px]">
-
-                {/* HOTEL HEADER */}
-                <div className="grid grid-cols-[190px_repeat(3,minmax(210px,1fr))] border-b border-slate-200">
-
-                  <div className="bg-slate-50 p-5">
-                    <span className="text-sm font-semibold text-slate-500">
-                      Hotels
-                    </span>
-                  </div>
-
-                  {selectedHotelObjects.map(
-                    (hotel, index) => (
-
-                      <div
-                        key={index}
-                        className="border-l border-slate-200 p-5"
-                      >
-
-                        {hotel ? (
-                          <>
-                            <div className="relative h-32 overflow-hidden rounded-xl">
-
-                              {hotel.image_url ? (
-                                <img
-                                  src={hotel.image_url}
-                                  alt={
-                                    hotel.hotel_name ||
-                                    "Hotel"
-                                  }
-                                  className="h-full w-full object-cover"
-                                />
-                              ) : (
-                                <div className="flex h-full items-center justify-center bg-slate-100 text-sm text-slate-400">
-                                  No image
-                                </div>
-                              )}
-
-                            </div>
-
-                            <h3 className="mt-4 line-clamp-2 font-semibold text-[#0b1625]">
-                              {hotel.hotel_name ||
-                                "Unnamed Hotel"}
-                            </h3>
-
-                            {hotel.restaurant_name && (
-                              <p className="mt-1 text-xs text-slate-500">
-                                {hotel.restaurant_name}
-                              </p>
-                            )}
-
-                          </>
-                        ) : (
-                          <div className="flex min-h-[180px] items-center justify-center text-sm text-slate-400">
-                            Select a hotel
-                          </div>
-                        )}
-
+                  <div className="overflow-hidden rounded-2xl bg-slate-100">
+                    {hotel.image_url ? (
+                      <img
+                        src={hotel.image_url}
+                        alt={hotel.hotel_name || "Hotel"}
+                        className="h-44 w-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-44 items-center justify-center text-sm text-slate-400">
+                        No image available
                       </div>
-                    )
-                  )}
+                    )}
+                  </div>
 
+                  <h2 className="mt-5 text-xl font-bold text-[#091423]">
+                    {hotel.hotel_name || "Hotel"}
+                  </h2>
+
+                  <p className="mt-1 text-sm font-medium text-slate-500">
+                    {hotel.restaurant_name || "Restaurant information unavailable"}
+                  </p>
                 </div>
+              ))}
 
-                {/* RATING */}
-                <ComparisonRow
-                  label="Rating"
-                  icon={
-                    <Star size={17} />
-                  }
-                  values={selectedHotelObjects.map(
-                    (hotel) => {
+              {/* =====================================
+                  RATING
+              ===================================== */}
 
-                      if (!hotel) {
-                        return "—";
-                      }
-
-                      const rating =
-                        getRating(hotel);
-
-                      const reviewCount =
-                        getReviewCount(hotel);
-
-                      if (rating === null) {
-                        return "Not available";
-                      }
-
-                      return (
-                        <span className="inline-flex items-center gap-2">
-
-                          <span className="flex items-center gap-1 font-semibold text-[#0b1625]">
-
-                            <Star
-                              size={16}
-                              fill="currentColor"
-                              className="text-[#d1a044]"
-                            />
-
-                            {rating.toFixed(1)}
-
-                          </span>
-
-                          {reviewCount !== null && (
-                            <span className="text-slate-500">
-                              (
-                              {reviewCount.toLocaleString()}
-                              {" "}
-                              reviews)
-                            </span>
-                          )}
-
-                        </span>
-                      );
-                    }
-                  )}
-                />
-
-                {/* PRICE */}
-                <ComparisonRow
-                  label="Price"
-                  values={selectedHotelObjects.map(
-                    (hotel) => {
-
-                      if (!hotel) {
-                        return "—";
-                      }
-
-                      const price =
-                        getPrice(hotel);
-
-                      return (
-                        <span className="font-semibold text-[#0b1625]">
-                          {formatPrice(price)}
-                        </span>
-                      );
-                    }
-                  )}
-                />
-
-                {/* BUFFET TIME */}
-                <ComparisonRow
-                  label="Buffet time"
-                  values={selectedHotelObjects.map(
-                    (hotel) => {
-
-                      if (!hotel) {
-                        return "—";
-                      }
-
-                      const buffetTime =
-                        getBuffetTime(hotel);
-
-                      return (
-                        buffetTime ||
-                        "Not available"
-                      );
-                    }
-                  )}
-                />
-
-                {/* RESTAURANT */}
-                <ComparisonRow
-                  label="Restaurant"
-                  values={selectedHotelObjects.map(
-                    (hotel) =>
-                      hotel
-                        ? hotel.restaurant_name ||
-                          "Not available"
-                        : "—"
-                  )}
-                />
-
-                {/* LOCATION */}
-                <ComparisonRow
-                  label="Location"
-                  icon={
-                    <MapPin size={17} />
-                  }
-                  values={selectedHotelObjects.map(
-                    (hotel) => {
-
-                      if (!hotel) {
-                        return "—";
-                      }
-
-                      return (
-                        getLocation(hotel) ||
-                        "Not available"
-                      );
-                    }
-                  )}
-                />
-
-                {/* PHONE */}
-                <ComparisonRow
-                  label="Contact"
-                  icon={
-                    <Phone size={17} />
-                  }
-                  values={selectedHotelObjects.map(
-                    (hotel) => {
-
-                      if (!hotel) {
-                        return "—";
-                      }
-
-                      const phone =
-                        getPhone(hotel);
-
-                      if (!phone) {
-                        return "Not available";
-                      }
-
-                      return (
-                        <a
-                          href={`tel:${phone}`}
-                          className="font-medium text-[#9b732b] hover:underline"
-                        >
-                          {phone}
-                        </a>
-                      );
-                    }
-                  )}
-                />
-
-                {/* WEBSITE */}
-                <ComparisonRow
-                  label="Website"
-                  icon={
-                    <Globe size={17} />
-                  }
-                  values={selectedHotelObjects.map(
-                    (hotel) => {
-
-                      if (!hotel) {
-                        return "—";
-                      }
-
-                      const website =
-                        getWebsite(hotel);
-
-                      if (!website) {
-                        return "Not available";
-                      }
-
-                      const finalUrl =
-                        String(website).startsWith(
-                          "http"
-                        )
-                          ? String(website)
-                          : `https://${website}`;
-
-                      return (
-                        <a
-                          href={finalUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 font-medium text-[#9b732b] hover:underline"
-                        >
-                          {formatWebsite(
-                            finalUrl
-                          )}
-
-                          <ArrowRight
-                            size={14}
-                          />
-                        </a>
-                      );
-                    }
-                  )}
-                />
-
-                {/* DESCRIPTION */}
-                <ComparisonRow
-                  label="Description"
-                  values={selectedHotelObjects.map(
-                    (hotel) =>
-                      hotel
-                        ? hotel.description ||
-                          "Not available"
-                        : "—"
-                  )}
-                  tall
-                />
-
-              </div>
-
-            </div>
-
-          </div>
-        )}
-
-        {/* INFO */}
-        {hasSelectedHotels && (
-          <div className="mt-6 flex gap-3 rounded-2xl border border-[#d1a044]/25 bg-[#d1a044]/5 p-5">
-
-            <div className="mt-0.5 shrink-0">
-              <Check
-                size={18}
-                className="text-[#b48632]"
+              <CompareLabel
+                icon={<Star size={19} />}
+                title="Rating"
               />
+
+              {selectedHotels.map((hotel) => {
+                const rating = getRating(hotel);
+
+                return (
+                  <CompareValue key={hotel.hotel_id}>
+                    {rating !== null ? (
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg font-bold text-[#091423]">
+                          {rating.toFixed(1)}
+                        </span>
+
+                        <div className="flex">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star
+                              key={star}
+                              size={16}
+                              className={
+                                star <= Math.round(rating)
+                                  ? "fill-[#d1a044] text-[#d1a044]"
+                                  : "text-slate-300"
+                              }
+                            />
+                          ))}
+                        </div>
+
+                        {hotel.review_count && (
+                          <span className="text-sm text-slate-500">
+                            ({hotel.review_count})
+                          </span>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="text-slate-500">
+                        Not available
+                      </span>
+                    )}
+                  </CompareValue>
+                );
+              })}
+
+              {/* =====================================
+                  PRICE
+              ===================================== */}
+
+              <CompareLabel title="Price" />
+
+              {selectedHotels.map((hotel) => {
+                const price = getPrice(hotel);
+
+                return (
+                  <CompareValue key={hotel.hotel_id}>
+                    {price ? (
+                      <span className="font-bold text-[#091423]">
+                        {price}
+                      </span>
+                    ) : (
+                      <span className="text-slate-500">
+                        Not available
+                      </span>
+                    )}
+                  </CompareValue>
+                );
+              })}
+
+              {/* =====================================
+                  BUFFET TIME
+              ===================================== */}
+
+              <CompareLabel title="Buffet time" />
+
+              {selectedHotels.map((hotel) => {
+                const buffetTime = getBuffetTime(hotel);
+
+                return (
+                  <CompareValue key={hotel.hotel_id}>
+                    {buffetTime ? (
+                      <span className="font-medium text-[#091423]">
+                        {buffetTime}
+                      </span>
+                    ) : (
+                      <span className="text-slate-500">
+                        Not available
+                      </span>
+                    )}
+                  </CompareValue>
+                );
+              })}
+
+              {/* =====================================
+                  RESTAURANT
+              ===================================== */}
+
+              <CompareLabel title="Restaurant" />
+
+              {selectedHotels.map((hotel) => (
+                <CompareValue key={hotel.hotel_id}>
+                  <span>
+                    {hotel.restaurant_name || "Not available"}
+                  </span>
+                </CompareValue>
+              ))}
+
+              {/* =====================================
+                  LOCATION
+              ===================================== */}
+
+              <CompareLabel
+                icon={<MapPin size={19} />}
+                title="Location"
+              />
+
+              {selectedHotels.map((hotel) => {
+                const location = getLocation(hotel);
+
+                return (
+                  <CompareValue key={hotel.hotel_id}>
+                    {location || "Not available"}
+                  </CompareValue>
+                );
+              })}
+
+              {/* =====================================
+                  CONTACT
+              ===================================== */}
+
+              <CompareLabel
+                icon={<Phone size={19} />}
+                title="Contact"
+              />
+
+              {selectedHotels.map((hotel) => {
+                const phone = getPhone(hotel);
+
+                return (
+                  <CompareValue key={hotel.hotel_id}>
+                    {phone ? (
+                      <a
+                        href={`tel:${phone}`}
+                        className="font-medium text-[#a47720] hover:underline"
+                      >
+                        {phone}
+                      </a>
+                    ) : (
+                      "Not available"
+                    )}
+                  </CompareValue>
+                );
+              })}
+
+              {/* =====================================
+                  WEBSITE
+              ===================================== */}
+
+              <CompareLabel
+                icon={<Globe size={19} />}
+                title="Website"
+              />
+
+              {selectedHotels.map((hotel) => {
+                const website = getWebsite(hotel);
+
+                return (
+                  <CompareValue key={hotel.hotel_id}>
+                    {website ? (
+                      <a
+                        href={
+                          website.startsWith("http")
+                            ? website
+                            : `https://${website}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-[#a47720] hover:underline"
+                      >
+                        {formatWebsite(website)} →
+                      </a>
+                    ) : (
+                      "Not available"
+                    )}
+                  </CompareValue>
+                );
+              })}
+
             </div>
-
-            <div>
-
-              <h3 className="text-sm font-semibold text-[#0b1625]">
-                About the comparison data
-              </h3>
-
-              <p className="mt-1 text-sm leading-6 text-slate-600">
-                Ratings, prices, buffet information and
-                other hotel details are loaded directly
-                from your Supabase hotel data.
-              </p>
-
-            </div>
-
           </div>
-        )}
 
-      </section>
+          {/* =========================================
+              FOOTER
+          ========================================= */}
+
+          <div className="border-t border-slate-200 bg-[#fafafa] px-6 py-5 sm:px-8">
+            <p className="text-sm text-slate-500">
+              Hotel information, ratings and buffet details are
+              loaded from the Colombo Dining & Events Guide database.
+            </p>
+          </div>
+
+        </section>
+      </div>
     </main>
   );
 }
 
-/* -------------------------------------------------------
-   COMPARISON ROW
-------------------------------------------------------- */
+/* =================================================
+   COMPARISON LABEL
+================================================= */
 
-function ComparisonRow({
-  label,
+function CompareLabel({
+  title,
   icon,
-  values,
-  tall = false,
 }: {
-  label: string;
+  title: string;
   icon?: React.ReactNode;
-  values: React.ReactNode[];
-  tall?: boolean;
 }) {
   return (
-    <div className="grid grid-cols-[190px_repeat(3,minmax(210px,1fr))] border-b border-slate-100 last:border-b-0">
-
-      <div
-        className={`flex gap-2 bg-slate-50 p-5 ${
-          tall
-            ? "items-start"
-            : "items-center"
-        }`}
-      >
-
-        {icon && (
-          <span className="text-[#b48632]">
-            {icon}
-          </span>
-        )}
-
-        <span className="text-sm font-semibold text-slate-600">
-          {label}
+    <div className="flex min-h-[110px] items-center gap-3 border-r border-t border-slate-200 bg-[#f9fafb] px-6">
+      {icon && (
+        <span className="text-[#c08c29]">
+          {icon}
         </span>
+      )}
 
-      </div>
+      <span className="font-bold text-slate-600">
+        {title}
+      </span>
+    </div>
+  );
+}
 
-      {values.map((value, index) => (
-        <div
-          key={index}
-          className={`border-l border-slate-100 p-5 text-sm leading-6 text-slate-600 ${
-            tall
-              ? "min-h-[130px]"
-              : "min-h-[72px]"
-          }`}
-        >
-          {value}
-        </div>
-      ))}
+/* =================================================
+   COMPARISON VALUE
+================================================= */
 
+function CompareValue({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex min-h-[110px] items-center border-r border-t border-slate-200 px-6 text-[16px] leading-7 text-slate-600">
+      {children}
     </div>
   );
 }
