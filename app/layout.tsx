@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 
 import Sidebar from "@/components/layout/Sidebar";
@@ -33,16 +34,18 @@ export default function RootLayout({
     >
       <body className="h-screen overflow-hidden bg-slate-50 text-slate-900">
         <div className="flex h-screen overflow-hidden">
-          
+
           {/* Fixed Sidebar */}
           <Sidebar />
 
           {/* Main Application Area */}
           <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
-            
+
             {/* Fixed Header */}
             <div className="shrink-0">
-              <Header />
+              <Suspense fallback={<div className="h-16" />}>
+                <Header />
+              </Suspense>
             </div>
 
             {/* ONLY THIS AREA SCROLLS */}
