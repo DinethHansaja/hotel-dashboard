@@ -43,12 +43,12 @@ const menuItems = [
     href: "/reviews",
     icon: MessageSquare,
   },
-  {
-    label: "Best Products",
-    description: "Top Picks & Recommendations",
-    href: "/products",
-    icon: Award,
-  },
+  //{
+  //  label: "Best Products",
+  //  description: "Top Picks & Recommendations",
+   // href: "/products",
+   // icon: Award,
+  //},
   {
     label: "Compare",
     description: "Compare Options",
