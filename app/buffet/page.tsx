@@ -1,7 +1,6 @@
 import { supabase } from "@/lib/supabase";
 
 import BuffetFilters from "@/components/buffet/BuffetFilters";
-
 import BuffetGrid from "@/components/buffet/BuffetGrid";
 
 type BuffetPageProps = {
@@ -40,30 +39,19 @@ type Buffet = {
   latest_review?: string | null;
 };
 
-type Review = {
-  hotel_id: number;
-  rating?: number | null;
-  review_text?: string | null;
-  created_at?: string | null;
-};
-
-/*
- * Explicit schedule type.
- *
- * This fixes the TypeScript problem that was happening
- * around:
- *
- * existing.push(schedule)
- *
- * because TypeScript was previously trying to infer
- * the schedule array type from the Supabase response.
- */
 type Schedule = {
   schedule_id: number;
   hotel_id: number;
   price_lkr?: number | null;
   buffet_time?: string | null;
   meal_type?: string | null;
+};
+
+type Review = {
+  hotel_id: number;
+  rating?: number | null;
+  review_text?: string | null;
+  created_at?: string | null;
 };
 
 export default async function BuffetPage({
@@ -78,13 +66,17 @@ export default async function BuffetPage({
   const search =
     params.search?.trim().toLowerCase() || "";
 
-  const sort = params.sort || "popular";
+  const sort =
+    params.sort || "popular";
 
-  const priceFilter = params.price || "all";
+  const priceFilter =
+    params.price || "all";
 
-  const cuisineFilter = params.cuisine || "all";
+  const cuisineFilter =
+    params.cuisine || "all";
 
-  const ratingFilter = params.rating || "all";
+  const ratingFilter =
+    params.rating || "all";
 
   const availabilityFilter =
     params.availability || "all";
@@ -92,24 +84,32 @@ export default async function BuffetPage({
   // ==================================================
   // 2. GET HOTELS
   // ==================================================
-  //
-  // Keep select("*") for now.
-  //
-  // Your current application checks dynamically for:
-  // - cuisine
-  // - cuisine_type
-  // - food_type
-  //
-  // Until the exact hotels table schema is confirmed,
-  // removing those fields could break the cuisine filter.
-  // ==================================================
+
+  /*
+   * Only request the hotel columns required by
+   * the buffet page.
+   *
+   * This is already optimized and is kept as-is.
+   */
 
   const {
     data: hotels,
     error: hotelError,
   } = await supabase
     .from("hotels")
-    .select("*")
+    .select(`
+      hotel_id,
+      hotel_name,
+      restaurant_name,
+      image_url,
+      description,
+      Rating,
+      review_count,
+      google_review_url,
+      rate_verified_at,
+      cash_cow_dish,
+      cash_cow_description
+    `)
     .order("hotel_id");
 
   if (hotelError) {
@@ -135,16 +135,24 @@ export default async function BuffetPage({
   // ==================================================
 
   const hotelIds =
-    hotels?.map((hotel) => hotel.hotel_id) ?? [];
+    hotels?.map(
+      (hotel) => hotel.hotel_id
+    ) ?? [];
 
   // ==================================================
   // 4. GET BUFFET SCHEDULES
   // ==================================================
-  //
-  // Only fetch the fields actually used by this page.
-  //
-  // This reduces the amount of data returned by Supabase.
-  // ==================================================
+
+  /*
+   * PERFORMANCE IMPROVEMENT:
+   *
+   * Previously:
+   *
+   * .select("*")
+   *
+   * Now we only request the fields actually
+   * required by this page.
+   */
 
   const {
     data: schedules,
@@ -188,14 +196,22 @@ export default async function BuffetPage({
   // ==================================================
   // 5. GET COMMUNITY REVIEWS
   // ==================================================
-  //
-  // Only fetch the fields actually required for:
-  // - average rating
-  // - review count
-  // - latest review
-  //
-  // This is smaller than the previous query.
-  // ==================================================
+
+  /*
+   * PERFORMANCE IMPROVEMENT:
+   *
+   * The page only needs:
+   * - hotel_id
+   * - rating
+   * - review_text
+   * - created_at
+   *
+   * So there is no reason to download:
+   * - review_id
+   * - review_type
+   * - guest_name
+   * - visit_date
+   */
 
   const {
     data: reviews,
@@ -222,11 +238,8 @@ export default async function BuffetPage({
   /*
    * Reviews should not prevent the buffet page
    * from loading.
-   *
-   * If RLS or another Supabase issue prevents
-   * reviews from loading, the hotel/buffet data
-   * will still be displayed.
    */
+
   if (reviewError) {
     console.error(
       "Unable to load community reviews:",
@@ -239,21 +252,23 @@ export default async function BuffetPage({
   // ==================================================
 
   /*
-   * Explicitly use Schedule[] here.
+   * Explicit Schedule[] type.
    *
-   * This is the important TypeScript fix.
+   * This also prevents the TypeScript error that
+   * previously occurred on:
+   *
+   * existing.push(schedule)
    */
-  const schedulesByHotel = new Map<number, Schedule[]>();
 
-  /*
-   * Cast the Supabase result to Schedule[] | null
-   * so TypeScript knows exactly what each schedule is.
-   */
+  const schedulesByHotel =
+    new Map<number, Schedule[]>();
+
   (schedules as Schedule[] | null)?.forEach(
     (schedule) => {
       const existing =
-        schedulesByHotel.get(schedule.hotel_id) ??
-        [];
+        schedulesByHotel.get(
+          schedule.hotel_id
+        ) ?? [];
 
       existing.push(schedule);
 
@@ -268,10 +283,8 @@ export default async function BuffetPage({
   // 7. GROUP REVIEWS BY HOTEL
   // ==================================================
 
-  const reviewsByHotel = new Map<
-    number,
-    Review[]
-  >();
+  const reviewsByHotel =
+    new Map<number, Review[]>();
 
   (reviews as Review[] | null)?.forEach(
     (review) => {
@@ -283,7 +296,9 @@ export default async function BuffetPage({
       }
 
       const existing =
-        reviewsByHotel.get(review.hotel_id) ?? [];
+        reviewsByHotel.get(
+          review.hotel_id
+        ) ?? [];
 
       existing.push(review);
 
@@ -301,10 +316,14 @@ export default async function BuffetPage({
   const buffets: Buffet[] =
     hotels?.map((hotel) => {
       const hotelSchedules =
-        schedulesByHotel.get(hotel.hotel_id) ?? [];
+        schedulesByHotel.get(
+          hotel.hotel_id
+        ) ?? [];
 
       const hotelReviews =
-        reviewsByHotel.get(hotel.hotel_id) ?? [];
+        reviewsByHotel.get(
+          hotel.hotel_id
+        ) ?? [];
 
       // ----------------------------------------------
       // Prices
@@ -314,17 +333,17 @@ export default async function BuffetPage({
         hotelSchedules.filter(
           (schedule) =>
             schedule.price_lkr !== null &&
-            schedule.price_lkr !== undefined &&
-            !Number.isNaN(
-              Number(schedule.price_lkr)
-            )
+            schedule.price_lkr !== undefined
         );
 
       const lowestPrice =
         pricedSchedules.length > 0
           ? Math.min(
-              ...pricedSchedules.map((schedule) =>
-                Number(schedule.price_lkr)
+              ...pricedSchedules.map(
+                (schedule) =>
+                  Number(
+                    schedule.price_lkr
+                  )
               )
             )
           : null;
@@ -337,7 +356,9 @@ export default async function BuffetPage({
         hotelSchedules.find(
           (schedule) =>
             schedule.buffet_time &&
-            String(schedule.buffet_time).trim() !== ""
+            String(
+              schedule.buffet_time
+            ).trim() !== ""
         );
 
       // ----------------------------------------------
@@ -348,7 +369,9 @@ export default async function BuffetPage({
         hotelSchedules.find(
           (schedule) =>
             schedule.meal_type &&
-            String(schedule.meal_type).trim() !== ""
+            String(
+              schedule.meal_type
+            ).trim() !== ""
         );
 
       // ----------------------------------------------
@@ -364,6 +387,14 @@ export default async function BuffetPage({
       // ----------------------------------------------
       // Cuisine
       // ----------------------------------------------
+
+      /*
+       * Keep the existing dynamic lookup.
+       *
+       * We are not adding a potentially incorrect
+       * cuisine column to the Supabase SELECT until
+       * the exact database column is confirmed.
+       */
 
       const cuisineValue =
         hotelRecord.cuisine ??
@@ -454,6 +485,7 @@ export default async function BuffetPage({
        * descending, so the first review
        * is the latest review.
        */
+
       const latestReview =
         hotelReviews.length > 0
           ? hotelReviews[0]
@@ -464,17 +496,22 @@ export default async function BuffetPage({
       // ----------------------------------------------
 
       return {
-        hotel_id: hotel.hotel_id,
+        hotel_id:
+          hotel.hotel_id,
 
-        hotel_name: hotel.hotel_name,
+        hotel_name:
+          hotel.hotel_name,
 
         restaurant_name:
-          hotel.restaurant_name ?? null,
+          hotel.restaurant_name ??
+          null,
 
         image_url:
-          hotel.image_url ?? null,
+          hotel.image_url ??
+          null,
 
-        price: lowestPrice,
+        price:
+          lowestPrice,
 
         rating:
           hotel.Rating !== null &&
@@ -485,14 +522,18 @@ export default async function BuffetPage({
         review_count:
           hotel.review_count !== null &&
           hotel.review_count !== undefined
-            ? Number(hotel.review_count)
+            ? Number(
+                hotel.review_count
+              )
             : null,
 
         buffet_time:
-          scheduleWithTime?.buffet_time ?? null,
+          scheduleWithTime?.buffet_time ??
+          null,
 
         description:
-          hotel.description ?? null,
+          hotel.description ??
+          null,
 
         cuisine:
           cuisineValue
@@ -545,7 +586,8 @@ export default async function BuffetPage({
   // 9. SEARCH
   // ==================================================
 
-  let filteredBuffets = buffets;
+  let filteredBuffets =
+    buffets;
 
   if (search) {
     filteredBuffets =
@@ -738,13 +780,18 @@ export default async function BuffetPage({
     const minimumRating =
       Number(ratingFilter);
 
-    if (!Number.isNaN(minimumRating)) {
+    if (
+      !Number.isNaN(
+        minimumRating
+      )
+    ) {
       filteredBuffets =
         filteredBuffets.filter(
           (buffet) =>
             buffet.rating !== null &&
             buffet.rating !== undefined &&
-            buffet.rating >= minimumRating
+            buffet.rating >=
+              minimumRating
         );
     }
   }
