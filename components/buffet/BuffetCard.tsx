@@ -6,6 +6,10 @@ import {
   Clock3,
   CalendarDays,
   ArrowRight,
+  ExternalLink,
+  Utensils,
+  CheckCircle2,
+  MessageSquare,
 } from "lucide-react";
 
 type BuffetCardProps = {
@@ -18,7 +22,80 @@ type BuffetCardProps = {
   reviewCount?: number | null;
   buffetTime?: string | null;
   description?: string | null;
+
+  // Phase 1
+  mealType?: string | null;
+  googleReviewUrl?: string | null;
+  rateVerifiedAt?: string | null;
+  cashCowDish?: string | null;
+  cashCowDescription?: string | null;
+
+  // Community reviews
+  communityRating?: number | null;
+  communityReviewCount?: number | null;
+  latestReview?: string | null;
 };
+
+function getVerifiedText(dateString?: string | null) {
+  if (!dateString) {
+    return null;
+  }
+
+  const verifiedDate = new Date(dateString);
+
+  if (Number.isNaN(verifiedDate.getTime())) {
+    return null;
+  }
+
+  const now = new Date();
+
+  const differenceMs =
+    now.getTime() - verifiedDate.getTime();
+
+  if (differenceMs < 0) {
+    return "Rates recently verified";
+  }
+
+  const minutes = Math.floor(
+    differenceMs / (1000 * 60)
+  );
+
+  if (minutes < 60) {
+    return `Rates last verified ${Math.max(
+      minutes,
+      1
+    )} min ago`;
+  }
+
+  const hours = Math.floor(minutes / 60);
+
+  if (hours < 24) {
+    return `Rates last verified ${hours}h ago`;
+  }
+
+  const days = Math.floor(hours / 24);
+
+  if (days < 30) {
+    return `Rates last verified ${days}d ago`;
+  }
+
+  const months = Math.floor(days / 30);
+
+  return `Rates last verified ${months}mo ago`;
+}
+
+function getGoogleReviewUrl(
+  hotelName: string,
+  googleReviewUrl?: string | null
+) {
+  if (googleReviewUrl) {
+    return googleReviewUrl;
+  }
+
+  return `https://www.google.com/search?q=${encodeURIComponent(
+    `${hotelName} Google Reviews`
+  )}`;
+}
 
 export default function BuffetCard({
   hotelId,
@@ -30,17 +107,42 @@ export default function BuffetCard({
   reviewCount,
   buffetTime,
   description,
+  mealType,
+  googleReviewUrl,
+  rateVerifiedAt,
+  cashCowDish,
+  cashCowDescription,
+  communityRating,
+  communityReviewCount,
+  latestReview,
 }: BuffetCardProps) {
+  const verifiedText =
+    getVerifiedText(rateVerifiedAt);
+
+  const googleUrl = getGoogleReviewUrl(
+    hotelName,
+    googleReviewUrl
+  );
+
+  const displayCommunityRating =
+    communityRating ?? rating;
+
+  const displayCommunityReviewCount =
+    communityReviewCount ?? reviewCount;
+
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl">
 
-      {/* Image */}
+      {/* IMAGE */}
       <div className="relative aspect-[16/9] overflow-hidden bg-slate-100">
-
         {imageUrl ? (
           <img
             src={imageUrl}
-            alt={hotelName}
+            alt={`${hotelName} buffet`}
+            loading="lazy"
+            decoding="async"
+            width={800}
+            height={450}
             className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
           />
         ) : (
@@ -55,10 +157,9 @@ export default function BuffetCard({
           </div>
         )}
 
-        {/* Image overlay */}
         <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/30 to-transparent" />
 
-        {/* Popular badge */}
+        {/* Popular */}
         <div className="absolute left-3 top-3 rounded-full bg-[#c79a45] px-3 py-1 text-xs font-semibold text-white shadow-md">
           Popular
         </div>
@@ -73,28 +174,29 @@ export default function BuffetCard({
         </button>
       </div>
 
-      {/* Content */}
+      {/* CONTENT */}
       <div className="flex flex-1 flex-col p-5">
 
-        {/* Hotel information */}
+        {/* HOTEL INFORMATION */}
         <div>
           <div className="flex items-start justify-between gap-4">
 
-            {/* Hotel name */}
-            <div className="min-w-0">
-              <h3 className="line-clamp-1 text-lg font-bold text-slate-900">
+            {/* HOTEL NAME */}
+            <div className="min-w-0 flex-1">
+              <h3 className="break-words text-lg font-bold leading-6 text-slate-900">
                 {hotelName}
               </h3>
 
-              <p className="mt-1 line-clamp-1 text-sm text-slate-500">
+              <p className="mt-1 break-words text-sm text-slate-500">
                 {restaurantName ||
                   "Restaurant information unavailable"}
               </p>
             </div>
 
-            {/* Starting price */}
+            {/* PRICE */}
             <div className="shrink-0 text-right">
-              {price !== null && price !== undefined ? (
+              {price !== null &&
+              price !== undefined ? (
                 <>
                   <div className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
                     From
@@ -116,8 +218,8 @@ export default function BuffetCard({
             </div>
           </div>
 
-          {/* Rating */}
-          <div className="mt-4 flex items-center gap-2">
+          {/* RATING */}
+          <div className="mt-4 flex flex-wrap items-center gap-2">
             <Star className="h-4 w-4 fill-[#c79a45] text-[#c79a45]" />
 
             <span className="text-sm font-semibold text-slate-800">
@@ -130,9 +232,25 @@ export default function BuffetCard({
                   ({reviewCount} reviews)
                 </span>
               )}
+
+            <span className="text-slate-300">
+              |
+            </span>
+
+            {/* GOOGLE REVIEWS */}
+            <a
+              href={googleUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 transition hover:text-blue-800 hover:underline"
+            >
+              Google Reviews
+
+              <ExternalLink className="h-3 w-3" />
+            </a>
           </div>
 
-          {/* Description */}
+          {/* DESCRIPTION */}
           {description && (
             <p className="mt-3 line-clamp-2 text-sm leading-5 text-slate-500">
               {description}
@@ -140,12 +258,22 @@ export default function BuffetCard({
           )}
         </div>
 
-        {/* Bottom section */}
+        {/* BOTTOM */}
         <div className="mt-auto pt-6">
+          <div className="space-y-3">
 
-          <div className="space-y-2">
+            {/* MEAL TYPE */}
+            <div className="flex items-center gap-2 text-sm text-slate-500">
+              <Utensils className="h-4 w-4 shrink-0 text-[#c79a45]" />
 
-            {/* Buffet time */}
+              <span>
+                {mealType
+                  ? `${mealType} Buffet`
+                  : "Buffet Experience"}
+              </span>
+            </div>
+
+            {/* BUFFET TIME */}
             {buffetTime && (
               <div className="flex items-center gap-2 text-sm text-slate-500">
                 <Clock3 className="h-4 w-4 shrink-0 text-[#c79a45]" />
@@ -156,7 +284,7 @@ export default function BuffetCard({
               </div>
             )}
 
-            {/* Buffet type */}
+            {/* BUFFET TYPE */}
             <div className="flex items-center gap-2 text-sm text-slate-500">
               <CalendarDays className="h-4 w-4 shrink-0 text-[#c79a45]" />
 
@@ -164,9 +292,104 @@ export default function BuffetCard({
                 Buffet Experience
               </span>
             </div>
+
+            {/* RATE VERIFIED */}
+            {verifiedText && (
+              <div className="flex items-center gap-2 text-xs text-emerald-600">
+                <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
+
+                <span>
+                  {verifiedText}
+                </span>
+              </div>
+            )}
+
+            {/* CASH COW DISH */}
+            <div className="mt-4 rounded-xl border border-amber-100 bg-amber-50/60 p-3">
+              <div className="flex items-start gap-2">
+
+                <span className="mt-0.5 text-base">
+                  🐄
+                </span>
+
+                <div className="min-w-0">
+                  <p className="text-xs font-bold uppercase tracking-wide text-[#9a742e]">
+                    Cash Cow Dish
+                  </p>
+
+                  {cashCowDish ? (
+                    <>
+                      <p className="mt-1 text-sm font-semibold text-slate-800">
+                        {cashCowDish}
+                      </p>
+
+                      {cashCowDescription && (
+                        <p className="mt-1 text-xs leading-5 text-slate-500">
+                          {cashCowDescription}
+                        </p>
+                      )}
+                    </>
+                  ) : (
+                    <p className="mt-1 text-xs text-slate-500">
+                      Popular dish information coming soon.
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* COMMUNITY REVIEWS */}
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+
+              <div className="flex items-center justify-between gap-2">
+
+                <div className="flex items-center gap-2">
+                  <MessageSquare className="h-4 w-4 text-[#c79a45]" />
+
+                  <span className="text-xs font-bold uppercase tracking-wide text-slate-700">
+                    Guest Reviews
+                  </span>
+                </div>
+
+                {displayCommunityRating !== null &&
+                  displayCommunityRating !==
+                    undefined && (
+                    <div className="flex items-center gap-1">
+                      <Star className="h-3.5 w-3.5 fill-[#c79a45] text-[#c79a45]" />
+
+                      <span className="text-xs font-semibold text-slate-700">
+                        {displayCommunityRating}
+                      </span>
+                    </div>
+                  )}
+              </div>
+
+              {latestReview ? (
+                <p className="mt-2 line-clamp-2 text-xs italic leading-5 text-slate-500">
+                  "{latestReview}"
+                </p>
+              ) : (
+                <p className="mt-2 text-xs text-slate-400">
+                  Guest reviews coming soon.
+                </p>
+              )}
+
+              {displayCommunityReviewCount !==
+                null &&
+                displayCommunityReviewCount !==
+                  undefined && (
+                  <p className="mt-2 text-[11px] text-slate-400">
+                    {displayCommunityReviewCount} review
+                    {displayCommunityReviewCount ===
+                    1
+                      ? ""
+                      : "s"}
+                  </p>
+                )}
+            </div>
           </div>
 
-          {/* View Details */}
+          {/* VIEW DETAILS */}
           <Link
             href={`/hotels/${hotelId}`}
             className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl border border-[#c79a45] px-4 py-2.5 text-sm font-semibold text-[#9a742e] transition hover:bg-[#c79a45] hover:text-white"
