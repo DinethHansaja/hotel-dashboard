@@ -15,6 +15,13 @@ type HotelMapProps = {
   hotels: Hotel[];
 };
 
+/*
+ * IMPORTANT:
+ * Leaflet must only load in the browser.
+ *
+ * ssr: false prevents HotelMapClient from being
+ * rendered/evaluated on the server.
+ */
 const HotelMapClient = dynamic(
   () => import("./HotelMapClient"),
   {
