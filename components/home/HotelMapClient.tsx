@@ -25,6 +25,9 @@ type HotelMapClientProps = {
   hotels: Hotel[];
 };
 
+/*
+ * Leaflet marker icon
+ */
 const hotelIcon = L.icon({
   iconUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
@@ -36,14 +39,20 @@ const hotelIcon = L.icon({
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
 
   iconSize: [25, 41],
+
   iconAnchor: [12, 41],
+
   popupAnchor: [1, -34],
+
   shadowSize: [41, 41],
 });
 
 export default function HotelMapClient({
   hotels,
 }: HotelMapClientProps) {
+  /*
+   * Only use hotels that have valid coordinates.
+   */
   const validHotels = hotels.filter(
     (hotel) =>
       hotel.latitude !== null &&
@@ -72,11 +81,23 @@ export default function HotelMapClient({
             Number(hotel.longitude),
           ]}
           icon={hotelIcon}
+          eventHandlers={{
+            /*
+             * OPEN POPUP WHEN USER HOVERS
+             * OVER THE HOTEL MARKER
+             */
+            mouseover: (event) => {
+              event.target.openPopup();
+            },
+          }}
         >
           <Popup>
             <div className="w-[280px] overflow-hidden rounded-xl">
 
-              {/* Hotel Image */}
+              {/* ==============================
+                  HOTEL IMAGE
+              =============================== */}
+
               <div className="h-36 w-full overflow-hidden bg-slate-100">
                 {hotel.image_url ? (
                   <img
@@ -91,16 +112,25 @@ export default function HotelMapClient({
                 )}
               </div>
 
-              {/* Content */}
+              {/* ==============================
+                  HOTEL CONTENT
+              =============================== */}
+
               <div className="p-4">
+
+                {/* Hotel Badge */}
 
                 <div className="mb-2 inline-flex rounded-full bg-[#c79a45] px-3 py-1 text-xs font-semibold text-white">
                   Hotel
                 </div>
 
+                {/* Hotel Name */}
+
                 <h3 className="text-lg font-bold text-slate-900">
                   {hotel.hotel_name}
                 </h3>
+
+                {/* Restaurant */}
 
                 {hotel.restaurant_name && (
                   <p className="mt-1 text-sm text-slate-500">
@@ -108,10 +138,17 @@ export default function HotelMapClient({
                   </p>
                 )}
 
+                {/* Location */}
+
                 <div className="mt-4 flex items-center gap-2 text-sm text-slate-500">
                   <span>📍</span>
-                  <span>Colombo, Sri Lanka</span>
+
+                  <span>
+                    Colombo, Sri Lanka
+                  </span>
                 </div>
+
+                {/* View Hotel */}
 
                 <Link
                   href={`/hotels/${hotel.hotel_id}`}
