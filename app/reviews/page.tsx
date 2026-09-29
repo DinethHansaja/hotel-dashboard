@@ -13,6 +13,7 @@ import {
   PenLine,
   X,
   CalendarDays,
+  ExternalLink,
 } from "lucide-react";
 
 import { supabase } from "@/lib/supabase";
@@ -28,6 +29,7 @@ type Hotel = {
   Rating?: number | string;
   review_count?: number | string;
   address?: string;
+  google_review_url?: string | null;
 };
 
 type Review = {
@@ -54,9 +56,7 @@ function getRating(hotel: Hotel) {
 }
 
 function getHotelId(hotel: Hotel, index: number) {
-  return String(
-    hotel.hotel_id ?? `${hotel.hotel_name}-${index}`
-  );
+  return String(hotel.hotel_id ?? `${hotel.hotel_name}-${index}`);
 }
 
 function formatDate(date: string | null | undefined) {
@@ -234,19 +234,6 @@ export default function ReviewsPage() {
     return total / reviews.length;
   }, [reviews]);
 
-  const filteredReviews = useMemo(() => {
-    return reviews.filter((review) => {
-      if (
-        reviewType !== "all" &&
-        review.review_type !== reviewType
-      ) {
-        return false;
-      }
-
-      return true;
-    });
-  }, [reviews, reviewType]);
-
   // --------------------------------------------------
   // REVIEWS BY HOTEL
   // --------------------------------------------------
@@ -282,6 +269,7 @@ export default function ReviewsPage() {
 
   return (
     <main className="min-h-screen bg-[#f7f8fa] text-slate-900">
+
       {/* ==================================================
           HERO
       ================================================== */}
@@ -295,9 +283,9 @@ export default function ReviewsPage() {
 
         <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">
           <div className="max-w-3xl">
+
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#d1a044]/30 bg-[#d1a044]/10 px-4 py-2 text-sm font-medium text-[#e3bd6d]">
               <MessageSquareText className="h-4 w-4" />
-
               Dining & Stay Reviews
             </div>
 
@@ -317,8 +305,10 @@ export default function ReviewsPage() {
           </div>
 
           {/* SEARCH */}
+
           <div className="mt-10 max-w-3xl">
             <div className="flex items-center rounded-2xl border border-white/10 bg-white p-2 shadow-2xl">
+
               <Search className="ml-3 h-5 w-5 shrink-0 text-slate-400" />
 
               <input
@@ -352,14 +342,18 @@ export default function ReviewsPage() {
 
       <section className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-6 lg:px-8">
+
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+
             <div>
               <p className="text-sm font-medium text-slate-500">
                 Guest feedback across our hotel collection
               </p>
 
               <div className="mt-2 flex flex-wrap items-center gap-5">
+
                 {/* HOTEL RATING */}
+
                 <div className="flex items-center gap-2">
                   <Star className="h-5 w-5 fill-[#d1a044] text-[#d1a044]" />
 
@@ -377,6 +371,7 @@ export default function ReviewsPage() {
                 <div className="hidden h-5 w-px bg-slate-200 sm:block" />
 
                 {/* HOTELS */}
+
                 <div className="text-sm text-slate-500">
                   <span className="font-semibold text-slate-900">
                     {hotels.length}
@@ -387,6 +382,7 @@ export default function ReviewsPage() {
                 <div className="hidden h-5 w-px bg-slate-200 sm:block" />
 
                 {/* COMMUNITY REVIEWS */}
+
                 <div className="flex items-center gap-2">
                   <MessageSquareText className="h-4 w-4 text-[#d1a044]" />
 
@@ -418,6 +414,7 @@ export default function ReviewsPage() {
             </div>
 
             {/* WRITE REVIEW */}
+
             <button
               type="button"
               onClick={() =>
@@ -426,9 +423,9 @@ export default function ReviewsPage() {
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#091423] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#12233a]"
             >
               <PenLine className="h-4 w-4" />
-
               Write a Review
             </button>
+
           </div>
         </div>
       </section>
@@ -439,12 +436,15 @@ export default function ReviewsPage() {
 
       <section className="sticky top-0 z-20 border-b border-slate-200 bg-[#f7f8fa]/95 backdrop-blur">
         <div className="mx-auto max-w-7xl px-6 py-5 lg:px-8">
+
           <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+
             {/* TYPE */}
+
             <div className="flex flex-wrap items-center gap-2">
+
               <div className="mr-1 flex items-center gap-2 text-sm font-semibold text-slate-700">
                 <SlidersHorizontal className="h-4 w-4" />
-
                 Reviews
               </div>
 
@@ -482,7 +482,9 @@ export default function ReviewsPage() {
             </div>
 
             {/* RATING */}
+
             <div className="flex flex-wrap items-center gap-2">
+
               <span className="mr-1 text-sm font-medium text-slate-500">
                 Hotel Rating
               </span>
@@ -528,6 +530,7 @@ export default function ReviewsPage() {
                   Clear
                 </button>
               )}
+
             </div>
           </div>
         </div>
@@ -538,6 +541,7 @@ export default function ReviewsPage() {
       ================================================== */}
 
       <section className="mx-auto max-w-7xl px-6 py-10 lg:px-8">
+
         <div className="mb-7 flex items-end justify-between gap-4">
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-[#091423]">
@@ -559,8 +563,10 @@ export default function ReviewsPage() {
         </div>
 
         {/* LOADING */}
+
         {loading && (
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+
             {[1, 2, 3, 4, 5, 6].map(
               (item) => (
                 <div
@@ -581,12 +587,15 @@ export default function ReviewsPage() {
                 </div>
               )
             )}
+
           </div>
         )}
 
         {/* ERROR */}
+
         {!loading && errorMessage && (
           <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center">
+
             <h3 className="font-semibold text-red-900">
               Unable to load hotels
             </h3>
@@ -594,14 +603,17 @@ export default function ReviewsPage() {
             <p className="mt-2 text-sm text-red-700">
               {errorMessage}
             </p>
+
           </div>
         )}
 
         {/* EMPTY */}
+
         {!loading &&
           !errorMessage &&
           filteredHotels.length === 0 && (
             <div className="rounded-2xl border border-slate-200 bg-white px-6 py-16 text-center">
+
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100">
                 <Search className="h-6 w-6 text-slate-500" />
               </div>
@@ -622,16 +634,20 @@ export default function ReviewsPage() {
               >
                 Clear filters
               </button>
+
             </div>
           )}
 
         {/* HOTEL CARDS */}
+
         {!loading &&
           !errorMessage &&
           filteredHotels.length > 0 && (
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+
               {filteredHotels.map(
                 (hotel, index) => {
+
                   const rating =
                     getRating(hotel);
 
@@ -659,8 +675,11 @@ export default function ReviewsPage() {
                       )}
                       className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
                     >
+
                       {/* IMAGE */}
+
                       <div className="relative h-56 overflow-hidden">
+
                         <img
                           src={
                             hotel.image_url ||
@@ -671,9 +690,8 @@ export default function ReviewsPage() {
                             "Colombo hotel"
                           }
                           className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                          onError={(
-                            event
-                          ) => {
+                          loading="lazy"
+                          onError={(event) => {
                             event.currentTarget.src =
                               FALLBACK_IMAGE;
                           }}
@@ -682,21 +700,27 @@ export default function ReviewsPage() {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
                         {/* RATING */}
+
                         <div className="absolute bottom-4 left-4">
+
                           <div className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-sm font-semibold text-[#091423] shadow-lg">
+
                             <Star className="h-4 w-4 fill-[#d1a044] text-[#d1a044]" />
 
                             {rating > 0
-                              ? rating.toFixed(
-                                  1
-                                )
+                              ? rating.toFixed(1)
                               : "No rating"}
+
                           </div>
+
                         </div>
 
                         {/* TYPE */}
+
                         <div className="absolute right-4 top-4">
+
                           <span className="rounded-full border border-white/20 bg-[#091423]/80 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur">
+
                             {reviewType ===
                             "dining"
                               ? "Dining"
@@ -704,12 +728,17 @@ export default function ReviewsPage() {
                                   "stay"
                                 ? "Stay"
                                 : "Dining & Stay"}
+
                           </span>
+
                         </div>
+
                       </div>
 
                       {/* BODY */}
+
                       <div className="p-6">
+
                         <h3 className="text-xl font-bold tracking-tight text-[#091423]">
                           {hotel.hotel_name ||
                             "Hotel"}
@@ -724,24 +753,31 @@ export default function ReviewsPage() {
                         )}
 
                         {/* ADDRESS */}
+
                         {hotel.address && (
                           <div className="mt-4 flex items-start gap-2 text-sm text-slate-500">
+
                             <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#d1a044]" />
 
                             <span>
                               {hotel.address}
                             </span>
+
                           </div>
                         )}
 
                         {/* HOTEL RATING */}
+
                         <div className="mt-5 rounded-xl bg-[#f7f8fa] p-4">
+
                           <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
                             Hotel rating
                           </p>
 
                           <div className="mt-1 flex items-center justify-between gap-4">
+
                             <div className="flex items-center gap-2">
+
                               <span className="text-2xl font-bold text-[#091423]">
                                 {rating > 0
                                   ? rating.toFixed(
@@ -752,12 +788,11 @@ export default function ReviewsPage() {
 
                               {rating > 0 && (
                                 <div className="flex items-center gap-0.5">
+
                                   {[1, 2, 3, 4, 5].map(
                                     (star) => (
                                       <Star
-                                        key={
-                                          star
-                                        }
+                                        key={star}
                                         className={`h-3.5 w-3.5 ${
                                           star <=
                                           Math.round(
@@ -769,11 +804,14 @@ export default function ReviewsPage() {
                                       />
                                     )
                                   )}
+
                                 </div>
                               )}
+
                             </div>
 
                             <div className="text-right">
+
                               <p className="text-xs text-slate-400">
                                 Community
                               </p>
@@ -784,26 +822,49 @@ export default function ReviewsPage() {
                                 }{" "}
                                 reviews
                               </p>
+
                             </div>
+
                           </div>
                         </div>
 
+                        {/* GOOGLE REVIEWS */}
+
+                        {hotel.google_review_url && (
+                          <a
+                            href={
+                              hotel.google_review_url
+                            }
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-[#d1a044] bg-white px-4 py-3 text-sm font-semibold text-[#8a651c] transition hover:bg-[#d1a044]/10 hover:shadow-sm"
+                          >
+                            <Star className="h-4 w-4 fill-[#d1a044] text-[#d1a044]" />
+
+                            View Google Reviews
+
+                            <ExternalLink className="h-4 w-4" />
+                          </a>
+                        )}
+
                         {/* EXPERIENCE TYPES */}
+
                         <div className="mt-5 flex flex-wrap gap-2">
+
                           <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600">
                             <Utensils className="h-3.5 w-3.5 text-[#d1a044]" />
-
                             Dining
                           </span>
 
                           <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600">
                             <BedDouble className="h-3.5 w-3.5 text-[#d1a044]" />
-
                             Stay
                           </span>
+
                         </div>
 
                         {/* DESCRIPTION */}
+
                         {hotel.description && (
                           <p className="mt-5 line-clamp-3 text-sm leading-6 text-slate-500">
                             {hotel.description}
@@ -811,10 +872,12 @@ export default function ReviewsPage() {
                         )}
 
                         {/* COMMUNITY REVIEWS */}
-                        {visibleReviews.length >
-                          0 && (
+
+                        {visibleReviews.length > 0 && (
                           <div className="mt-6 border-t border-slate-100 pt-5">
+
                             <div className="mb-4 flex items-center justify-between">
+
                               <p className="text-sm font-semibold text-[#091423]">
                                 Recent guest reviews
                               </p>
@@ -825,23 +888,26 @@ export default function ReviewsPage() {
                                 }{" "}
                                 total
                               </span>
+
                             </div>
 
                             <div className="space-y-4">
+
                               {visibleReviews
                                 .slice(0, 2)
                                 .map(
-                                  (
-                                    review
-                                  ) => (
+                                  (review) => (
                                     <div
                                       key={
                                         review.review_id
                                       }
                                       className="rounded-xl bg-[#f7f8fa] p-4"
                                     >
+
                                       <div className="flex items-start justify-between gap-3">
+
                                         <div>
+
                                           <p className="text-sm font-semibold text-[#091423]">
                                             {
                                               review.guest_name
@@ -849,6 +915,7 @@ export default function ReviewsPage() {
                                           </p>
 
                                           <div className="mt-1 flex items-center gap-1">
+
                                             {[
                                               1,
                                               2,
@@ -872,7 +939,9 @@ export default function ReviewsPage() {
                                                 />
                                               )
                                             )}
+
                                           </div>
+
                                         </div>
 
                                         <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold capitalize text-slate-500">
@@ -880,6 +949,7 @@ export default function ReviewsPage() {
                                             review.review_type
                                           }
                                         </span>
+
                                       </div>
 
                                       <p className="mt-3 text-sm leading-6 text-slate-600">
@@ -890,23 +960,29 @@ export default function ReviewsPage() {
 
                                       {review.visit_date && (
                                         <div className="mt-3 flex items-center gap-1.5 text-xs text-slate-400">
+
                                           <CalendarDays className="h-3.5 w-3.5" />
 
                                           Visited{" "}
                                           {formatDate(
                                             review.visit_date
                                           )}
+
                                         </div>
                                       )}
+
                                     </div>
                                   )
                                 )}
+
                             </div>
                           </div>
                         )}
 
                         {/* ACTIONS */}
+
                         <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-5">
+
                           <button
                             type="button"
                             onClick={() =>
@@ -917,7 +993,6 @@ export default function ReviewsPage() {
                             className="inline-flex items-center gap-2 text-sm font-semibold text-[#091423] transition hover:text-[#a47a27]"
                           >
                             <MessageSquareText className="h-4 w-4" />
-
                             Write a review
                           </button>
 
@@ -932,14 +1007,18 @@ export default function ReviewsPage() {
                                 }`
                               : "No guest reviews yet"}
                           </span>
+
                         </div>
+
                       </div>
                     </article>
                   );
                 }
               )}
+
             </div>
           )}
+
       </section>
 
       {/* ==================================================
@@ -947,15 +1026,20 @@ export default function ReviewsPage() {
       ================================================== */}
 
       <section className="border-t border-slate-200 bg-white">
+
         <div className="mx-auto max-w-7xl px-6 py-14 lg:px-8">
+
           <div className="grid gap-10 lg:grid-cols-[1fr_1.5fr] lg:items-center">
+
             <div>
+
               <p className="text-sm font-semibold uppercase tracking-widest text-[#a47a27]">
                 About our reviews
               </p>
 
               <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#091423]">
                 Real hotel information,
+
                 <span className="block">
                   real guest experiences.
                 </span>
@@ -966,10 +1050,13 @@ export default function ReviewsPage() {
                 data, while written guest reviews are stored
                 separately in our community review system.
               </p>
+
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
+
               <div className="rounded-2xl border border-slate-200 bg-[#f7f8fa] p-6">
+
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#091423] text-white">
                   <Star className="h-5 w-5" />
                 </div>
@@ -982,9 +1069,11 @@ export default function ReviewsPage() {
                   Existing hotel ratings remain connected
                   to the hotel information in your database.
                 </p>
+
               </div>
 
               <div className="rounded-2xl border border-slate-200 bg-[#f7f8fa] p-6">
+
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#d1a044] text-[#091423]">
                   <MessageSquareText className="h-5 w-5" />
                 </div>
@@ -997,8 +1086,11 @@ export default function ReviewsPage() {
                   Visitors can submit dining and stay
                   experiences directly through the website.
                 </p>
+
               </div>
+
             </div>
+
           </div>
         </div>
       </section>
@@ -1014,6 +1106,7 @@ export default function ReviewsPage() {
         }
         onReviewSubmitted={loadData}
       />
+
     </main>
   );
 }

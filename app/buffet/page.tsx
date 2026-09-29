@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/supabase";
 
 import BuffetFilters from "@/components/buffet/BuffetFilters";
+
 import BuffetGrid from "@/components/buffet/BuffetGrid";
 
 type BuffetPageProps = {
@@ -25,6 +26,44 @@ type Buffet = {
   buffet_time?: string | null;
   description?: string | null;
   cuisine?: string | null;
+
+  // Phase 1
+  meal_type?: string | null;
+  google_review_url?: string | null;
+  rate_verified_at?: string | null;
+  cash_cow_dish?: string | null;
+  cash_cow_description?: string | null;
+
+  // Community reviews
+  community_rating?: number | null;
+  community_review_count?: number | null;
+  latest_review?: string | null;
+};
+
+type Review = {
+  hotel_id: number;
+  rating?: number | null;
+  review_text?: string | null;
+  created_at?: string | null;
+};
+
+/*
+ * Explicit schedule type.
+ *
+ * This fixes the TypeScript problem that was happening
+ * around:
+ *
+ * existing.push(schedule)
+ *
+ * because TypeScript was previously trying to infer
+ * the schedule array type from the Supabase response.
+ */
+type Schedule = {
+  schedule_id: number;
+  hotel_id: number;
+  price_lkr?: number | null;
+  buffet_time?: string | null;
+  meal_type?: string | null;
 };
 
 export default async function BuffetPage({
@@ -39,23 +78,30 @@ export default async function BuffetPage({
   const search =
     params.search?.trim().toLowerCase() || "";
 
-  const sort =
-    params.sort || "popular";
+  const sort = params.sort || "popular";
 
-  const priceFilter =
-    params.price || "all";
+  const priceFilter = params.price || "all";
 
-  const cuisineFilter =
-    params.cuisine || "all";
+  const cuisineFilter = params.cuisine || "all";
 
-  const ratingFilter =
-    params.rating || "all";
+  const ratingFilter = params.rating || "all";
 
   const availabilityFilter =
     params.availability || "all";
 
   // ==================================================
   // 2. GET HOTELS
+  // ==================================================
+  //
+  // Keep select("*") for now.
+  //
+  // Your current application checks dynamically for:
+  // - cuisine
+  // - cuisine_type
+  // - food_type
+  //
+  // Until the exact hotels table schema is confirmed,
+  // removing those fields could break the cuisine filter.
   // ==================================================
 
   const {
@@ -89,12 +135,15 @@ export default async function BuffetPage({
   // ==================================================
 
   const hotelIds =
-    hotels?.map(
-      (hotel) => hotel.hotel_id
-    ) ?? [];
+    hotels?.map((hotel) => hotel.hotel_id) ?? [];
 
   // ==================================================
   // 4. GET BUFFET SCHEDULES
+  // ==================================================
+  //
+  // Only fetch the fields actually used by this page.
+  //
+  // This reduces the amount of data returned by Supabase.
   // ==================================================
 
   const {
@@ -104,7 +153,13 @@ export default async function BuffetPage({
     hotelIds.length > 0
       ? await supabase
           .from("buffet_schedules")
-          .select("*")
+          .select(`
+            schedule_id,
+            hotel_id,
+            price_lkr,
+            buffet_time,
+            meal_type
+          `)
           .in("hotel_id", hotelIds)
           .order("schedule_id")
       : {
@@ -131,36 +186,125 @@ export default async function BuffetPage({
   }
 
   // ==================================================
-  // 5. GROUP SCHEDULES BY HOTEL
+  // 5. GET COMMUNITY REVIEWS
+  // ==================================================
+  //
+  // Only fetch the fields actually required for:
+  // - average rating
+  // - review count
+  // - latest review
+  //
+  // This is smaller than the previous query.
   // ==================================================
 
-  const schedulesByHotel =
-    new Map<number, typeof schedules>();
+  const {
+    data: reviews,
+    error: reviewError,
+  } =
+    hotelIds.length > 0
+      ? await supabase
+          .from("reviews")
+          .select(`
+            hotel_id,
+            rating,
+            review_text,
+            created_at
+          `)
+          .in("hotel_id", hotelIds)
+          .order("created_at", {
+            ascending: false,
+          })
+      : {
+          data: [],
+          error: null,
+        };
 
-  schedules?.forEach((schedule) => {
-    const existing =
-      schedulesByHotel.get(
-        schedule.hotel_id
-      ) ?? [];
-
-    existing.push(schedule);
-
-    schedulesByHotel.set(
-      schedule.hotel_id,
-      existing
+  /*
+   * Reviews should not prevent the buffet page
+   * from loading.
+   *
+   * If RLS or another Supabase issue prevents
+   * reviews from loading, the hotel/buffet data
+   * will still be displayed.
+   */
+  if (reviewError) {
+    console.error(
+      "Unable to load community reviews:",
+      reviewError.message
     );
-  });
+  }
 
   // ==================================================
-  // 6. PREPARE BUFFET DATA
+  // 6. GROUP SCHEDULES BY HOTEL
+  // ==================================================
+
+  /*
+   * Explicitly use Schedule[] here.
+   *
+   * This is the important TypeScript fix.
+   */
+  const schedulesByHotel = new Map<number, Schedule[]>();
+
+  /*
+   * Cast the Supabase result to Schedule[] | null
+   * so TypeScript knows exactly what each schedule is.
+   */
+  (schedules as Schedule[] | null)?.forEach(
+    (schedule) => {
+      const existing =
+        schedulesByHotel.get(schedule.hotel_id) ??
+        [];
+
+      existing.push(schedule);
+
+      schedulesByHotel.set(
+        schedule.hotel_id,
+        existing
+      );
+    }
+  );
+
+  // ==================================================
+  // 7. GROUP REVIEWS BY HOTEL
+  // ==================================================
+
+  const reviewsByHotel = new Map<
+    number,
+    Review[]
+  >();
+
+  (reviews as Review[] | null)?.forEach(
+    (review) => {
+      if (
+        review.hotel_id === null ||
+        review.hotel_id === undefined
+      ) {
+        return;
+      }
+
+      const existing =
+        reviewsByHotel.get(review.hotel_id) ?? [];
+
+      existing.push(review);
+
+      reviewsByHotel.set(
+        review.hotel_id,
+        existing
+      );
+    }
+  );
+
+  // ==================================================
+  // 8. PREPARE BUFFET DATA
   // ==================================================
 
   const buffets: Buffet[] =
     hotels?.map((hotel) => {
       const hotelSchedules =
-        schedulesByHotel.get(
-          hotel.hotel_id
-        ) ?? [];
+        schedulesByHotel.get(hotel.hotel_id) ?? [];
+
+      const hotelReviews =
+        reviewsByHotel.get(hotel.hotel_id) ?? [];
 
       // ----------------------------------------------
       // Prices
@@ -170,17 +314,17 @@ export default async function BuffetPage({
         hotelSchedules.filter(
           (schedule) =>
             schedule.price_lkr !== null &&
-            schedule.price_lkr !== undefined
+            schedule.price_lkr !== undefined &&
+            !Number.isNaN(
+              Number(schedule.price_lkr)
+            )
         );
 
       const lowestPrice =
         pricedSchedules.length > 0
           ? Math.min(
-              ...pricedSchedules.map(
-                (schedule) =>
-                  Number(
-                    schedule.price_lkr
-                  )
+              ...pricedSchedules.map((schedule) =>
+                Number(schedule.price_lkr)
               )
             )
           : null;
@@ -193,19 +337,22 @@ export default async function BuffetPage({
         hotelSchedules.find(
           (schedule) =>
             schedule.buffet_time &&
-            String(
-              schedule.buffet_time
-            ).trim() !== ""
+            String(schedule.buffet_time).trim() !== ""
         );
 
       // ----------------------------------------------
-      // Cuisine
-      //
-      // If your hotels table has a cuisine field,
-      // use it.
-      //
-      // Otherwise we safely fall back to restaurant
-      // name so the application will not crash.
+      // Meal type
+      // ----------------------------------------------
+
+      const scheduleWithMeal =
+        hotelSchedules.find(
+          (schedule) =>
+            schedule.meal_type &&
+            String(schedule.meal_type).trim() !== ""
+        );
+
+      // ----------------------------------------------
+      // Hotel record
       // ----------------------------------------------
 
       const hotelRecord =
@@ -214,29 +361,120 @@ export default async function BuffetPage({
           unknown
         >;
 
+      // ----------------------------------------------
+      // Cuisine
+      // ----------------------------------------------
+
       const cuisineValue =
         hotelRecord.cuisine ??
         hotelRecord.cuisine_type ??
         hotelRecord.food_type ??
         null;
 
-      return {
-        hotel_id:
-          hotel.hotel_id,
+      // ----------------------------------------------
+      // Google Review URL
+      // ----------------------------------------------
 
-        hotel_name:
-          hotel.hotel_name,
+      const googleReviewUrl =
+        hotelRecord.google_review_url
+          ? String(
+              hotelRecord.google_review_url
+            )
+          : null;
+
+      // ----------------------------------------------
+      // Rate verification
+      // ----------------------------------------------
+
+      const rateVerifiedAt =
+        hotelRecord.rate_verified_at
+          ? String(
+              hotelRecord.rate_verified_at
+            )
+          : null;
+
+      // ----------------------------------------------
+      // Cash Cow Dish
+      // ----------------------------------------------
+
+      const cashCowDish =
+        hotelRecord.cash_cow_dish
+          ? String(
+              hotelRecord.cash_cow_dish
+            )
+          : null;
+
+      const cashCowDescription =
+        hotelRecord.cash_cow_description
+          ? String(
+              hotelRecord.cash_cow_description
+            )
+          : null;
+
+      // ----------------------------------------------
+      // Community Reviews
+      // ----------------------------------------------
+
+      const validReviews =
+        hotelReviews.filter(
+          (review) =>
+            review.rating !== null &&
+            review.rating !== undefined &&
+            !Number.isNaN(
+              Number(review.rating)
+            )
+        );
+
+      const reviewRatings =
+        validReviews.map((review) =>
+          Number(review.rating)
+        );
+
+      const communityRating =
+        reviewRatings.length > 0
+          ? Number(
+              (
+                reviewRatings.reduce(
+                  (sum, rating) =>
+                    sum + rating,
+                  0
+                ) /
+                reviewRatings.length
+              ).toFixed(1)
+            )
+          : null;
+
+      const communityReviewCount =
+        hotelReviews.length > 0
+          ? hotelReviews.length
+          : null;
+
+      /*
+       * Reviews are ordered by created_at
+       * descending, so the first review
+       * is the latest review.
+       */
+      const latestReview =
+        hotelReviews.length > 0
+          ? hotelReviews[0]
+          : null;
+
+      // ----------------------------------------------
+      // Return buffet
+      // ----------------------------------------------
+
+      return {
+        hotel_id: hotel.hotel_id,
+
+        hotel_name: hotel.hotel_name,
 
         restaurant_name:
-          hotel.restaurant_name ??
-          null,
+          hotel.restaurant_name ?? null,
 
         image_url:
-          hotel.image_url ??
-          null,
+          hotel.image_url ?? null,
 
-        price:
-          lowestPrice,
+        price: lowestPrice,
 
         rating:
           hotel.Rating !== null &&
@@ -247,28 +485,64 @@ export default async function BuffetPage({
         review_count:
           hotel.review_count !== null &&
           hotel.review_count !== undefined
-            ? Number(
-                hotel.review_count
-              )
+            ? Number(hotel.review_count)
             : null,
 
         buffet_time:
-          scheduleWithTime?.buffet_time ??
-          null,
+          scheduleWithTime?.buffet_time ?? null,
 
         description:
-          hotel.description ??
-          null,
+          hotel.description ?? null,
 
         cuisine:
           cuisineValue
             ? String(cuisineValue)
             : null,
+
+        // ------------------------------------------
+        // Phase 1
+        // ------------------------------------------
+
+        meal_type:
+          scheduleWithMeal?.meal_type
+            ? String(
+                scheduleWithMeal.meal_type
+              )
+            : null,
+
+        google_review_url:
+          googleReviewUrl,
+
+        rate_verified_at:
+          rateVerifiedAt,
+
+        cash_cow_dish:
+          cashCowDish,
+
+        cash_cow_description:
+          cashCowDescription,
+
+        // ------------------------------------------
+        // Community reviews
+        // ------------------------------------------
+
+        community_rating:
+          communityRating,
+
+        community_review_count:
+          communityReviewCount,
+
+        latest_review:
+          latestReview?.review_text
+            ? String(
+                latestReview.review_text
+              )
+            : null,
       };
     }) ?? [];
 
   // ==================================================
-  // 7. SEARCH
+  // 9. SEARCH
   // ==================================================
 
   let filteredBuffets = buffets;
@@ -293,18 +567,28 @@ export default async function BuffetPage({
             buffet.cuisine
               ?.toLowerCase() || "";
 
+          const mealType =
+            buffet.meal_type
+              ?.toLowerCase() || "";
+
+          const cashCowDish =
+            buffet.cash_cow_dish
+              ?.toLowerCase() || "";
+
           return (
             hotelName.includes(search) ||
             restaurantName.includes(search) ||
             description.includes(search) ||
-            cuisine.includes(search)
+            cuisine.includes(search) ||
+            mealType.includes(search) ||
+            cashCowDish.includes(search)
           );
         }
       );
   }
 
   // ==================================================
-  // 8. PRICE FILTER
+  // 10. PRICE FILTER
   // ==================================================
 
   switch (priceFilter) {
@@ -366,7 +650,7 @@ export default async function BuffetPage({
   }
 
   // ==================================================
-  // 9. CUISINE FILTER
+  // 11. CUISINE FILTER
   // ==================================================
 
   if (cuisineFilter !== "all") {
@@ -400,45 +684,33 @@ export default async function BuffetPage({
               );
 
             case "asian":
-              return (
-                searchText.includes(
-                  "asian"
-                )
+              return searchText.includes(
+                "asian"
               );
 
             case "indian":
-              return (
-                searchText.includes(
-                  "indian"
-                )
+              return searchText.includes(
+                "indian"
               );
 
             case "chinese":
-              return (
-                searchText.includes(
-                  "chinese"
-                )
+              return searchText.includes(
+                "chinese"
               );
 
             case "japanese":
-              return (
-                searchText.includes(
-                  "japanese"
-                )
+              return searchText.includes(
+                "japanese"
               );
 
             case "italian":
-              return (
-                searchText.includes(
-                  "italian"
-                )
+              return searchText.includes(
+                "italian"
               );
 
             case "seafood":
-              return (
-                searchText.includes(
-                  "seafood"
-                )
+              return searchText.includes(
+                "seafood"
               );
 
             case "local":
@@ -459,7 +731,7 @@ export default async function BuffetPage({
   }
 
   // ==================================================
-  // 10. RATING FILTER
+  // 12. RATING FILTER
   // ==================================================
 
   if (ratingFilter !== "all") {
@@ -472,14 +744,13 @@ export default async function BuffetPage({
           (buffet) =>
             buffet.rating !== null &&
             buffet.rating !== undefined &&
-            buffet.rating >=
-              minimumRating
+            buffet.rating >= minimumRating
         );
     }
   }
 
   // ==================================================
-  // 11. AVAILABILITY FILTER
+  // 13. AVAILABILITY FILTER
   // ==================================================
 
   if (
@@ -498,7 +769,7 @@ export default async function BuffetPage({
   }
 
   // ==================================================
-  // 12. SORTING
+  // 14. SORTING
   // ==================================================
 
   filteredBuffets =
@@ -551,14 +822,14 @@ export default async function BuffetPage({
     );
 
   // ==================================================
-  // 13. PAGE UI
+  // 15. PAGE UI
   // ==================================================
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <div className="mx-auto max-w-[1600px] p-5 md:p-8">
 
-        {/* Page Header */}
+        {/* PAGE HEADER */}
 
         <div className="mb-7">
 
@@ -576,7 +847,7 @@ export default async function BuffetPage({
             </span>
           </div>
 
-          {/* Title */}
+          {/* TITLE */}
 
           <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
 
@@ -592,7 +863,7 @@ export default async function BuffetPage({
               </p>
             </div>
 
-            {/* Count */}
+            {/* COUNT */}
 
             <div className="rounded-xl bg-white px-4 py-3 text-sm shadow-sm ring-1 ring-slate-200">
               <span className="font-semibold text-slate-900">
@@ -604,13 +875,13 @@ export default async function BuffetPage({
           </div>
         </div>
 
-        {/* Filters */}
+        {/* FILTERS */}
 
         <div className="mb-7">
           <BuffetFilters />
         </div>
 
-        {/* Hotels */}
+        {/* HOTELS */}
 
         <BuffetGrid
           buffets={filteredBuffets}
