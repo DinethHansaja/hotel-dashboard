@@ -24,6 +24,18 @@ type Buffet = {
   buffet_time?: string | null;
   description?: string | null;
   cuisine?: string | null;
+
+  // Phase 1 fields
+  meal_type?: string | null;
+  google_review_url?: string | null;
+  rate_verified_at?: string | null;
+  cash_cow_dish?: string | null;
+  cash_cow_description?: string | null;
+
+  // Community reviews
+  community_rating?: number | null;
+  community_review_count?: number | null;
+  latest_review?: string | null;
 };
 
 type BuffetGridProps = {
@@ -38,8 +50,8 @@ export default function BuffetGrid({
   const [currentPage, setCurrentPage] =
     useState(1);
 
-  // Reset page whenever filtering/searching/sorting
-  // changes the result list.
+  // Reset page whenever filtering,
+  // searching, or sorting changes results.
   useEffect(() => {
     setCurrentPage(1);
   }, [buffets]);
@@ -57,10 +69,7 @@ export default function BuffetGrid({
       startIndex,
       startIndex + ITEMS_PER_PAGE
     );
-  }, [
-    buffets,
-    currentPage,
-  ]);
+  }, [buffets, currentPage]);
 
   const startItem =
     buffets.length === 0
@@ -74,9 +83,7 @@ export default function BuffetGrid({
     buffets.length
   );
 
-  const goToPage = (
-    page: number
-  ) => {
+  const goToPage = (page: number) => {
     if (
       page < 1 ||
       page > totalPages
@@ -95,7 +102,6 @@ export default function BuffetGrid({
   if (buffets.length === 0) {
     return (
       <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-sm">
-
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-2xl">
           🔍
         </div>
@@ -107,7 +113,6 @@ export default function BuffetGrid({
         <p className="mt-2 text-sm text-slate-500">
           Try changing your search or filters.
         </p>
-
       </div>
     );
   }
@@ -118,81 +123,111 @@ export default function BuffetGrid({
       {/* Results information */}
 
       <div className="flex items-center justify-between">
-
         <p className="text-sm text-slate-500">
           Showing{" "}
-
           <span className="font-semibold text-slate-800">
             {startItem}-{endItem}
           </span>{" "}
-
           of{" "}
-
           <span className="font-semibold text-slate-800">
             {buffets.length}
           </span>{" "}
-
           hotels
         </p>
 
         {totalPages > 1 && (
           <p className="text-sm text-slate-400">
             Page{" "}
-
             <span className="font-medium text-slate-700">
               {currentPage}
             </span>{" "}
-
             of {totalPages}
           </p>
         )}
-
       </div>
 
       {/* Hotel Grid */}
 
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+        {currentBuffets.map((buffet) => (
+          <BuffetCard
+            key={buffet.hotel_id}
 
-        {currentBuffets.map(
-          (buffet) => (
-            <BuffetCard
-              key={buffet.hotel_id}
-              hotelId={buffet.hotel_id}
-              hotelName={
-                buffet.hotel_name
-              }
-              restaurantName={
-                buffet.restaurant_name
-              }
-              imageUrl={
-                buffet.image_url
-              }
-              price={
-                buffet.price
-              }
-              rating={
-                buffet.rating
-              }
-              reviewCount={
-                buffet.review_count
-              }
-              buffetTime={
-                buffet.buffet_time
-              }
-              description={
-                buffet.description
-              }
-            />
-          )
-        )}
+            hotelId={buffet.hotel_id}
 
+            hotelName={
+              buffet.hotel_name
+            }
+
+            restaurantName={
+              buffet.restaurant_name
+            }
+
+            imageUrl={
+              buffet.image_url
+            }
+
+            price={
+              buffet.price
+            }
+
+            rating={
+              buffet.rating
+            }
+
+            reviewCount={
+              buffet.review_count
+            }
+
+            buffetTime={
+              buffet.buffet_time
+            }
+
+            description={
+              buffet.description
+            }
+
+            // Phase 1
+            mealType={
+              buffet.meal_type
+            }
+
+            googleReviewUrl={
+              buffet.google_review_url
+            }
+
+            rateVerifiedAt={
+              buffet.rate_verified_at
+            }
+
+            cashCowDish={
+              buffet.cash_cow_dish
+            }
+
+            cashCowDescription={
+              buffet.cash_cow_description
+            }
+
+            // Community reviews
+            communityRating={
+              buffet.community_rating
+            }
+
+            communityReviewCount={
+              buffet.community_review_count
+            }
+
+            latestReview={
+              buffet.latest_review
+            }
+          />
+        ))}
       </div>
 
       {/* Pagination */}
 
       {totalPages > 1 && (
         <div className="flex items-center justify-center pt-4">
-
           <div className="flex items-center gap-2">
 
             {/* Previous */}
@@ -217,7 +252,6 @@ export default function BuffetGrid({
             {/* Page numbers */}
 
             <div className="flex items-center gap-1">
-
               {Array.from(
                 {
                   length: totalPages,
@@ -240,7 +274,6 @@ export default function BuffetGrid({
                   {page}
                 </button>
               ))}
-
             </div>
 
             {/* Next */}
@@ -266,7 +299,6 @@ export default function BuffetGrid({
           </div>
         </div>
       )}
-
     </div>
   );
 }
