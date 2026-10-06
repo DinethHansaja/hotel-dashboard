@@ -1,291 +1,191 @@
-
 import { supabase } from "@/lib/supabase";
-import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
-  ArrowLeft,
   Star,
   MapPin,
   UtensilsCrossed,
-  CalendarDays,
-  Clock3,
-  Info,
+  ArrowRight,
 } from "lucide-react";
 
-type HotelPageProps = {
-  params: Promise<{
-    id: string;
-  }>;
-};
-
-export default async function HotelDetailsPage({
-  params,
-}: HotelPageProps) {
-  const { id } = await params;
-
-  const hotelId = Number(id);
-
-  if (Number.isNaN(hotelId)) {
-    notFound();
-  }
-
-  const { data: hotel, error } = await supabase
+export default async function HotelsPage() {
+  // Fetch only the columns required by the hotel listing page.
+  // This reduces the amount of data transferred from Supabase.
+  const { data: hotels, error } = await supabase
     .from("hotels")
-    .select("*")
-    .eq("hotel_id", hotelId)
-    .single();
+    .select(`
+      hotel_id,
+      hotel_name,
+      restaurant_name,
+      image_url,
+      rating,
+      price
+    `)
+    .order("hotel_id");
 
-  if (error || !hotel) {
-    notFound();
+  // Handle Supabase errors
+  if (error) {
+    return (
+      <main className="min-h-screen bg-slate-50 px-6 py-8">
+        <div className="mx-auto max-w-[1500px]">
+          <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-red-700">
+            <h2 className="font-semibold">
+              Unable to load hotels
+            </h2>
+
+            <p className="mt-2 text-sm">
+              {error.message}
+            </p>
+          </div>
+        </div>
+      </main>
+    );
   }
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
+      {/* =========================
+          PAGE HEADER
+      ========================== */}
+      <section className="border-b border-slate-200 bg-white">
+        <div className="mx-auto max-w-[1500px] px-6 py-10 md:px-8">
+          <p className="text-sm font-semibold text-[#c58d24]">
+            Colombo Hotels
+          </p>
 
-      {/* Back Button */}
-      <div className="px-6 pt-6">
-        <Link
-          href="/buffet"
-          className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-[#9a742e]"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to Buffet Guide
-        </Link>
-      </div>
+          <h1 className="mt-2 text-3xl font-bold tracking-tight md:text-4xl">
+            Explore Hotels
+          </h1>
 
-      {/* Hotel Hero Section */}
-      <section className="mx-6 mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-500 md:text-base">
+            Explore hotels, restaurants and buffet dining
+            experiences across Colombo.
+          </p>
 
-        <div className="relative h-[360px] w-full">
+          {/* Hotel Count */}
+          <div className="mt-5 inline-flex items-center rounded-xl border border-slate-200 bg-slate-50 px-4 py-2">
+            <span className="text-lg font-bold text-slate-900">
+              {hotels?.length ?? 0}
+            </span>
 
-          {hotel.image_url ? (
-            <img
-              src={hotel.image_url}
-              alt={hotel.hotel_name}
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center bg-slate-100 text-slate-400">
-              No hotel image available
-            </div>
-          )}
-
-          {/* Image Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-
-          {/* Hotel Name */}
-          <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-[#c79a45] px-3 py-1 text-xs font-semibold">
-              Popular Hotel
-            </div>
-
-            <h1 className="text-4xl font-bold">
-              {hotel.hotel_name}
-            </h1>
-
-            {hotel.restaurant_name && (
-              <p className="mt-2 flex items-center gap-2 text-white/90">
-                <UtensilsCrossed className="h-4 w-4" />
-                {hotel.restaurant_name}
-              </p>
-            )}
-
+            <span className="ml-2 text-sm text-slate-500">
+              hotels available
+            </span>
           </div>
-        </div>
-
-        {/* Hotel Summary */}
-        <div className="grid gap-6 p-6 md:grid-cols-3">
-
-          {/* Rating */}
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#c79a45]/10">
-              <Star className="h-5 w-5 fill-[#c79a45] text-[#c79a45]" />
-            </div>
-
-            <div>
-              <p className="text-sm text-slate-500">
-                Rating
-              </p>
-
-              <p className="font-semibold text-slate-900">
-                N/A
-              </p>
-            </div>
-          </div>
-
-          {/* Location */}
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#c79a45]/10">
-              <MapPin className="h-5 w-5 text-[#c79a45]" />
-            </div>
-
-            <div>
-              <p className="text-sm text-slate-500">
-                Location
-              </p>
-
-              <p className="font-semibold text-slate-900">
-                Colombo, Sri Lanka
-              </p>
-            </div>
-          </div>
-
-          {/* Buffet */}
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#c79a45]/10">
-              <CalendarDays className="h-5 w-5 text-[#c79a45]" />
-            </div>
-
-            <div>
-              <p className="text-sm text-slate-500">
-                Experience
-              </p>
-
-              <p className="font-semibold text-slate-900">
-                Buffet Dining
-              </p>
-            </div>
-          </div>
-
         </div>
       </section>
 
-      {/* Main Content */}
-      <div className="mx-6 mt-6 grid gap-6 lg:grid-cols-3">
+      {/* =========================
+          HOTEL GRID
+      ========================== */}
+      <section className="mx-auto max-w-[1500px] px-6 py-8 md:px-8">
+        {hotels && hotels.length > 0 ? (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {hotels.map((hotel) => (
+              <article
+                key={hotel.hotel_id}
+                className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg"
+              >
+                {/* =========================
+                    HOTEL IMAGE
+                ========================== */}
+                <div className="relative h-56 w-full overflow-hidden bg-slate-100">
+                  {hotel.image_url ? (
+                    <img
+                      src={hotel.image_url}
+                      alt={hotel.hotel_name}
+                      className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-sm text-slate-400">
+                      No hotel image available
+                    </div>
+                  )}
 
-        {/* Left - Description */}
-        <section className="lg:col-span-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#c79a45]/10">
-              <Info className="h-5 w-5 text-[#c79a45]" />
-            </div>
-
-            <div>
-              <h2 className="text-xl font-bold">
-                About {hotel.hotel_name}
-              </h2>
-
-              <p className="text-sm text-slate-500">
-                Hotel information
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-6">
-            {hotel.description ? (
-              <p className="leading-7 text-slate-600">
-                {hotel.description}
-              </p>
-            ) : (
-              <p className="text-slate-400">
-                Hotel description is currently unavailable.
-              </p>
-            )}
-          </div>
-
-        </section>
-
-        {/* Right - Buffet Information */}
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#c79a45]/10">
-              <UtensilsCrossed className="h-5 w-5 text-[#c79a45]" />
-            </div>
-
-            <div>
-              <h2 className="text-xl font-bold">
-                Buffet Experience
-              </h2>
-
-              <p className="text-sm text-slate-500">
-                Dining information
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-6 space-y-4">
-
-            {/* Breakfast */}
-            <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
-              <div className="flex items-center gap-3">
-                <Clock3 className="h-4 w-4 text-[#c79a45]" />
-
-                <div>
-                  <p className="font-semibold">
-                    Breakfast
-                  </p>
-
-                  <p className="text-sm text-slate-500">
-                    Schedule unavailable
-                  </p>
+                  {/* Hotel Badge */}
+                  <div className="absolute left-4 top-4 rounded-full bg-[#c79a45] px-3 py-1 text-xs font-semibold text-white shadow-sm">
+                    Hotel
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            {/* Lunch */}
-            <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
-              <div className="flex items-center gap-3">
-                <Clock3 className="h-4 w-4 text-[#c79a45]" />
+                {/* =========================
+                    HOTEL CONTENT
+                ========================== */}
+                <div className="p-5">
+                  {/* Hotel Name */}
+                  <h2 className="line-clamp-2 text-xl font-bold text-slate-900">
+                    {hotel.hotel_name}
+                  </h2>
 
-                <div>
-                  <p className="font-semibold">
-                    Lunch
-                  </p>
+                  {/* Restaurant */}
+                  {hotel.restaurant_name && (
+                    <div className="mt-2 flex items-start gap-2 text-sm text-slate-500">
+                      <UtensilsCrossed className="mt-0.5 h-4 w-4 shrink-0 text-[#c79a45]" />
 
-                  <p className="text-sm text-slate-500">
-                    Schedule unavailable
-                  </p>
+                      <span className="line-clamp-2">
+                        {hotel.restaurant_name}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Location */}
+                  <div className="mt-3 flex items-center gap-2 text-sm text-slate-500">
+                    <MapPin className="h-4 w-4 shrink-0 text-[#c79a45]" />
+
+                    <span>
+                      Colombo, Sri Lanka
+                    </span>
+                  </div>
+
+                  {/* Rating + Price */}
+                  <div className="mt-4 flex items-center justify-between">
+                    {/* Rating */}
+                    <div className="flex items-center gap-2">
+                      <Star className="h-4 w-4 fill-[#c79a45] text-[#c79a45]" />
+
+                      <span className="text-sm font-semibold text-slate-800">
+                        {hotel.rating !== null &&
+                        hotel.rating !== undefined
+                          ? Number(hotel.rating).toFixed(1)
+                          : "N/A"}
+                      </span>
+                    </div>
+
+                    {/* Price */}
+                    {hotel.price && (
+                      <span className="text-sm font-semibold text-slate-700">
+                        {hotel.price}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* View Hotel Button */}
+                  <Link
+                    href={`/hotels/${hotel.hotel_id}`}
+                    className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                  >
+                    View Hotel
+
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
                 </div>
-              </div>
-            </div>
-
-            {/* Dinner */}
-            <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
-              <div className="flex items-center gap-3">
-                <Clock3 className="h-4 w-4 text-[#c79a45]" />
-
-                <div>
-                  <p className="font-semibold">
-                    Dinner
-                  </p>
-
-                  <p className="text-sm text-slate-500">
-                    Schedule unavailable
-                  </p>
-                </div>
-              </div>
-            </div>
-
+              </article>
+            ))}
           </div>
+        ) : (
+          /* =========================
+             NO HOTELS
+          ========================== */
+          <div className="rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">
+              No hotels available
+            </h2>
 
-        </section>
-
-      </div>
-
-      {/* Special Notes */}
-      <section className="mx-6 mb-8 mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-
-        <h2 className="text-xl font-bold">
-          Special Notes
-        </h2>
-
-        <div className="mt-4">
-          {hotel.special_notes ? (
-            <p className="leading-7 text-slate-600">
-              {hotel.special_notes}
+            <p className="mt-2 text-sm text-slate-500">
+              There are currently no hotels available to display.
             </p>
-          ) : (
-            <p className="text-slate-400">
-              No special notes available for this hotel.
-            </p>
-          )}
-        </div>
-
+          </div>
+        )}
       </section>
-
     </main>
   );
 }

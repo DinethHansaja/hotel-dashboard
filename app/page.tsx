@@ -3,13 +3,27 @@ import { supabase } from "@/lib/supabase";
 import HeroSection from "@/components/home/HeroSection";
 import HotelMap from "@/components/home/HotelMap";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
+import CashCowSection from "@/components/home/CashCowSection";
 
 export default async function HomePage() {
+  // =========================================================
+  // FETCH HOTEL DATA REQUIRED FOR THE HOMEPAGE MAP
+  // =========================================================
+  // Only fetch the columns required by the map.
+  // This avoids downloading unnecessary hotel data.
   const { data: hotels, error } = await supabase
     .from("hotels")
-    .select("*")
+    .select(`
+      hotel_id,
+      hotel_name,
+      restaurant_name,
+      image_url,
+      latitude,
+      longitude
+    `)
     .order("hotel_id");
 
+  // Handle Supabase errors for the main hotel/map query
   if (error) {
     return (
       <main className="min-h-screen bg-slate-50 p-6 md:p-8">
@@ -28,6 +42,9 @@ export default async function HomePage() {
     );
   }
 
+  // =========================================================
+  // PREPARE HOTEL DATA FOR THE MAP
+  // =========================================================
   const hotelLocations =
     hotels?.map((hotel) => ({
       hotel_id: hotel.hotel_id,
@@ -38,24 +55,48 @@ export default async function HomePage() {
       longitude: hotel.longitude ?? null,
     })) ?? [];
 
+  // =========================================================
+  // FETCH CASHCOW DATA
+  // =========================================================
+  // Only fetch the fields required for the CashCow section.
+  //
+  // CashCow information is already stored in the hotels table:
+  // - cash_cow_dish
+  // - cash_cow_description
+  //
+  // We only display hotels that have a CashCow dish.
+  const { data: cashCowHotels } = await supabase
+    .from("hotels")
+    .select(`
+      hotel_id,
+      hotel_name,
+      restaurant_name,
+      image_url,
+      cash_cow_dish,
+      cash_cow_description
+    `)
+    .not("cash_cow_dish", "is", null)
+    .neq("cash_cow_dish", "")
+    .limit(6);
+
   return (
     <main className="min-h-screen bg-[#f8fafc]">
-
       <div className="mx-auto max-w-[1500px] space-y-8 px-5 py-6 md:px-8 md:py-8">
 
-        {/* HERO */}
+        {/* =====================================================
+            HERO SECTION
+        ====================================================== */}
         <HeroSection />
 
-
-        {/* HOTEL MAP SECTION */}
+        {/* =====================================================
+            HOTEL MAP SECTION
+        ====================================================== */}
         <section
           id="hotel-map"
           className="scroll-mt-24"
         >
-
           {/* Section Heading */}
           <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-
             <div>
               <p className="text-sm font-semibold text-[#c58d24]">
                 Explore Colombo
@@ -71,10 +112,8 @@ export default async function HomePage() {
               </p>
             </div>
 
-
             {/* Hotel Count */}
             <div className="flex w-fit items-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 shadow-sm">
-
               <span className="text-2xl font-bold text-slate-900">
                 {hotelLocations.length}
               </span>
@@ -82,33 +121,28 @@ export default async function HomePage() {
               <span className="text-sm text-slate-500">
                 locations
               </span>
-
             </div>
-
           </div>
 
-
-          {/* MAP + INFORMATION */}
+          {/* ===================================================
+              MAP + INFORMATION
+          ==================================================== */}
           <div className="grid items-stretch gap-5 lg:grid-cols-[minmax(0,1.8fr)_minmax(320px,0.8fr)]">
 
-            {/* LEFT COLUMN */}
+            {/* =================================================
+                LEFT COLUMN
+            ================================================== */}
             <div className="flex min-w-0 flex-col gap-5">
 
               {/* MAP */}
               <div className="overflow-hidden rounded-[24px] border border-slate-200 bg-white p-2 shadow-sm">
-
                 <div className="h-[500px] overflow-hidden rounded-[18px] md:h-[520px]">
-
                   <HotelMap hotels={hotelLocations} />
-
                 </div>
-
               </div>
-
 
               {/* COLOMBO DINING GUIDE */}
               <section className="rounded-[24px] border border-slate-200 bg-white px-6 py-7 shadow-sm md:px-8 md:py-8">
-
                 <p className="text-sm font-semibold text-[#c58d24]">
                   Colombo Dining Guide
                 </p>
@@ -123,21 +157,27 @@ export default async function HomePage() {
                   places, explore locations and find the right
                   experience for you.
                 </p>
-
               </section>
-
             </div>
 
-
-            {/* RIGHT COLUMN */}
+            {/* =================================================
+                RIGHT COLUMN
+            ================================================== */}
             <WhyChooseUs />
 
           </div>
+        </section>
 
+        {/* =====================================================
+            CASHCOW SECTION
+        ====================================================== */}
+        <section>
+          <CashCowSection
+            hotels={cashCowHotels ?? []}
+          />
         </section>
 
       </div>
-
     </main>
   );
 }

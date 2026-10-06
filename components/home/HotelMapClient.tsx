@@ -9,6 +9,7 @@ import {
 
 import L from "leaflet";
 import Link from "next/link";
+import { useRef } from "react";
 
 import "leaflet/dist/leaflet.css";
 
@@ -51,7 +52,48 @@ export default function HotelMapClient({
   hotels,
 }: HotelMapClientProps) {
   /*
-   * Only use hotels that have valid coordinates.
+   * Stores the current close timer.
+   */
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
+
+  /*
+   * Stores the marker whose popup is currently active.
+   */
+  const activeMarker = useRef<L.Marker | null>(null);
+
+  /*
+   * Cancel any scheduled popup close.
+   */
+  const cancelClose = () => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+
+  /*
+   * Schedule popup closing.
+   *
+   * We wait 300ms so the user can move
+   * from the marker into the popup.
+   */
+  const scheduleClose = () => {
+    cancelClose();
+
+    closeTimer.current = setTimeout(() => {
+      if (activeMarker.current) {
+        activeMarker.current.closePopup();
+      }
+
+      activeMarker.current = null;
+      closeTimer.current = null;
+    }, 300);
+  };
+
+  /*
+   * Only show hotels with valid map coordinates.
    */
   const validHotels = hotels.filter(
     (hotel) =>
@@ -83,15 +125,54 @@ export default function HotelMapClient({
           icon={hotelIcon}
           eventHandlers={{
             /*
-             * OPEN POPUP WHEN USER HOVERS
-             * OVER THE HOTEL MARKER
+             * ==============================
+             * MOUSE ENTERS MARKER
+             * ==============================
              */
             mouseover: (event) => {
+              cancelClose();
+
+              activeMarker.current = event.target;
+
               event.target.openPopup();
+            },
+
+            /*
+             * ==============================
+             * MOUSE LEAVES MARKER
+             * ==============================
+             */
+            mouseout: () => {
+              scheduleClose();
             },
           }}
         >
-          <Popup>
+          <Popup
+            closeButton={true}
+            eventHandlers={{
+              /*
+               * ==============================
+               * MOUSE ENTERS POPUP
+               * ==============================
+               *
+               * Cancel the closing timer.
+               */
+              mouseover: () => {
+                cancelClose();
+              },
+
+              /*
+               * ==============================
+               * MOUSE LEAVES POPUP
+               * ==============================
+               *
+               * Schedule popup closing.
+               */
+              mouseout: () => {
+                scheduleClose();
+              },
+            }}
+          >
             <div className="w-[280px] overflow-hidden rounded-xl">
 
               {/* ==============================

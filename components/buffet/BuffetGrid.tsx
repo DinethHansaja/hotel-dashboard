@@ -25,17 +25,21 @@ type Buffet = {
   description?: string | null;
   cuisine?: string | null;
 
-  // Phase 1 fields
+  // Phase 1
   meal_type?: string | null;
   google_review_url?: string | null;
   rate_verified_at?: string | null;
+
+  // Cash Cow
   cash_cow_dish?: string | null;
   cash_cow_description?: string | null;
 
-  // Community reviews
+  // Community Reviews
   community_rating?: number | null;
   community_review_count?: number | null;
   latest_review?: string | null;
+  latest_review_guest?: string | null;
+  latest_review_rating?: number | null;
 };
 
 type BuffetGridProps = {
@@ -50,8 +54,6 @@ export default function BuffetGrid({
   const [currentPage, setCurrentPage] =
     useState(1);
 
-  // Reset page whenever filtering,
-  // searching, or sorting changes results.
   useEffect(() => {
     setCurrentPage(1);
   }, [buffets]);
@@ -99,9 +101,14 @@ export default function BuffetGrid({
     });
   };
 
+  // ==================================================
+  // NO RESULTS
+  // ==================================================
+
   if (buffets.length === 0) {
     return (
       <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-sm">
+
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-2xl">
           🔍
         </div>
@@ -113,6 +120,7 @@ export default function BuffetGrid({
         <p className="mt-2 text-sm text-slate-500">
           Try changing your search or filters.
         </p>
+
       </div>
     );
   }
@@ -120,9 +128,10 @@ export default function BuffetGrid({
   return (
     <div className="space-y-6">
 
-      {/* Results information */}
+      {/* RESULTS COUNT */}
 
       <div className="flex items-center justify-between">
+
         <p className="text-sm text-slate-500">
           Showing{" "}
           <span className="font-semibold text-slate-800">
@@ -144,93 +153,98 @@ export default function BuffetGrid({
             of {totalPages}
           </p>
         )}
+
       </div>
 
-      {/* Hotel Grid */}
+      {/* HOTEL GRID */}
 
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {currentBuffets.map((buffet) => (
-          <BuffetCard
-            key={buffet.hotel_id}
 
-            hotelId={buffet.hotel_id}
+        {currentBuffets.map(
+          (buffet) => (
+            <BuffetCard
+              key={buffet.hotel_id}
+              hotelId={
+                buffet.hotel_id
+              }
+              hotelName={
+                buffet.hotel_name
+              }
+              restaurantName={
+                buffet.restaurant_name
+              }
+              imageUrl={
+                buffet.image_url
+              }
+              price={
+                buffet.price
+              }
+              rating={
+                buffet.rating
+              }
+              reviewCount={
+                buffet.review_count
+              }
+              buffetTime={
+                buffet.buffet_time
+              }
+              description={
+                buffet.description
+              }
 
-            hotelName={
-              buffet.hotel_name
-            }
+              mealType={
+                buffet.meal_type
+              }
 
-            restaurantName={
-              buffet.restaurant_name
-            }
+              googleReviewUrl={
+                buffet.google_review_url
+              }
 
-            imageUrl={
-              buffet.image_url
-            }
+              rateVerifiedAt={
+                buffet.rate_verified_at
+              }
 
-            price={
-              buffet.price
-            }
+              cashCowDish={
+                buffet.cash_cow_dish
+              }
 
-            rating={
-              buffet.rating
-            }
+              cashCowDescription={
+                buffet.cash_cow_description
+              }
 
-            reviewCount={
-              buffet.review_count
-            }
+              communityRating={
+                buffet.community_rating
+              }
 
-            buffetTime={
-              buffet.buffet_time
-            }
+              communityReviewCount={
+                buffet.community_review_count
+              }
 
-            description={
-              buffet.description
-            }
+              latestReview={
+                buffet.latest_review
+              }
 
-            // Phase 1
-            mealType={
-              buffet.meal_type
-            }
+              latestReviewGuest={
+                buffet.latest_review_guest
+              }
 
-            googleReviewUrl={
-              buffet.google_review_url
-            }
+              latestReviewRating={
+                buffet.latest_review_rating
+              }
+            />
+          )
+        )}
 
-            rateVerifiedAt={
-              buffet.rate_verified_at
-            }
-
-            cashCowDish={
-              buffet.cash_cow_dish
-            }
-
-            cashCowDescription={
-              buffet.cash_cow_description
-            }
-
-            // Community reviews
-            communityRating={
-              buffet.community_rating
-            }
-
-            communityReviewCount={
-              buffet.community_review_count
-            }
-
-            latestReview={
-              buffet.latest_review
-            }
-          />
-        ))}
       </div>
 
-      {/* Pagination */}
+      {/* PAGINATION */}
 
       {totalPages > 1 && (
         <div className="flex items-center justify-center pt-4">
+
           <div className="flex items-center gap-2">
 
-            {/* Previous */}
+            {/* PREVIOUS */}
 
             <button
               type="button"
@@ -249,34 +263,38 @@ export default function BuffetGrid({
               Previous
             </button>
 
-            {/* Page numbers */}
+            {/* PAGE NUMBERS */}
 
             <div className="flex items-center gap-1">
+
               {Array.from(
                 {
                   length: totalPages,
                 },
                 (_, index) =>
                   index + 1
-              ).map((page) => (
-                <button
-                  key={page}
-                  type="button"
-                  onClick={() =>
-                    goToPage(page)
-                  }
-                  className={`flex h-10 w-10 items-center justify-center rounded-lg text-sm font-medium transition ${
-                    currentPage === page
-                      ? "bg-[#c79a45] text-white shadow-sm"
-                      : "border border-slate-200 bg-white text-slate-600 hover:border-[#c79a45] hover:text-[#9a742e]"
-                  }`}
-                >
-                  {page}
-                </button>
-              ))}
+              ).map(
+                (page) => (
+                  <button
+                    key={page}
+                    type="button"
+                    onClick={() =>
+                      goToPage(page)
+                    }
+                    className={`flex h-10 w-10 items-center justify-center rounded-lg text-sm font-medium transition ${
+                      currentPage === page
+                        ? "bg-[#c79a45] text-white shadow-sm"
+                        : "border border-slate-200 bg-white text-slate-600 hover:border-[#c79a45] hover:text-[#9a742e]"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                )
+              )}
+
             </div>
 
-            {/* Next */}
+            {/* NEXT */}
 
             <button
               type="button"
@@ -299,6 +317,7 @@ export default function BuffetGrid({
           </div>
         </div>
       )}
+
     </div>
   );
 }
