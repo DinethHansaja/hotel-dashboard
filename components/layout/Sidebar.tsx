@@ -7,12 +7,11 @@ import { useState } from "react";
 import {
   Home,
   UtensilsCrossed,
+  Coffee,
+  Utensils,
   CalendarDays,
   MessageSquare,
   BarChart3,
-  Tag,
-  Heart,
-  Info,
   Settings,
   Landmark,
   ChevronLeft,
@@ -33,6 +32,18 @@ const menuItems = [
     icon: UtensilsCrossed,
   },
   {
+    label: "Cafe Guide",
+    description: "Colombo Cafes",
+    href: "/cafes",
+    icon: Coffee,
+  },
+  {
+    label: "Restaurant Guide",
+    description: "Colombo Restaurants",
+    href: "/restaurants",
+    icon: Utensils,
+  },
+  {
     label: "Events & Weddings",
     description: "Prices & Packages",
     href: "/events",
@@ -49,24 +60,6 @@ const menuItems = [
     description: "Compare Options",
     href: "/compare",
     icon: BarChart3,
-  },
-  {
-    label: "Offers & Promotions",
-    description: "Latest Deals",
-    href: "/offers",
-    icon: Tag,
-  },
-  {
-    label: "Favourites",
-    description: "Saved Places",
-    href: "/favourites",
-    icon: Heart,
-  },
-  {
-    label: "About Us",
-    description: "About this Platform",
-    href: "/about",
-    icon: Info,
   },
 ];
 
@@ -152,15 +145,10 @@ export default function Sidebar() {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={`relative hidden h-screen shrink-0 overflow-visible bg-[#0c1725] text-white transition-all duration-300 ease-in-out lg:flex lg:flex-col ${
-        expanded
-          ? "w-[272px]"
-          : "w-[82px]"
+        expanded ? "w-[272px]" : "w-[82px]"
       }`}
     >
-      {/* ================================================= */}
       {/* LOGO */}
-      {/* ================================================= */}
-
       <div
         className={`flex shrink-0 items-center py-7 transition-all duration-300 ${
           expanded
@@ -171,21 +159,15 @@ export default function Sidebar() {
         <Link
           href="/"
           className={`flex items-center ${
-            expanded
-              ? "gap-3"
-              : "justify-center"
+            expanded ? "gap-3" : "justify-center"
           }`}
         >
-          {/* Logo Icon */}
-
           <div
             className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[#c79a45] transition hover:bg-white/10"
             aria-label="Colombo Dining & Events Guide"
           >
             <Landmark className="h-6 w-6 text-[#d2a64d]" />
           </div>
-
-          {/* Logo Text */}
 
           {expanded && (
             <div className="min-w-0 whitespace-nowrap">
@@ -201,10 +183,7 @@ export default function Sidebar() {
         </Link>
       </div>
 
-      {/* ================================================= */}
       {/* NAVIGATION */}
-      {/* ================================================= */}
-
       <nav className="min-h-0 flex-1 overflow-y-auto px-3">
         <div className="space-y-1 pb-3">
           {menuItems.map((item) => {
@@ -214,19 +193,13 @@ export default function Sidebar() {
               item.href === "/"
                 ? pathname === "/"
                 : pathname === item.href ||
-                  pathname.startsWith(
-                    `${item.href}/`
-                  );
+                  pathname.startsWith(`${item.href}/`);
 
             return (
               <Link
                 key={item.label}
                 href={item.href}
-                title={
-                  !expanded
-                    ? item.label
-                    : undefined
-                }
+                title={!expanded ? item.label : undefined}
                 className={`group flex items-center rounded-xl transition-all duration-200 ${
                   expanded
                     ? "gap-4 px-4 py-3"
@@ -258,21 +231,11 @@ export default function Sidebar() {
         </div>
       </nav>
 
-      {/* ================================================= */}
       {/* BOTTOM CONTROLS */}
-      {/* ================================================= */}
-
       <div className="shrink-0 border-t border-white/10 p-3">
-
-        {/* SETTINGS */}
-
         <Link
           href="/settings"
-          title={
-            !expanded
-              ? "Settings"
-              : undefined
-          }
+          title={!expanded ? "Settings" : undefined}
           className={`mb-2 flex items-center rounded-xl text-slate-200 transition hover:bg-white/10 ${
             expanded
               ? "gap-4 px-4 py-3"
@@ -294,10 +257,6 @@ export default function Sidebar() {
           )}
         </Link>
 
-        {/* ================================================= */}
-        {/* COLLAPSE / EXPAND */}
-        {/* ================================================= */}
-
         <button
           type="button"
           onClick={handleToggle}
@@ -307,14 +266,10 @@ export default function Sidebar() {
               : "justify-center px-3 py-3.5"
           }`}
           aria-label={
-            expanded
-              ? "Collapse sidebar"
-              : "Expand sidebar"
+            expanded ? "Collapse sidebar" : "Expand sidebar"
           }
           title={
-            expanded
-              ? "Collapse sidebar"
-              : "Expand sidebar"
+            expanded ? "Collapse sidebar" : "Expand sidebar"
           }
         >
           {expanded ? (
