@@ -12,30 +12,9 @@ import {
   Utensils,
 } from "lucide-react";
 import BusinessMap from "@/components/directory/BusinessMap";
+import type { DirectoryBusiness } from "@/types/database";
 
-export type DirectoryBusiness = {
-  id: string;
-  name: string;
-  category: string | null;
-  address: string | null;
-  area: string | null;
-  telephone: string | null;
-  email: string | null;
-  website: string | null;
-  imageUrl: string | null;
-  mapsUrl: string | null;
-  latitude: number | null;
-  longitude: number | null;
-  rating: number | null;
-  reviewCount: number | null;
-  priceRange: string | null;
-  openingHours: string | null;
-  specialties: string | null;
-  sourceUrl: string | null;
-  verificationStatus: string | null;
-  lastChecked: string | null;
-  notes: string | null;
-};
+export type { DirectoryBusiness };
 
 type BusinessDirectoryProps = {
   businesses: DirectoryBusiness[];

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 
 import FavoriteDishForm from "@/components/hotels/FavoriteDishForm";
+import type { FavoriteDish } from "@/types/database";
 
 import {
   ArrowLeft,
@@ -23,13 +24,7 @@ type HotelPageProps = {
   }>;
 };
 
-type FavoriteDish = {
-  favorite_id: number;
-  hotel_id: number;
-  dish_name: string;
-  customer_name: string | null;
-  created_at: string;
-};
+
 
 export default async function HotelDetailsPage({
   params,

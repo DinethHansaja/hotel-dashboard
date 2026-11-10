@@ -85,3 +85,4 @@ export type DirectoryBusiness = {
   lastChecked: string | null;
   notes: string | null;
 };
+
