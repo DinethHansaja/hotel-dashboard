@@ -233,7 +233,11 @@ export default function ComparePage() {
   }
 
   useEffect(() => {
-    loadHotels();
+    const timeoutId = window.setTimeout(() => {
+      void loadHotels();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, []);
 
   const selectedHotels = useMemo(() => {
@@ -601,14 +605,14 @@ export default function ComparePage() {
 
                     if (rating === null) {
                       return (
-                        <span className="text-slate-400">
+                        <span key={normalizeId(hotel.hotel_id)} className="text-slate-400">
                           Not available
                         </span>
                       );
                     }
 
                     return (
-                      <span className="inline-flex items-center gap-2 font-semibold text-[#091423]">
+                      <span key={normalizeId(hotel.hotel_id)} className="inline-flex items-center gap-2 font-semibold text-[#091423]">
                         <span>{rating.toFixed(1)}</span>
 
                         <span className="flex items-center gap-0.5">
@@ -650,14 +654,14 @@ export default function ComparePage() {
 
                     if (price === null) {
                       return (
-                        <span className="text-slate-400">
+                        <span key={normalizeId(hotel.hotel_id)} className="text-slate-400">
                           Not available
                         </span>
                       );
                     }
 
                     return (
-                      <div>
+                      <div key={normalizeId(hotel.hotel_id)}>
                         <p className="font-bold text-[#091423]">
                           {formatPrice(price)}
                         </p>
@@ -686,14 +690,14 @@ export default function ComparePage() {
 
                     if (times.length === 0) {
                       return (
-                        <span className="text-slate-400">
+                        <span key={normalizeId(hotel.hotel_id)} className="text-slate-400">
                           Not available
                         </span>
                       );
                     }
 
                     return (
-                      <div className="space-y-2">
+                      <div key={normalizeId(hotel.hotel_id)} className="space-y-2">
                         {times.map((time) => (
                           <div
                             key={time}
@@ -715,7 +719,7 @@ export default function ComparePage() {
                     <Utensils className="h-5 w-5" />
                   }
                   values={selectedHotels.map((hotel) => (
-                    <span>
+                    <span key={normalizeId(hotel.hotel_id)}>
                       {hotel.restaurant_name ||
                         "Not available"}
                     </span>
@@ -730,7 +734,7 @@ export default function ComparePage() {
                     <MapPin className="h-5 w-5" />
                   }
                   values={selectedHotels.map((hotel) => (
-                    <span>
+                    <span key={normalizeId(hotel.hotel_id)}>
                       {getLocation(hotel) ||
                         "Not available"}
                     </span>
@@ -749,7 +753,7 @@ export default function ComparePage() {
 
                     if (!phone) {
                       return (
-                        <span className="text-slate-400">
+                        <span key={normalizeId(hotel.hotel_id)} className="text-slate-400">
                           Not available
                         </span>
                       );
@@ -757,6 +761,7 @@ export default function ComparePage() {
 
                     return (
                       <a
+                        key={normalizeId(hotel.hotel_id)}
                         href={`tel:${phone}`}
                         className="font-semibold text-[#a87822] hover:underline"
                       >
@@ -778,7 +783,7 @@ export default function ComparePage() {
 
                     if (!website) {
                       return (
-                        <span className="text-slate-400">
+                        <span key={normalizeId(hotel.hotel_id)} className="text-slate-400">
                           Not available
                         </span>
                       );
@@ -786,6 +791,7 @@ export default function ComparePage() {
 
                     return (
                       <a
+                        key={normalizeId(hotel.hotel_id)}
                         href={getWebsiteUrl(website)}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -804,7 +810,7 @@ export default function ComparePage() {
                   <CompareRow
                     label="Description"
                     values={selectedHotels.map((hotel) => (
-                      <span className="leading-6 text-slate-600">
+                      <span key={normalizeId(hotel.hotel_id)} className="leading-6 text-slate-600">
                         {hotel.description ||
                           "No description available."}
                       </span>

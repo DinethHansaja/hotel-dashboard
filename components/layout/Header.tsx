@@ -66,7 +66,11 @@ export default function Header() {
     useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setSearch(existingSearch);
+    const timeoutId = window.setTimeout(() => {
+      setSearch(existingSearch);
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [existingSearch]);
 
   // Close city dropdown when clicking outside

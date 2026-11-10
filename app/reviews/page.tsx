@@ -153,7 +153,11 @@ export default function ReviewsPage() {
   }
 
   useEffect(() => {
-    loadData();
+    const timeoutId = window.setTimeout(() => {
+      void loadData();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, []);
 
   // --------------------------------------------------

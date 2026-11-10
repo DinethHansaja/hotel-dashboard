@@ -55,7 +55,11 @@ export default function BuffetGrid({
     useState(1);
 
   useEffect(() => {
-    setCurrentPage(1);
+    const timeoutId = window.setTimeout(() => {
+      setCurrentPage(1);
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [buffets]);
 
   const totalPages = Math.ceil(

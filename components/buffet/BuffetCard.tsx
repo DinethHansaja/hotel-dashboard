@@ -520,7 +520,7 @@ export default function BuffetCard({
                 <div className="mt-3">
 
                   <p className="line-clamp-3 text-xs italic leading-5 text-slate-600">
-                    "{latestReview}"
+                    &ldquo;{latestReview}&rdquo;
                   </p>
 
                   {/* REVIEWER INFORMATION */}
