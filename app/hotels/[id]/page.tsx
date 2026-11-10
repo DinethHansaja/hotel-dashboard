@@ -2,7 +2,7 @@ import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 
-import FavoriteDishForm from "@/components/home/FavoriteDishForm";
+import FavoriteDishForm from "@/components/hotels/FavoriteDishForm";
 
 import {
   ArrowLeft,
