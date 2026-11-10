@@ -108,6 +108,10 @@ export default function BusinessMapClient({
                   <img
                     src={business.imageUrl}
                     alt=""
+                    width={320}
+                    height={112}
+                    loading="lazy"
+                    decoding="async"
                     className="h-28 w-full object-cover"
                   />
                 )}
@@ -135,6 +139,10 @@ export default function BusinessMapClient({
                     <img
                       src={business.imageUrl}
                       alt={business.name}
+                      width={640}
+                      height={448}
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover"
                     />
                   </div>
