@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, Tooltip } from "react-leaflet";
 import L from "leaflet";
 import type { DirectoryBusiness } from "@/components/directory/BusinessDirectory";
 import "leaflet/dist/leaflet.css";
@@ -19,16 +19,26 @@ const businessIcon = L.icon({
   shadowSize: [41, 41],
 });
 
-function websiteUrl(value: string) {
-  return /^https?:\/\//i.test(value) ? value : "https://" + value;
-}
+const selectedBusinessIcon = L.icon({
+  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
+  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+  iconSize: [32, 49],
+  iconAnchor: [16, 49],
+  popupAnchor: [1, -42],
+  shadowSize: [49, 49],
+});
 
 export default function BusinessMapClient({
   businesses,
   kind,
+  selectedBusinessId,
+  onSelectBusiness,
 }: {
   businesses: DirectoryBusiness[];
   kind: "cafe" | "restaurant";
+  selectedBusinessId?: string | null;
+  onSelectBusiness?: (id: string) => void;
 }) {
   const locatedBusinesses = useMemo(
     () =>
@@ -84,12 +94,44 @@ export default function BusinessMapClient({
           <Marker
             key={business.id}
             position={[Number(business.latitude), Number(business.longitude)]}
-            icon={businessIcon}
+            icon={business.id === selectedBusinessId ? selectedBusinessIcon : businessIcon}
+            eventHandlers={{ click: () => onSelectBusiness?.(business.id) }}
           >
-            <Popup closeButton={true} maxWidth={330}>
-              <div className="w-[280px] overflow-hidden rounded-xl">
+            <Tooltip
+              direction="top"
+              offset={[0, -28]}
+              sticky
+              className="!border-0 !bg-transparent !p-0 !shadow-none"
+            >
+              <div className="w-64 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
                 {business.imageUrl && (
-                  <div className="h-36 w-full overflow-hidden bg-slate-100">
+                  <img
+                    src={business.imageUrl}
+                    alt=""
+                    className="h-28 w-full object-cover"
+                  />
+                )}
+                <div className="p-3">
+                  <span className="inline-flex rounded-full bg-[#c79a45]/15 px-2.5 py-1 text-[11px] font-semibold text-[#805d26]">
+                    {business.category || (kind === "cafe" ? "Cafe" : "Restaurant")}
+                  </span>
+                  <span className="mt-2 block font-semibold text-slate-900">{business.name}</span>
+                  <span className="mt-1 block text-xs text-slate-500">
+                    {business.area || business.address || "Colombo"}
+                  </span>
+                  {business.rating !== null && (
+                    <span className="mt-2 block text-xs font-medium text-slate-700">
+                      <span className="text-amber-500">★</span> {business.rating.toFixed(1)}
+                      {business.reviewCount !== null && ` · ${business.reviewCount.toLocaleString()} reviews`}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </Tooltip>
+            <Popup closeButton={true} maxWidth={280} minWidth={240}>
+              <div className="w-[240px] overflow-hidden rounded-xl">
+                {business.imageUrl && (
+                  <div className="h-28 w-full overflow-hidden rounded-lg bg-slate-100">
                     <img
                       src={business.imageUrl}
                       alt={business.name}
@@ -98,102 +140,34 @@ export default function BusinessMapClient({
                   </div>
                 )}
 
-                <div className="p-3">
-                  <span className="mb-2 inline-flex rounded-full bg-[#c79a45] px-3 py-1 text-xs font-semibold text-white">
-                    {business.category ||
-                      (kind === "cafe" ? "Cafe" : "Restaurant")}
+                <div className="pt-3">
+                  <span className="inline-flex rounded-full bg-[#c79a45]/15 px-2.5 py-1 text-[11px] font-semibold text-[#805d26]">
+                    {business.category || (kind === "cafe" ? "Cafe" : "Restaurant")}
                   </span>
-
-                  <h3 className="text-base font-bold text-slate-900">
-                    {business.name}
-                  </h3>
-
-                  <p className="mt-1 text-xs text-slate-500">
-                    ID: {business.id}
-                  </p>
-
+                  <h3 className="mt-2 text-base font-bold leading-5 text-slate-900">{business.name}</h3>
                   {business.rating !== null && (
-                    <p className="mt-2 text-sm text-slate-700">
-                      ★ {business.rating.toFixed(1)}
-                      {business.reviewCount !== null
-                        ? " · " +
-                          business.reviewCount.toLocaleString() +
-                          " reviews"
-                        : ""}
+                    <p className="mt-2 text-sm font-medium text-slate-700">
+                      <span className="text-amber-500">★</span> {business.rating.toFixed(1)}
+                      {business.reviewCount !== null && <span className="font-normal text-slate-500"> · {business.reviewCount.toLocaleString()} reviews</span>}
                     </p>
                   )}
-
-                  {business.address && (
-                    <p className="mt-2 text-sm text-slate-600">
-                      {business.address}
-                      {business.area ? " · " + business.area : ""}
+                  {(business.address || business.area) && (
+                    <p className="mt-2 text-xs leading-5 text-slate-600">
+                      {business.address || business.area}
+                      {business.address && business.area ? ` · ${business.area}` : ""}
                     </p>
                   )}
-
-                  {business.priceRange && (
-                    <p className="mt-2 text-sm text-slate-600">
-                      <strong>Price:</strong> {business.priceRange}
-                    </p>
-                  )}
-
-                  {business.openingHours && (
-                    <p className="mt-2 text-sm text-slate-600">
-                      <strong>Hours:</strong> {business.openingHours}
-                    </p>
-                  )}
-
-                  {business.specialties && (
-                    <p className="mt-2 text-sm text-slate-600">
-                      <strong>
-                        {kind === "cafe" ? "Specialties" : "Signature dishes"}:
-                      </strong>{" "}
-                      {business.specialties}
-                    </p>
-                  )}
-
-                  {business.telephone && (
-                    <p className="mt-2 text-sm text-slate-600">
-                      <strong>Phone:</strong> {business.telephone}
-                    </p>
-                  )}
-
-                  {business.email && (
-                    <p className="mt-1 break-all text-sm text-slate-600">
-                      <strong>Email:</strong> {business.email}
-                    </p>
-                  )}
-
-                  {business.verificationStatus && (
-                    <p className="mt-2 text-xs text-slate-500">
-                      <strong>Verification:</strong>{" "}
-                      {business.verificationStatus}
-                    </p>
-                  )}
-
-                  <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-sm font-semibold">
-                    {business.website && (
-                      <a
-                        href={websiteUrl(business.website)}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Website
-                      </a>
-                    )}
-
-                    <a href={mapsUrl} target="_blank" rel="noreferrer">
-                      Open map
+                  <div className="mt-3 flex items-center justify-between gap-2 border-t border-slate-100 pt-3">
+                    <button
+                      type="button"
+                      onClick={() => onSelectBusiness?.(business.id)}
+                      className="rounded-lg bg-[#c79a45] px-3 py-2 text-xs font-semibold text-white transition hover:bg-[#a97f36]"
+                    >
+                      View details
+                    </button>
+                    <a href={mapsUrl} target="_blank" rel="noreferrer" className="text-xs font-semibold text-slate-600 hover:text-[#805d26]">
+                      Get directions
                     </a>
-
-                    {business.sourceUrl && (
-                      <a
-                        href={business.sourceUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Source
-                      </a>
-                    )}
                   </div>
                 </div>
               </div>

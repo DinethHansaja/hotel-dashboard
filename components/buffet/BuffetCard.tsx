@@ -21,9 +21,12 @@ type BuffetCardProps = {
   restaurantName?: string | null;
   imageUrl?: string | null;
   price?: number | null;
+  lunchPrice?: number | null;
+  dinnerPrice?: number | null;
   rating?: number | null;
   reviewCount?: number | null;
   buffetTime?: string | null;
+  buffetTimes?: string[];
   description?: string | null;
 
   // Phase 1
@@ -142,9 +145,12 @@ export default function BuffetCard({
   restaurantName,
   imageUrl,
   price,
+  lunchPrice,
+  dinnerPrice,
   rating,
   reviewCount,
   buffetTime,
+  buffetTimes,
   description,
   mealType,
   googleReviewUrl,
@@ -394,17 +400,21 @@ export default function BuffetCard({
 
             </div>
 
-            {/* BUFFET TIME */}
-
-            {buffetTime && (
-              <div className="flex items-center gap-2 text-sm text-slate-500">
-
+            {(buffetTimes?.length ? buffetTimes : buffetTime ? [buffetTime] : []).map((time) => (
+              <div key={time} className="flex items-center gap-2 text-sm text-slate-500">
                 <Clock3 className="h-4 w-4 shrink-0 text-[#c79a45]" />
+                <span>{time}</span>
+              </div>
+            ))}
 
-                <span>
-                  {buffetTime}
-                </span>
-
+            {(lunchPrice !== null && lunchPrice !== undefined || dinnerPrice !== null && dinnerPrice !== undefined) && (
+              <div className="grid grid-cols-2 gap-2 rounded-xl bg-amber-50/70 p-3 text-xs">
+                {lunchPrice !== null && lunchPrice !== undefined && (
+                  <p className="text-slate-600">Lunch starting at <strong className="block text-sm text-slate-900">LKR {Number(lunchPrice).toLocaleString()}</strong></p>
+                )}
+                {dinnerPrice !== null && dinnerPrice !== undefined && (
+                  <p className="text-slate-600">Dinner starting at <strong className="block text-sm text-slate-900">LKR {Number(dinnerPrice).toLocaleString()}</strong></p>
+                )}
               </div>
             )}
 

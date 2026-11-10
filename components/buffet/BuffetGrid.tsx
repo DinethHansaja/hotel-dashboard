@@ -19,9 +19,12 @@ type Buffet = {
   restaurant_name?: string | null;
   image_url?: string | null;
   price?: number | null;
+  lunch_price?: number | null;
+  dinner_price?: number | null;
   rating?: number | null;
   review_count?: number | null;
   buffet_time?: string | null;
+  buffet_times?: string[];
   description?: string | null;
   cuisine?: string | null;
 
@@ -46,7 +49,7 @@ type BuffetGridProps = {
   buffets: Buffet[];
 };
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 12;
 
 export default function BuffetGrid({
   buffets,
@@ -183,6 +186,8 @@ export default function BuffetGrid({
               price={
                 buffet.price
               }
+              lunchPrice={buffet.lunch_price}
+              dinnerPrice={buffet.dinner_price}
               rating={
                 buffet.rating
               }
@@ -192,6 +197,7 @@ export default function BuffetGrid({
               buffetTime={
                 buffet.buffet_time
               }
+              buffetTimes={buffet.buffet_times}
               description={
                 buffet.description
               }

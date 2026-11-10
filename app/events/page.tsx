@@ -156,7 +156,7 @@ const eventProfiles: Record<string, EventProfile> = {
 
     description:
 
-      "A modern large-scale event destination featuring elegant ballrooms and flexible spaces for major celebrations and conferences.",
+      "A modern event destination bringing new energy to Colombo, with elegant ballrooms and flexible spaces for major celebrations and conferences.",
 
     services: [
 

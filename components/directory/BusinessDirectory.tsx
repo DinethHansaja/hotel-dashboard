@@ -72,6 +72,7 @@ export default function BusinessDirectory({
   const [selectedArea, setSelectedArea] = useState("all");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sort, setSort] = useState("popular");
+  const [selectedBusinessId, setSelectedBusinessId] = useState<string | null>(null);
 
   const title = kind === "cafe" ? "Cafe Guide" : "Restaurant Guide";
   const singular = kind === "cafe" ? "café" : "restaurant";
@@ -143,6 +144,11 @@ export default function BusinessDirectory({
       return 0;
     });
   }, [businesses, search, selectedArea, selectedCategory, sort]);
+
+  const selectedBusiness =
+    filteredBusinesses.find((business) => business.id === selectedBusinessId) ??
+    filteredBusinesses[0] ??
+    null;
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
@@ -247,6 +253,48 @@ export default function BusinessDirectory({
           </div>
         </section>
 
+        {(
+          kind === "cafe" || kind === "restaurant"
+        ) ? (
+          <section className="mb-8">
+            <div className="mb-3">
+              <h2 className="text-xl font-semibold text-slate-900">{title} map</h2>
+              <p className="mt-1 text-sm text-slate-500">Hover over a marker for a preview, or select one to see the {singular} details.</p>
+            </div>
+            <div className="grid grid-cols-1 items-stretch gap-4 lg:grid-cols-2">
+              <BusinessMap businesses={filteredBusinesses} kind={kind} selectedBusinessId={selectedBusiness?.id ?? null} onSelectBusiness={setSelectedBusinessId} />
+              <article className="flex h-[620px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+              {selectedBusiness ? (
+                <>
+                  <div className="relative h-56 shrink-0 bg-slate-100">
+                    {selectedBusiness.imageUrl ? <img src={selectedBusiness.imageUrl} alt={selectedBusiness.name} className="h-full w-full object-cover" /> : <div className="flex h-full items-center justify-center bg-gradient-to-br from-[#e8dfd1] to-[#c9b69a]"><Coffee className="h-14 w-14 text-[#79532c]" /></div>}
+                    {selectedBusiness.area && <span className="absolute right-4 top-4 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-slate-700 shadow">{selectedBusiness.area}</span>}
+                  </div>
+                  <div className="min-h-0 flex-1 overflow-y-auto p-5 md:p-6">
+                    <h3 className="text-2xl font-bold text-slate-900">{selectedBusiness.name}</h3>
+                    <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-600">
+                      {selectedBusiness.rating !== null && <span className="inline-flex items-center gap-1"><Star className="h-4 w-4 fill-amber-500 text-amber-500" />{selectedBusiness.rating.toFixed(1)}{selectedBusiness.reviewCount !== null && ` (${selectedBusiness.reviewCount.toLocaleString()} reviews)`}</span>}
+                      {selectedBusiness.category && <span className="inline-flex items-center gap-1"><Coffee className="h-4 w-4 text-[#8b682b]" />{selectedBusiness.category}</span>}
+                      {selectedBusiness.area && <span className="inline-flex items-center gap-1"><MapPin className="h-4 w-4 text-[#8b682b]" />{selectedBusiness.area}</span>}
+                    </div>
+                    {selectedBusiness.address && <p className="mt-4 text-sm leading-6 text-slate-600">{selectedBusiness.address}</p>}
+                    {selectedBusiness.specialties && <p className="mt-3 text-sm leading-6 text-slate-600"><strong className="text-slate-800">{kind === "cafe" ? "Popular items:" : "Signature dishes:"}</strong> {selectedBusiness.specialties}</p>}
+                    <div className="mt-5 flex flex-wrap gap-2 border-b border-slate-100 pb-5">
+                      {selectedBusiness.telephone && <a href={`tel:${selectedBusiness.telephone}`} className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium hover:border-[#c79a45]"><Phone className="mr-2 inline h-4 w-4" />{selectedBusiness.telephone}</a>}
+                      {selectedBusiness.website && <a href={getWebsiteUrl(selectedBusiness.website)} target="_blank" rel="noreferrer" className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium hover:border-[#c79a45]"><Globe className="mr-2 inline h-4 w-4" />Website</a>}
+                      {getMapUrl(selectedBusiness) && <a href={getMapUrl(selectedBusiness)!} target="_blank" rel="noreferrer" className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium hover:border-[#c79a45]"><MapPin className="mr-2 inline h-4 w-4" />Directions</a>}
+                    </div>
+                    <div className="grid gap-5 pt-4 sm:grid-cols-2">
+                      <div><h4 className="font-semibold text-slate-800"><Clock3 className="mr-2 inline h-4 w-4 text-[#8b682b]" />Opening hours</h4><p className="mt-2 text-sm text-slate-600">{selectedBusiness.openingHours || "Hours not provided"}</p></div>
+                      <div><h4 className="font-semibold text-slate-800"><Icon className="mr-2 inline h-4 w-4 text-[#8b682b]" />{kind === "cafe" ? "Cafe details" : "Restaurant details"}</h4><p className="mt-2 text-sm text-slate-600">{selectedBusiness.priceRange || "Price range not provided"}</p></div>
+                    </div>
+                  </div>
+                </>
+              ) : <div className="flex h-full items-center justify-center p-8 text-center text-slate-500">No cafes match the selected filters.</div>}
+              </article>
+            </div>
+          </section>
+        ) : (
         <section className="mb-8">
           <div className="mb-3">
             <h2 className="text-xl font-semibold text-slate-900">{title} map</h2>
@@ -258,6 +306,7 @@ export default function BusinessDirectory({
 
           <BusinessMap businesses={filteredBusinesses} kind={kind} />
         </section>
+        )}
 
         {filteredBusinesses.length === 0 ? (
           <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-sm">
@@ -368,9 +417,7 @@ export default function BusinessDirectory({
                       {business.specialties && (
                         <p className="mt-3 text-sm leading-5 text-slate-600">
                           <span className="font-medium text-slate-800">
-                            {kind === "cafe"
-                              ? "Specialties: "
-                              : "Signature dishes: "}
+                            Signature dishes:
                           </span>
                           {business.specialties}
                         </p>
@@ -439,9 +486,7 @@ export default function BusinessDirectory({
                           <DetailRow label="Business ID" value={business.id} />
                           <DetailRow
                             label={
-                              kind === "cafe"
-                                ? "Business type"
-                                : "Cuisine or category"
+                              "Cuisine or category"
                             }
                             value={business.category}
                           />
@@ -460,7 +505,7 @@ export default function BusinessDirectory({
                           <DetailRow label="Opening hours" value={business.openingHours} />
                           <DetailRow
                             label={
-                              kind === "cafe" ? "Specialties" : "Signature dishes"
+                              "Signature dishes"
                             }
                             value={business.specialties}
                           />
