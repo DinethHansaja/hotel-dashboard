@@ -20,9 +20,12 @@ type Buffet = {
   restaurant_name?: string | null;
   image_url?: string | null;
   price?: number | null;
+  lunch_price?: number | null;
+  dinner_price?: number | null;
   rating?: number | null;
   review_count?: number | null;
   buffet_time?: string | null;
+  buffet_times?: string[];
   description?: string | null;
   cuisine?: string | null;
 
@@ -307,14 +310,21 @@ export default async function BuffetPage({
       // Buffet time
       // ------------------------------------------------
 
-      const scheduleWithTime =
-        hotelSchedules.find(
-          (schedule) =>
-            schedule.buffet_time &&
-            String(
-              schedule.buffet_time
-            ).trim() !== ""
-        );
+      const buffetTimes = [...new Set(
+        hotelSchedules
+          .map((schedule) => schedule.buffet_time?.trim())
+          .filter((time): time is string => Boolean(time))
+      )];
+
+      const getStartingPrice = (meal: "lunch" | "dinner") => {
+        const matchingPrices = pricedSchedules
+          .filter((schedule) =>
+            (schedule.meal_type ?? "").toLowerCase().includes(meal)
+          )
+          .map((schedule) => Number(schedule.price_lkr));
+
+        return matchingPrices.length > 0 ? Math.min(...matchingPrices) : null;
+      };
 
       // ------------------------------------------------
       // Meal type
@@ -457,6 +467,8 @@ export default async function BuffetPage({
           hotel.image_url ?? null,
 
         price: lowestPrice,
+        lunch_price: getStartingPrice("lunch"),
+        dinner_price: getStartingPrice("dinner"),
 
         rating:
           hotel.Rating !== null &&
@@ -468,8 +480,8 @@ export default async function BuffetPage({
           communityReviewCount,
 
         buffet_time:
-          scheduleWithTime?.buffet_time ??
-          null,
+          buffetTimes[0] ?? null,
+        buffet_times: buffetTimes,
 
         description:
           hotel.description ?? null,
