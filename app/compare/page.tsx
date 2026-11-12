@@ -334,6 +334,7 @@ export default function ComparePage() {
             </p>
 
             <button
+              type="button"
               onClick={loadHotels}
               className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#0b1728] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#12243a]"
             >
@@ -379,6 +380,7 @@ export default function ComparePage() {
 
                 {selectedHotels.length > 0 && (
                   <button
+                    type="button"
                     onClick={clearComparison}
                     className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600"
                   >
@@ -405,6 +407,7 @@ export default function ComparePage() {
               </div>
 
               <button
+                type="button"
                 onClick={() => setShowHotelPicker((value) => !value)}
                 disabled={selectedHotels.length >= MAX_COMPARE}
                 className="ui-button ui-button-primary inline-flex items-center justify-center gap-2 px-5 py-3 text-sm text-white disabled:cursor-not-allowed disabled:opacity-40"
@@ -450,6 +453,7 @@ export default function ComparePage() {
 
                       return (
                         <button
+                          type="button"
                           key={id}
                           onClick={() => addHotel(id)}
                           disabled={alreadySelected}
@@ -501,6 +505,7 @@ export default function ComparePage() {
               </p>
 
               <button
+                type="button"
                 onClick={() => setShowHotelPicker(true)}
                 className="ui-button ui-button-primary mt-6 px-5 py-3 text-sm text-white"
               >
@@ -521,7 +526,7 @@ export default function ComparePage() {
                 return (
                   <article key={id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card">
                     <div className="relative aspect-[16/9] bg-slate-100">
-                      {hotel.image_url ? <img src={hotel.image_url} alt={hotel.hotel_name || "Hotel"} className="h-full w-full object-cover" /> : <div className="flex h-full items-center justify-center"><HotelIcon className="h-10 w-10 text-slate-300" /></div>}
+                      {hotel.image_url ? <img src={hotel.image_url} alt={hotel.hotel_name || "Hotel"} loading="lazy" decoding="async" className="h-full w-full object-cover" /> : <div className="flex h-full items-center justify-center"><HotelIcon className="h-10 w-10 text-slate-300" /></div>}
                       <button type="button" onClick={() => removeHotel(id)} aria-label={`Remove ${hotel.hotel_name || "hotel"}`} className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white text-slate-600 shadow"><X className="h-4 w-4" /></button>
                     </div>
                     <div className="p-5">
@@ -582,6 +587,7 @@ export default function ComparePage() {
                         className="relative border-l border-slate-200 p-5"
                       >
                         <button
+                          type="button"
                           onClick={() => removeHotel(id)}
                           aria-label={`Remove ${
                             hotel.hotel_name || "hotel"
@@ -596,6 +602,8 @@ export default function ComparePage() {
                             <img
                               src={hotel.image_url}
                               alt={hotel.hotel_name || "Hotel"}
+                              loading="lazy"
+                              decoding="async"
                               className="h-52 w-full object-cover"
                             />
                           ) : (
@@ -879,6 +887,7 @@ export default function ComparePage() {
                           </a>
                         ) : (
                           <button
+                            type="button"
                             disabled
                             className="w-full cursor-not-allowed rounded-xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-400"
                           >
@@ -899,6 +908,7 @@ export default function ComparePage() {
           {selectedHotels.length > 0 && (
             <div className="border-t border-slate-200 bg-[#ffffff] px-6 py-5 md:px-8">
               <button
+                type="button"
                 onClick={() =>
                   setShowAllDetails((value) => !value)
                 }

@@ -33,7 +33,7 @@ export default function WhyChooseUs() {
       {/* HEADER */}
       <div>
 
-        <p className="text-sm font-semibold text-[#c5a46d]">
+        <p className="text-sm font-semibold text-[#806744]">
           Why Colombo Guide?
         </p>
 

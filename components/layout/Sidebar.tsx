@@ -114,9 +114,9 @@ export default function Sidebar() {
 
           {expanded && (
             <div className="min-w-0 whitespace-nowrap">
-              <h1 className="font-serif text-[24px] leading-tight">
+              <span className="font-serif text-[24px] leading-tight">
                 Colombo
-              </h1>
+              </span>
 
               <p className="text-sm tracking-wide text-[#c5a46d]">
                 Dining & Events Guide

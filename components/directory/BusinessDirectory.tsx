@@ -251,7 +251,7 @@ export default function BusinessDirectory({
               {selectedBusiness ? (
                 <>
                   <div className="relative h-56 shrink-0 bg-slate-100">
-                    {selectedBusiness.imageUrl ? <img src={selectedBusiness.imageUrl} alt={selectedBusiness.name} className="h-full w-full object-cover" /> : <div className="flex h-full items-center justify-center bg-[#f3eee4]"><Coffee className="h-14 w-14 text-[#806744]" /></div>}
+                    {selectedBusiness.imageUrl ? <img src={selectedBusiness.imageUrl} alt={selectedBusiness.name} loading="lazy" decoding="async" className="h-full w-full object-cover" /> : <div className="flex h-full items-center justify-center bg-[#f3eee4]"><Coffee className="h-14 w-14 text-[#806744]" /></div>}
                     {selectedBusiness.area && <span className="absolute right-4 top-4 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-slate-700 shadow">{selectedBusiness.area}</span>}
                   </div>
                   <div className="min-h-0 flex-1 overflow-y-auto p-5 md:p-6">
@@ -333,6 +333,8 @@ export default function BusinessDirectory({
                         <img
                           src={business.imageUrl}
                           alt={business.name}
+                          loading="lazy"
+                          decoding="async"
                           className="h-full w-full object-cover"
                         />
                       ) : (

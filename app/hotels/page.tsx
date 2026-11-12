@@ -56,7 +56,7 @@ export default async function HotelsPage() {
       <section className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-[1500px] px-6 py-10 md:px-8">
           <Breadcrumbs items={[{ label: "Hotels" }]} />
-          <p className="text-sm font-semibold text-[#c5a46d]">
+          <p className="text-sm font-semibold text-[#806744]">
             Colombo Hotels
           </p>
 
@@ -101,6 +101,8 @@ export default async function HotelsPage() {
                     <img
                       src={hotel.image_url}
                       alt={hotel.hotel_name}
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
                     />
                   ) : (

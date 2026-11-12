@@ -27,7 +27,7 @@ export default function BusinessMap({
   onSelectBusiness?: (id: string) => void;
 }) {
   return (
-    <div className="h-[380px] w-full min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card p-2 shadow-sm lg:h-[560px]">
+    <div role="region" aria-label={kind === "cafe" ? "Café locations map" : "Restaurant locations map"} className="h-[380px] w-full min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card p-2 shadow-sm lg:h-[560px]">
       <div className="h-full w-full overflow-hidden rounded-[18px]">
         <BusinessMapClient businesses={businesses} kind={kind} selectedBusinessId={selectedBusinessId} onSelectBusiness={onSelectBusiness} />
       </div>

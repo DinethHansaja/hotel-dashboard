@@ -45,7 +45,7 @@ export default function SettingsPage() {
     <main className="min-h-full bg-slate-50 px-5 py-8 text-slate-900 md:px-8 md:py-10">
       <div className="mx-auto max-w-5xl">
         <div className="mb-8">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#c5a46d]">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#806744]">
             Your experience
           </p>
           <h1 className="page-title mt-2">
@@ -71,23 +71,21 @@ export default function SettingsPage() {
           </div>
 
           <div className="p-6 md:p-8">
-            <h3 className="text-sm font-semibold text-slate-800">Color theme</h3>
-            <div role="radiogroup" aria-label="Color theme" className="mt-4 grid gap-3 md:grid-cols-3">
+            <fieldset>
+              <legend className="text-sm font-semibold text-slate-800">Color theme</legend>
+              <div className="mt-4 grid gap-3 md:grid-cols-3">
               {themeChoices.map(({ value, label, description, Icon }) => {
                 const selected = theme === value;
                 return (
-                  <button
+                  <label
                     key={value}
-                    type="button"
-                    role="radio"
-                    aria-checked={selected}
-                    onClick={() => setTheme(value)}
-                    className={`group card-interactive rounded-xl border p-4 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c5a46d] ${
+                    className={`group card-interactive relative cursor-pointer rounded-xl border p-4 text-left transition-colors focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[var(--focus-ring)] ${
                       selected
                         ? "border-[#c5a46d] bg-[#c5a46d]/5 ring-1 ring-[#c5a46d]/30"
                         : "border-slate-200 hover:border-[#c5a46d]/60 hover:bg-slate-50"
                     }`}
                   >
+                    <input className="peer sr-only" type="radio" name="theme" value={value} checked={selected} onChange={() => setTheme(value)} aria-label={label} />
                     <span className="flex items-center justify-between">
                       <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-600 group-hover:text-[#806744]">
                         <Icon className="h-4 w-4" />
@@ -100,10 +98,11 @@ export default function SettingsPage() {
                     </span>
                     <span className="mt-4 block text-sm font-semibold text-slate-900">{label}</span>
                     <span className="mt-1 block text-xs leading-5 text-slate-500">{description}</span>
-                  </button>
+                  </label>
                 );
               })}
-            </div>
+              </div>
+            </fieldset>
             <p className="mt-3 text-xs text-slate-400">
               Your theme preference is saved in this browser. Gold accents and
               the existing brand colors stay the same.
@@ -131,7 +130,7 @@ export default function SettingsPage() {
               aria-checked={reduceMotion}
               aria-label="Reduce motion"
               onClick={() => setReduceMotion(!reduceMotion)}
-              className={`relative mt-1 inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c5a46d] ${
+              className={`relative mt-1 inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)] ${
                 reduceMotion ? "bg-[#806744]" : "bg-slate-300"
               }`}
             >
@@ -154,7 +153,7 @@ export default function SettingsPage() {
           <button
             type="button"
             onClick={resetPreferences}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 text-sm font-medium text-slate-700 transition-colors hover:border-[#c5a46d] hover:text-[#806744] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c5a46d]"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 text-sm font-medium text-slate-700 transition-colors hover:border-[#c5a46d] hover:text-[#806744] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
           >
             <RotateCcw className="h-4 w-4" />
             Reset settings

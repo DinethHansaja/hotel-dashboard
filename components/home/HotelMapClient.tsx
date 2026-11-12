@@ -176,6 +176,8 @@ export default function HotelMapClient({
                   <img
                     src={hotel.image_url}
                     alt={hotel.hotel_name}
+                    loading="lazy"
+                    decoding="async"
                     className="h-full w-full object-cover"
                   />
                 ) : (

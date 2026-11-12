@@ -155,7 +155,7 @@ export default function BuffetCard({
           aria-label={isSaved ? `Remove ${hotelName} from favourites` : `Save ${hotelName} to favourites`}
           aria-pressed={isSaved}
           onClick={() => toggleHotel(hotelId)}
-          className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-slate-600 shadow-sm transition hover:text-rose-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c5a46d]"
+          className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-slate-600 shadow-sm transition hover:text-rose-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
         >
           <Heart className={`h-5 w-5 ${isSaved ? "fill-rose-700 text-rose-700" : ""}`} />
         </button>

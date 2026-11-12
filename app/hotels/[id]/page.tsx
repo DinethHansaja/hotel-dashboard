@@ -204,6 +204,9 @@ export default async function HotelDetailsPage({
             <img
               src={hotel.image_url}
               alt={hotel.hotel_name}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
               className="h-full w-full object-cover"
             />
           ) : (

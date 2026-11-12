@@ -32,7 +32,7 @@ export default function CashCowSection({
       {/* Section Header */}
       <div className="mb-7 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="text-sm font-semibold text-[#c5a46d]">
+          <p className="text-sm font-semibold text-[#806744]">
             From hotel listings
           </p>
 
@@ -41,7 +41,7 @@ export default function CashCowSection({
           </h2>
 
           <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 md:text-base">
-            Explore dishes highlighted by participating hotels.
+            Explore dining highlights listed by hotels.
           </p>
         </div>
 
@@ -70,6 +70,8 @@ export default function CashCowSection({
                 <img
                   src={hotel.image_url}
                   alt={hotel.hotel_name}
+                  loading="lazy"
+                  decoding="async"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               ) : (
@@ -94,7 +96,7 @@ export default function CashCowSection({
               </h3>
 
               <div className="mt-4 rounded-2xl bg-[#f3eee4] p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-[#c5a46d]">
+                <p className="text-xs font-semibold uppercase tracking-wide text-[#806744]">
                   Featured dish
                 </p>
 
@@ -112,7 +114,7 @@ export default function CashCowSection({
               {/* View Hotel */}
               <Link
                 href={`/hotels/${hotel.hotel_id}`}
-                className="mt-4 flex items-center justify-between rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-[#c5a46d] hover:text-[#c5a46d]"
+                className="mt-4 flex items-center justify-between rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-[#c5a46d] hover:text-[#806744]"
               >
                 <span>View Hotel</span>
 

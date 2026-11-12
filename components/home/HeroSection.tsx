@@ -8,7 +8,9 @@ export default function HeroSection({ heroImage }: { heroImage?: string | null }
           src={heroImage}
           alt=""
           aria-hidden="true"
+          loading="eager"
           fetchPriority="high"
+          decoding="async"
           className="absolute inset-0 -z-20 h-full w-full object-cover"
         />
       )}

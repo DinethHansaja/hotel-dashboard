@@ -8,7 +8,8 @@
   --ivory: #f8f6f1;
   --surface: #ffffff;
   --champagne: #c5a46d;
-  --muted: #7c8490;
+  --muted: #626c78;
+  --focus-ring: #806744;
   --border: #e8e5de;
   --surface-subtle: #f1efe9;
   --font-editorial: Georgia, "Times New Roman", serif;
@@ -28,7 +29,7 @@
   --color-slate-100: var(--surface-subtle);
   --color-slate-200: var(--border);
   --color-slate-300: #d8d4cb;
-  --color-slate-400: #969da6;
+  --color-slate-400: #626c78;
   --color-slate-500: var(--muted);
   --color-slate-600: #626c78;
   --color-slate-700: #465363;
@@ -48,6 +49,8 @@ html[data-theme="dark"] {
   --surface: #14243a;
   --champagne: #c5a46d;
   --muted: #a4adba;
+  --focus-ring: #e3d2b3;
+  --color-slate-400: #a4adba;
   --border: #2b394b;
   --surface-subtle: #18283b;
   color-scheme: dark;
@@ -109,7 +112,7 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 .ui-button:focus-visible {
-  outline: 2px solid var(--champagne);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 

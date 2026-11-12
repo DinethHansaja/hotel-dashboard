@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   X,
   Star,
@@ -26,6 +26,10 @@ export default function WriteReviewModal({
   onClose,
   onReviewSubmitted,
 }: WriteReviewModalProps) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const isSubmittingRef = useRef(false);
+  const closeHandlerRef = useRef<() => void>(() => {});
   const [hotels, setHotels] = useState<Hotel[]>([]);
 
   const [hotelId, setHotelId] = useState("");
@@ -42,6 +46,10 @@ export default function WriteReviewModal({
 
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    isSubmittingRef.current = submitting;
+  }, [submitting]);
 
   // --------------------------------------------------
   // LOAD HOTELS
@@ -102,6 +110,55 @@ export default function WriteReviewModal({
     resetForm();
     onClose();
   }
+
+  useEffect(() => {
+    closeHandlerRef.current = handleClose;
+  });
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const previouslyFocused = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+    closeButtonRef.current?.focus();
+
+    const handleDialogKeys = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        if (!isSubmittingRef.current) closeHandlerRef.current();
+        return;
+      }
+
+      if (event.key !== "Tab" || !dialogRef.current) return;
+      const focusable = Array.from(
+        dialogRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      );
+      if (!focusable.length) {
+        event.preventDefault();
+        dialogRef.current.focus();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && (document.activeElement === first || !dialogRef.current.contains(document.activeElement))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (document.activeElement === last || !dialogRef.current.contains(document.activeElement))) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleDialogKeys);
+    return () => {
+      document.removeEventListener("keydown", handleDialogKeys);
+      previouslyFocused?.focus();
+    };
+  }, [isOpen]);
 
   // --------------------------------------------------
   // SUBMIT REVIEW
@@ -193,6 +250,12 @@ export default function WriteReviewModal({
       onClick={handleClose}
     >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="write-review-title"
+        aria-describedby="write-review-description"
+        tabIndex={-1}
         className="relative max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white shadow-2xl"
         onClick={(event) => event.stopPropagation()}
       >
@@ -203,16 +266,17 @@ export default function WriteReviewModal({
               Share Your Experience
             </p>
 
-            <h2 className="mt-1 text-2xl font-bold text-[#0b1728]">
+            <h2 id="write-review-title" className="mt-1 text-2xl font-bold text-[#0b1728]">
               Write a Review
             </h2>
 
-            <p className="mt-1 text-sm text-slate-500">
+            <p id="write-review-description" className="mt-1 text-sm text-slate-500">
               Tell other guests about your dining or stay experience.
             </p>
           </div>
 
           <button
+            ref={closeButtonRef}
             type="button"
             onClick={handleClose}
             disabled={submitting}
@@ -230,7 +294,7 @@ export default function WriteReviewModal({
         >
           {/* SUCCESS */}
           {successMessage && (
-            <div className="flex items-start gap-3 rounded-2xl border border-green-200 bg-green-50 p-4 text-green-700">
+            <div role="status" aria-live="polite" className="flex items-start gap-3 rounded-2xl border border-green-200 bg-green-50 p-4 text-green-700">
               <CheckCircle className="mt-0.5 h-5 w-5 shrink-0" />
 
               <div>
@@ -247,7 +311,7 @@ export default function WriteReviewModal({
 
           {/* ERROR */}
           {errorMessage && (
-            <div className="flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-700">
+            <div role="alert" aria-live="assertive" className="flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-700">
               <AlertCircle className="mt-0.5 h-5 w-5 shrink-0" />
 
               <div>
@@ -298,15 +362,16 @@ export default function WriteReviewModal({
           </div>
 
           {/* EXPERIENCE TYPE */}
-          <div>
-            <label className="mb-2 block text-sm font-semibold text-[#0b1728]">
+          <fieldset>
+            <legend className="mb-2 block text-sm font-semibold text-[#0b1728]">
               What are you reviewing?
-            </label>
+            </legend>
 
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 disabled={submitting}
+                aria-pressed={reviewType === "dining"}
                 onClick={() => setReviewType("dining")}
                 className={`rounded-xl border px-4 py-3 text-sm font-semibold transition ${
                   reviewType === "dining"
@@ -320,6 +385,7 @@ export default function WriteReviewModal({
               <button
                 type="button"
                 disabled={submitting}
+                aria-pressed={reviewType === "stay"}
                 onClick={() => setReviewType("stay")}
                 className={`rounded-xl border px-4 py-3 text-sm font-semibold transition ${
                   reviewType === "stay"
@@ -330,7 +396,7 @@ export default function WriteReviewModal({
                 Stay Experience
               </button>
             </div>
-          </div>
+          </fieldset>
 
           {/* NAME */}
           <div>
@@ -356,30 +422,37 @@ export default function WriteReviewModal({
           </div>
 
           {/* RATING */}
-          <div>
-            <label className="mb-2 block text-sm font-semibold text-[#0b1728]">
+          <fieldset>
+            <legend className="mb-2 block text-sm font-semibold text-[#0b1728]">
               Your Rating
-            </label>
+            </legend>
 
             <div className="flex flex-wrap items-center gap-2">
               <div className="flex items-center">
                 {[1, 2, 3, 4, 5].map((star) => (
-                  <button
+                  <label
                     key={star}
-                    type="button"
-                    disabled={submitting}
-                    onClick={() => setRating(star)}
-                    className="rounded-md p-1 transition hover:scale-110 disabled:cursor-not-allowed"
-                    aria-label={`Rate ${star} out of 5`}
+                    className="relative cursor-pointer rounded-md p-1"
                   >
+                    <input
+                      className="peer sr-only"
+                      type="radio"
+                      name="review-rating"
+                      value={star}
+                      checked={rating === star}
+                      onChange={() => setRating(star)}
+                      disabled={submitting}
+                      aria-label={`${star} out of 5 stars`}
+                    />
                     <Star
-                      className={`h-8 w-8 ${
+                      aria-hidden="true"
+                      className={`h-8 w-8 rounded-sm peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--focus-ring)] ${
                         star <= rating
-                          ? "fill-[#c5a46d] text-[#c5a46d]"
+                          ? "fill-[#806744] text-[#806744]"
                           : "text-slate-300"
                       }`}
                     />
-                  </button>
+                  </label>
                 ))}
               </div>
 
@@ -389,7 +462,7 @@ export default function WriteReviewModal({
                   : "Select a rating"}
               </span>
             </div>
-          </div>
+          </fieldset>
 
           {/* REVIEW */}
           <div>

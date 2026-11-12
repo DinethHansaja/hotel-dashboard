@@ -56,6 +56,7 @@ function PlaceCard({ place }: { place: FeaturedPlace }) {
               src={place.imageUrl}
               alt={place.name}
               loading="lazy"
+              decoding="async"
               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
             />
           ) : (
@@ -114,7 +115,7 @@ export function FeaturedHotelsPanel({ hotels }: { hotels: FeaturedHotel[] }) {
             <Link key={hotel.hotel_id} href={`/hotels/${hotel.hotel_id}`} className="group flex gap-3 py-3 first:pt-0 last:pb-0">
               <div className="h-14 w-16 shrink-0 overflow-hidden rounded-lg bg-slate-100">
                 {hotel.image_url ? (
-                  <img src={hotel.image_url} alt="" loading="lazy" className="h-full w-full object-cover" />
+                  <img src={hotel.image_url} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
                 ) : (
                   <div className="h-full w-full bg-[#f3eee4]" />
                 )}
