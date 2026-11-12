@@ -82,7 +82,7 @@ export default function SettingsPage() {
                     role="radio"
                     aria-checked={selected}
                     onClick={() => setTheme(value)}
-                    className={`group rounded-xl border p-4 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c79a45] ${
+                    className={`group card-interactive rounded-xl border p-4 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c79a45] ${
                       selected
                         ? "border-[#c79a45] bg-[#c79a45]/5 ring-1 ring-[#c79a45]/30"
                         : "border-slate-200 hover:border-[#c79a45]/60 hover:bg-slate-50"
