@@ -11,9 +11,10 @@ export default async function HomePage() {
   // =========================================================
   // Only fetch the columns required by the map.
   // This avoids downloading unnecessary hotel data.
-  const { data: hotels, error } = await supabase
-    .from("hotels")
-    .select(`
+  const [hotelResult, cashCowResult] = await Promise.all([
+    supabase
+      .from("hotels")
+      .select(`
       hotel_id,
       hotel_name,
       restaurant_name,
@@ -21,7 +22,23 @@ export default async function HomePage() {
       latitude,
       longitude
     `)
-    .order("hotel_id");
+      .order("hotel_id"),
+    supabase
+      .from("hotels")
+      .select(`
+      hotel_id,
+      hotel_name,
+      restaurant_name,
+      image_url,
+      cash_cow_dish,
+      cash_cow_description
+    `)
+      .not("cash_cow_dish", "is", null)
+      .neq("cash_cow_dish", "")
+      .limit(6),
+  ]);
+
+  const { data: hotels, error } = hotelResult;
 
   // Handle Supabase errors for the main hotel/map query
   if (error) {
@@ -65,19 +82,7 @@ export default async function HomePage() {
   // - cash_cow_description
   //
   // We only display hotels that have a CashCow dish.
-  const { data: cashCowHotels } = await supabase
-    .from("hotels")
-    .select(`
-      hotel_id,
-      hotel_name,
-      restaurant_name,
-      image_url,
-      cash_cow_dish,
-      cash_cow_description
-    `)
-    .not("cash_cow_dish", "is", null)
-    .neq("cash_cow_dish", "")
-    .limit(6);
+  const { data: cashCowHotels } = cashCowResult;
 
   return (
     <main className="min-h-screen bg-[#f8fafc]">

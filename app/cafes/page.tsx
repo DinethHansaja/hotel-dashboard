@@ -50,18 +50,6 @@ export default async function CafesPage() {
     );
   }
 
-  // Temporary diagnostic: inspect the exact record returned by Supabase.
-  const cafeKumbuk = (data ?? []).find(
-    (row) => String(row.business_id).trim() === "CAF0003"
-  );
-
-  console.log("Cafe Kumbuk image diagnostic:", {
-    found: Boolean(cafeKumbuk),
-    business_id: cafeKumbuk?.business_id,
-    cafe_name: cafeKumbuk?.cafe_name,
-    image_url: cafeKumbuk?.image_url,
-  });
-
   const cafes: DirectoryBusiness[] = (data ?? []).map((row) => ({
     id: String(row.business_id),
     name: row.cafe_name?.trim() || "Unnamed cafe",

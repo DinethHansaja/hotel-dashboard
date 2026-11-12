@@ -132,12 +132,9 @@ export default async function BuffetPage({
   // 4. GET BUFFET SCHEDULES
   // ==================================================
 
-  const {
-    data: schedules,
-    error: scheduleError,
-  } =
+  const schedulesRequest =
     hotelIds.length > 0
-      ? await supabase
+      ? supabase
           .from("buffet_schedules")
           .select(`
             schedule_id,
@@ -152,6 +149,34 @@ export default async function BuffetPage({
           data: [],
           error: null,
         };
+
+  // Schedules and reviews are independent once the hotel IDs are known.
+  const reviewsRequest =
+    hotelIds.length > 0
+      ? supabase
+          .from("reviews")
+          .select(`
+            hotel_id,
+            rating,
+            review_text,
+            guest_name,
+            visit_date,
+            created_at
+          `)
+          .in("hotel_id", hotelIds)
+          .order("visit_date", {
+            ascending: false,
+            nullsFirst: false,
+          })
+      : {
+          data: [],
+          error: null,
+        };
+
+  const [
+    { data: schedules, error: scheduleError },
+    { data: reviews, error: reviewError },
+  ] = await Promise.all([schedulesRequest, reviewsRequest]);
 
   if (scheduleError) {
     console.error(
@@ -177,33 +202,8 @@ export default async function BuffetPage({
   }
 
   // ==================================================
-  // 5. GET COMMUNITY REVIEWS
+  // 5. HANDLE COMMUNITY REVIEWS
   // ==================================================
-
-  const {
-    data: reviews,
-    error: reviewError,
-  } =
-    hotelIds.length > 0
-      ? await supabase
-          .from("reviews")
-          .select(`
-            hotel_id,
-            rating,
-            review_text,
-            guest_name,
-            visit_date,
-            created_at
-          `)
-          .in("hotel_id", hotelIds)
-          .order("visit_date", {
-            ascending: false,
-            nullsFirst: false,
-          })
-      : {
-          data: [],
-          error: null,
-        };
 
   // Reviews should not stop the page
   // from loading if there is a problem.
