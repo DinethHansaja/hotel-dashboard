@@ -290,7 +290,7 @@ export default function ReviewsPage() {
 
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#c5a46d]/30 bg-[#c5a46d]/10 px-4 py-2 text-sm font-medium text-[#c5a46d]">
               <MessageSquareText className="h-4 w-4" />
-              Dining & Stay Reviews
+              Guest reviews
             </div>
 
             <h1 className="editorial-title text-4xl font-bold tracking-tight text-white sm:text-5xl">

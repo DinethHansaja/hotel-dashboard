@@ -72,6 +72,7 @@ export default function EventsPage() {
                   {(hotel.address || hotel.location) && <p className="mt-2 flex gap-2 text-sm leading-5 text-slate-600"><MapPin className="h-4 w-4 shrink-0 text-[#806744]"/>{hotel.address || hotel.location}</p>}
                   <p className="mt-3 text-sm leading-6 text-slate-500">Contact the property to confirm event facilities, terms and availability.</p>
                   <div className="mt-4 flex flex-wrap gap-2">{phone && <a className="ui-button ui-button-secondary px-3 py-2 text-sm" href={`tel:${phone}`}><Phone className="mr-2 inline h-4 w-4"/>Call hotel</a>}{website && <a className="ui-button ui-button-secondary px-3 py-2 text-sm" href={/^https?:\/\//i.test(website) ? website : `https://${website}`} target="_blank" rel="noopener noreferrer">Property website <ExternalLink className="ml-1 inline h-3.5 w-3.5"/></a>}</div>
+                  <Link href={`/hotels/${hotel.hotel_id}`} className="mt-3 inline-flex text-sm font-semibold text-[#806744] hover:underline">View hotel details <span className="sr-only"> for {hotel.hotel_name}</span></Link>
                 </div>
               </article>;
             })}

@@ -8,7 +8,6 @@ import {
   DiningAreasSection,
   FeaturedDiningSection,
   FeaturedHotelsPanel,
-  HomeFooter,
   type DiningArea,
   type FeaturedHotel,
   type FeaturedPlace,
@@ -194,7 +193,6 @@ export default async function HomePage() {
           />
         </div>
       </main>
-      <HomeFooter />
     </>
   );
 }

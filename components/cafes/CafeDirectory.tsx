@@ -7,11 +7,13 @@ import BusinessDirectory, {
 type CafeDirectoryProps = {
   cafes: DirectoryBusiness[];
   initialArea?: string;
+  initialSearch?: string;
 };
 
 export default function CafeDirectory({
   cafes,
   initialArea,
+  initialSearch,
 }: CafeDirectoryProps) {
-  return <BusinessDirectory businesses={cafes} kind="cafe" initialArea={initialArea} />;
+  return <BusinessDirectory businesses={cafes} kind="cafe" initialArea={initialArea} initialSearch={initialSearch} />;
 }

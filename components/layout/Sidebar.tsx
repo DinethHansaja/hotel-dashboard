@@ -3,86 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-
-import {
-  Home,
-  UtensilsCrossed,
-  Coffee,
-  Utensils,
-  CalendarDays,
-  MessageSquare,
-  BarChart3,
-  Settings,
-  Landmark,
-  Heart,
-  BadgePercent,
-  Info,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
-
-export const menuItems = [
-  {
-    label: "Welcome",
-    description: "",
-    href: "/",
-    icon: Home,
-  },
-  {
-    label: "Buffet Guide",
-    description: "Hotel & Restaurant Buffets",
-    href: "/buffet",
-    icon: UtensilsCrossed,
-  },
-  {
-    label: "Cafe Guide",
-    description: "Colombo Cafes",
-    href: "/cafes",
-    icon: Coffee,
-  },
-  {
-    label: "Restaurant Guide",
-    description: "Colombo Restaurants",
-    href: "/restaurants",
-    icon: Utensils,
-  },
-  {
-    label: "Events & Weddings",
-    description: "Hotel contacts",
-    href: "/events",
-    icon: CalendarDays,
-  },
-  {
-    label: "Reviews",
-    description: "Dine & Stay Reviews",
-    href: "/reviews",
-    icon: MessageSquare,
-  },
-  {
-    label: "Compare",
-    description: "Compare Options",
-    href: "/compare",
-    icon: BarChart3,
-  },
-  {
-    label: "Favourites",
-    description: "Saved hotels",
-    href: "/favourites",
-    icon: Heart,
-  },
-  {
-    label: "Offers",
-    description: "Current promotions",
-    href: "/offers",
-    icon: BadgePercent,
-  },
-  {
-    label: "About Us",
-    description: "About the guide",
-    href: "/about",
-    icon: Info,
-  },
-];
+import { ChevronLeft, ChevronRight, Landmark, Settings } from "lucide-react";
+import { menuItems } from "@/components/layout/navigation";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -205,7 +127,7 @@ export default function Sidebar() {
       </div>
 
       {/* NAVIGATION */}
-      <nav className="min-h-0 flex-1 overflow-y-auto px-3">
+      <nav aria-label="Main navigation" className="min-h-0 flex-1 overflow-y-auto px-3">
         <div className="space-y-1 pb-3">
           {menuItems.map((item) => {
             const Icon = item.icon;
@@ -221,6 +143,7 @@ export default function Sidebar() {
                 key={item.label}
                 href={item.href}
                 title={!expanded ? item.label : undefined}
+                aria-current={isActive ? "page" : undefined}
                 className={`group flex items-center rounded-xl transition-colors duration-150 ${
                   expanded
                     ? "gap-4 px-4 py-3"
@@ -257,7 +180,8 @@ export default function Sidebar() {
         <Link
           href="/settings"
           title={!expanded ? "Settings" : undefined}
-          className={`mb-2 flex items-center rounded-xl text-slate-200 transition hover:bg-white/10 ${
+          aria-current={pathname === "/settings" ? "page" : undefined}
+          className={`mb-2 flex items-center rounded-xl transition ${pathname === "/settings" ? "bg-[#806744] text-white" : "text-slate-200 hover:bg-white/10"} ${
             expanded
               ? "gap-4 px-4 py-3"
               : "justify-center px-3 py-3.5"
@@ -298,7 +222,7 @@ export default function Sidebar() {
               <ChevronLeft className="h-5 w-5 shrink-0" />
 
               <span className="whitespace-nowrap text-sm font-medium">
-                Collapse Sidebar
+                Collapse menu
               </span>
             </>
           ) : (

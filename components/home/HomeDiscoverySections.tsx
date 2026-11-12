@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Coffee, MapPin, Star, Utensils } from "lucide-react";
+import { menuItems } from "@/components/layout/navigation";
 
 export type FeaturedPlace = {
   id: string;
@@ -235,28 +236,21 @@ export function DirectoryTrustSection({ stats }: { stats: DirectoryStats }) {
   );
 }
 
-export function HomeFooter() {
-  const links = [
-    ["Buffet guide", "/buffet"],
-    ["Hotels", "/hotels"],
-    ["Restaurants", "/restaurants"],
-    ["Cafés", "/cafes"],
-    ["Events", "/events"],
-    ["About", "/about"],
-  ] as const;
+export function SiteFooter() {
+  const links = menuItems.filter((item) => item.href !== "/");
 
   return (
     <footer className="bg-[#0b1728] px-5 py-8 text-white md:px-8">
       <div className="mx-auto flex max-w-[1500px] flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="editorial-title text-xl">Colombo</p>
+          <Link href="/" className="editorial-title text-xl hover:text-[#e5d2b1]">Colombo</Link>
           <p className="mt-1 text-sm text-slate-300">Dining &amp; Events Guide</p>
           <p className="mt-3 max-w-xl text-xs leading-5 text-slate-400">
             Prices, opening hours and venue details can change. Please confirm directly with a venue before making plans.
           </p>
         </div>
         <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-300">
-          {links.map(([label, href]) => <Link key={href} href={href} className="hover:text-white">{label}</Link>)}
+          {links.map((item) => <Link key={item.href} href={item.href} className="hover:text-white">{item.label}</Link>)}
         </nav>
       </div>
     </footer>

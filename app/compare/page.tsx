@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 
 import { supabase } from "@/lib/supabase";
+import Breadcrumbs from "@/components/layout/Breadcrumbs";
 
 type Hotel = {
   hotel_id: number | string;
@@ -352,6 +353,7 @@ export default function ComparePage() {
 
         <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white surface-card shadow-sm">
           <div className="border-b border-slate-200 px-6 py-7 md:px-8">
+            <Breadcrumbs items={[{ label: "Compare hotels" }]} />
             <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
 
               <div>

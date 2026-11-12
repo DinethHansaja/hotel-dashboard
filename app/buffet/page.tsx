@@ -2,6 +2,7 @@ import { supabase } from "@/lib/supabase";
 
 import BuffetFilters from "@/components/buffet/BuffetFilters";
 import BuffetGrid from "@/components/buffet/BuffetGrid";
+import Breadcrumbs from "@/components/layout/Breadcrumbs";
 
 type BuffetPageProps = {
   searchParams: Promise<{
@@ -849,19 +850,7 @@ export default async function BuffetPage({
 
         <div className="mb-7">
 
-          {/* Breadcrumb */}
-
-          <div className="mb-3 text-sm text-slate-400">
-            Home
-
-            <span className="mx-2">
-              ›
-            </span>
-
-            <span className="text-slate-600">
-              Buffet Guide
-            </span>
-          </div>
+          <Breadcrumbs items={[{ label: "Buffet Guide" }]} />
 
           {/* TITLE */}
 

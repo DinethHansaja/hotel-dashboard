@@ -5,10 +5,11 @@ import { supabase } from "@/lib/supabase";
 export default async function RestaurantsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ area?: string | string[] }>;
+  searchParams: Promise<{ area?: string | string[]; search?: string | string[] }>;
 }) {
   const params = await searchParams;
   const initialArea = Array.isArray(params.area) ? params.area[0] : params.area;
+  const initialSearch = Array.isArray(params.search) ? params.search[0] : params.search;
   const { data, error } = await supabase
     .from("restaurants")
     .select(
@@ -53,5 +54,5 @@ export default async function RestaurantsPage({
     notes: row.notes ?? null,
   }));
 
-  return <RestaurantDirectory restaurants={restaurants} initialArea={initialArea} />;
+  return <RestaurantDirectory restaurants={restaurants} initialArea={initialArea} initialSearch={initialSearch} />;
 }

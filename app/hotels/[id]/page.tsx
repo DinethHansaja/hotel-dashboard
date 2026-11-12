@@ -4,10 +4,10 @@ import Link from "next/link";
 
 import FavoriteDishForm from "@/components/hotels/FavoriteDishForm";
 import SaveHotelButton from "@/components/hotels/SaveHotelButton";
+import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import type { FavoriteDish } from "@/types/database";
 
 import {
-  ArrowLeft,
   Star,
   MapPin,
   Phone,
@@ -182,13 +182,7 @@ export default async function HotelDetailsPage({
       ========================================================= */}
 
       <div className="px-6 pt-6">
-        <Link
-          href="/buffet"
-          className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-[#806744]"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to Buffet Guide
-        </Link>
+        <Breadcrumbs items={[{ label: "Hotels", href: "/hotels" }, { label: hotel.hotel_name }]} />
       </div>
 
       {/* ========================================================

@@ -12,6 +12,7 @@ import {
   Utensils,
 } from "lucide-react";
 import BusinessMap from "@/components/directory/BusinessMap";
+import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import type { DirectoryBusiness } from "@/types/database";
 
 export type { DirectoryBusiness };
@@ -20,6 +21,7 @@ type BusinessDirectoryProps = {
   businesses: DirectoryBusiness[];
   kind: "cafe" | "restaurant";
   initialArea?: string;
+  initialSearch?: string;
 };
 
 function getWebsiteUrl(value: string) {
@@ -50,14 +52,15 @@ export default function BusinessDirectory({
   businesses,
   kind,
   initialArea = "all",
+  initialSearch = "",
 }: BusinessDirectoryProps) {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(initialSearch);
   const [selectedArea, setSelectedArea] = useState(initialArea);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sort, setSort] = useState("popular");
   const [selectedBusinessId, setSelectedBusinessId] = useState<string | null>(null);
 
-  const title = kind === "cafe" ? "Cafe Guide" : "Restaurant Guide";
+  const title = kind === "cafe" ? "Cafés" : "Restaurants";
   const singular = kind === "cafe" ? "café" : "restaurant";
   const Icon = kind === "cafe" ? Coffee : Utensils;
 
@@ -137,10 +140,7 @@ export default function BusinessDirectory({
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <div className="page-container p-5 md:p-8">
         <div className="mb-7">
-          <div className="mb-3 text-sm text-slate-400">
-            Home <span className="mx-2">›</span>
-            <span className="text-slate-600">{title}</span>
-          </div>
+          <Breadcrumbs items={[{ label: title }]} />
 
           <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
             <div>

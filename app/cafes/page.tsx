@@ -8,10 +8,11 @@ export const dynamic = "force-dynamic";
 export default async function CafesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ area?: string | string[] }>;
+  searchParams: Promise<{ area?: string | string[]; search?: string | string[] }>;
 }) {
   const params = await searchParams;
   const initialArea = Array.isArray(params.area) ? params.area[0] : params.area;
+  const initialSearch = Array.isArray(params.search) ? params.search[0] : params.search;
   const { data, error } = await supabase
     .from("cafes")
     .select(
@@ -87,5 +88,5 @@ export default async function CafesPage({
     notes: row.notes ?? null,
   }));
 
-  return <CafeDirectory cafes={cafes} initialArea={initialArea} />;
+  return <CafeDirectory cafes={cafes} initialArea={initialArea} initialSearch={initialSearch} />;
 }
