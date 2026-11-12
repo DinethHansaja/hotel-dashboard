@@ -2,7 +2,13 @@ import type { DirectoryBusiness } from "@/components/directory/BusinessDirectory
 import RestaurantDirectory from "@/components/restaurants/RestaurantDirectory";
 import { supabase } from "@/lib/supabase";
 
-export default async function RestaurantsPage() {
+export default async function RestaurantsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ area?: string | string[] }>;
+}) {
+  const params = await searchParams;
+  const initialArea = Array.isArray(params.area) ? params.area[0] : params.area;
   const { data, error } = await supabase
     .from("restaurants")
     .select(
@@ -47,5 +53,5 @@ export default async function RestaurantsPage() {
     notes: row.notes ?? null,
   }));
 
-  return <RestaurantDirectory restaurants={restaurants} />;
+  return <RestaurantDirectory restaurants={restaurants} initialArea={initialArea} />;
 }

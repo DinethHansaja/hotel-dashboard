@@ -85,7 +85,7 @@ export default function HotelMapClient({
     <MapContainer
       center={[6.9271, 79.8612]}
       zoom={12}
-      scrollWheelZoom={true}
+      scrollWheelZoom={false}
       className="h-full w-full"
     >
       <TileLayer

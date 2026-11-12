@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 
 import FavoriteDishForm from "@/components/hotels/FavoriteDishForm";
+import SaveHotelButton from "@/components/hotels/SaveHotelButton";
 import type { FavoriteDish } from "@/types/database";
 
 import {
@@ -196,7 +197,7 @@ export default async function HotelDetailsPage({
 
       <section className="mx-6 mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card shadow-sm">
 
-        <div className="relative h-[360px] w-full">
+        <div className="relative h-64 w-full sm:h-[360px]">
 
           {hotel.image_url ? (
             <img
@@ -216,13 +217,10 @@ export default async function HotelDetailsPage({
 
           {/* Hotel name */}
 
-          <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+          <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-4 p-5 text-white sm:p-8">
 
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-[#c5a46d] px-3 py-1 text-xs font-semibold shadow-sm">
-              Popular Hotel
-            </div>
-
-            <h1 className="page-title">
+            <div className="min-w-0">
+            <h1 className="page-title text-white">
               {hotel.hotel_name}
             </h1>
 
@@ -232,6 +230,8 @@ export default async function HotelDetailsPage({
                 {hotel.restaurant_name}
               </p>
             )}
+            </div>
+            <SaveHotelButton hotelId={hotel.hotel_id} hotelName={hotel.hotel_name} />
 
           </div>
         </div>
@@ -252,7 +252,7 @@ export default async function HotelDetailsPage({
 
             <div>
               <p className="text-sm text-slate-500">
-                Rating
+                Listed hotel rating
               </p>
 
               <p className="font-semibold text-slate-900">
@@ -589,11 +589,11 @@ export default async function HotelDetailsPage({
           <div className="min-w-0">
 
             <h2 className="text-xl font-bold text-slate-900">
-              Cash Cow Dish
+              Hotel dining highlight
             </h2>
 
             <p className="mt-1 text-sm text-slate-500">
-              The restaurant&apos;s highlighted popular dish
+              A featured dish listed for this property.
             </p>
 
           </div>
@@ -621,7 +621,7 @@ export default async function HotelDetailsPage({
           <div className="mt-5 rounded-xl border border-amber-100 bg-white p-4">
 
             <p className="text-sm text-slate-500">
-              Popular dish information coming soon.
+              No featured dish is listed for this property.
             </p>
 
           </div>

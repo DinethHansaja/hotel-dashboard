@@ -1,16 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { useSavedHotels } from "@/lib/useSavedHotels";
 
 import {
   Heart,
   Star,
   Clock3,
-  CalendarDays,
   ArrowRight,
   ExternalLink,
   Utensils,
-  CheckCircle2,
   MessageSquare,
   GitCompare,
 } from "lucide-react";
@@ -55,84 +54,14 @@ type BuffetCardProps = {
 // RATE VERIFIED TEXT
 // ======================================================
 
-function getVerifiedText(
-  dateString?: string | null
-) {
-  if (!dateString) {
-    return null;
-  }
-
-  const verifiedDate =
-    new Date(dateString);
-
-  if (
-    Number.isNaN(
-      verifiedDate.getTime()
-    )
-  ) {
-    return null;
-  }
-
-  const now = new Date();
-
-  const differenceMs =
-    now.getTime() -
-    verifiedDate.getTime();
-
-  if (differenceMs < 0) {
-    return "Rates recently verified";
-  }
-
-  const minutes = Math.floor(
-    differenceMs /
-      (1000 * 60)
-  );
-
-  if (minutes < 60) {
-    return `Rates last verified ${Math.max(
-      minutes,
-      1
-    )} min ago`;
-  }
-
-  const hours = Math.floor(
-    minutes / 60
-  );
-
-  if (hours < 24) {
-    return `Rates last verified ${hours}h ago`;
-  }
-
-  const days = Math.floor(
-    hours / 24
-  );
-
-  if (days < 30) {
-    return `Rates last verified ${days}d ago`;
-  }
-
-  const months = Math.floor(
-    days / 30
-  );
-
-  return `Rates last verified ${months}mo ago`;
-}
-
-// ======================================================
-// GOOGLE REVIEW URL
-// ======================================================
-
-function getGoogleReviewUrl(
-  hotelName: string,
-  googleReviewUrl?: string | null
-) {
-  if (googleReviewUrl) {
-    return googleReviewUrl;
-  }
-
-  return `https://www.google.com/search?q=${encodeURIComponent(
-    `${hotelName} Google Reviews`
-  )}`;
+function getVerifiedText(dateString?: string | null) {
+  if (!dateString) return null;
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) return null;
+  if (date.getTime() > Date.now()) return null;
+  return `Price last verified ${new Intl.DateTimeFormat("en-LK", {
+    day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Colombo",
+  }).format(date)}`;
 }
 
 // ======================================================
@@ -168,25 +97,9 @@ export default function BuffetCard({
   onToggleCompare,
   compareDisabled = false,
 }: BuffetCardProps) {
-  const verifiedText =
-    getVerifiedText(
-      rateVerifiedAt
-    );
-
-  const googleUrl =
-    getGoogleReviewUrl(
-      hotelName,
-      googleReviewUrl
-    );
-
-  // Community rating
-  const displayCommunityRating =
-    communityRating ?? rating;
-
-  // Community review count
-  const displayCommunityReviewCount =
-    communityReviewCount ??
-    reviewCount;
+  const verifiedText = getVerifiedText(rateVerifiedAt);
+  const { savedHotelIds, toggleHotel } = useSavedHotels();
+  const isSaved = savedHotelIds.includes(hotelId);
 
   // Latest individual review rating
   const formattedLatestReviewRating =
@@ -241,20 +154,14 @@ export default function BuffetCard({
 
         <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/30 to-transparent" />
 
-        {/* Popular */}
-
-        <div className="ui-badge absolute left-3 top-3">
-          Popular
-        </div>
-
-        {/* Favourite */}
-
         <button
           type="button"
-          aria-label={`Save ${hotelName}`}
-          className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/95 text-slate-600 shadow-sm transition hover:bg-white hover:text-red-500"
+          aria-label={isSaved ? `Remove ${hotelName} from favourites` : `Save ${hotelName} to favourites`}
+          aria-pressed={isSaved}
+          onClick={() => toggleHotel(hotelId)}
+          className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-slate-600 shadow-sm transition hover:text-rose-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c5a46d]"
         >
-          <Heart className="h-4 w-4" />
+          <Heart className={`h-5 w-5 ${isSaved ? "fill-rose-700 text-rose-700" : ""}`} />
         </button>
 
         {/* Comparison */}
@@ -334,39 +241,22 @@ export default function BuffetCard({
               RATING
           ================================================== */}
 
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-
-            <Star className="h-4 w-4 fill-[#c5a46d] text-[#c5a46d]" />
-
-            <span className="text-sm font-semibold text-slate-800">
-              {rating ?? "N/A"}
-            </span>
-
-            {reviewCount !== null &&
-              reviewCount !== undefined && (
-                <span className="text-xs text-slate-400">
-                  ({reviewCount} reviews)
+          {(rating !== null && rating !== undefined || (googleReviewUrl && googleReviewUrl.trim())) && (
+            <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
+              {rating !== null && rating !== undefined && (
+                <span className="inline-flex items-center gap-1.5 text-slate-700">
+                  <Star className="h-4 w-4 fill-[#c5a46d] text-[#c5a46d]" />
+                  <strong>{Number(rating).toFixed(1)}</strong>
+                  <span className="text-xs text-slate-500">Listed hotel rating{reviewCount != null ? ` · ${reviewCount} reviews` : ""}</span>
                 </span>
               )}
-
-            <span className="text-slate-300">
-              |
-            </span>
-
-            {/* GOOGLE REVIEWS */}
-
-            <a
-              href={googleUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 transition hover:text-blue-800 hover:underline"
-            >
-              Google Reviews
-
-              <ExternalLink className="h-3 w-3" />
-            </a>
-
-          </div>
+              {googleReviewUrl && googleReviewUrl.trim() && (
+                <a href={googleReviewUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-[#806744] hover:underline">
+                  View source <ExternalLink className="h-3 w-3" />
+                </a>
+              )}
+            </div>
+          )}
 
           {/* DESCRIPTION */}
 
@@ -388,17 +278,12 @@ export default function BuffetCard({
 
             {/* MEAL TYPE */}
 
-            <div className="flex items-center gap-2 text-sm text-slate-500">
-
-              <Utensils className="h-4 w-4 shrink-0 text-[#c5a46d]" />
-
-              <span>
-                {mealType
-                  ? `${mealType} Buffet`
-                  : "Buffet Experience"}
-              </span>
-
-            </div>
+            {mealType && (
+              <div className="flex items-center gap-2 text-sm text-slate-500">
+                <Utensils className="h-4 w-4 shrink-0 text-[#c5a46d]" />
+                <span>{mealType} buffet</span>
+              </div>
+            )}
 
             {(buffetTimes?.length ? buffetTimes : buffetTime ? [buffetTime] : []).map((time) => (
               <div key={time} className="flex items-center gap-2 text-sm text-slate-500">
@@ -418,26 +303,12 @@ export default function BuffetCard({
               </div>
             )}
 
-            {/* BUFFET TYPE */}
-
-            <div className="flex items-center gap-2 text-sm text-slate-500">
-
-              <CalendarDays className="h-4 w-4 shrink-0 text-[#c5a46d]" />
-
-              <span>
-                Buffet Experience
-              </span>
-
-            </div>
-
             {/* =================================================
                 RATE VERIFIED
             ================================================== */}
 
             {verifiedText && (
-              <div className="flex items-center gap-2 text-xs text-emerald-600">
-
-                <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
+              <div className="flex items-center gap-2 text-xs text-slate-500">
 
                 <span>
                   {verifiedText}
@@ -446,9 +317,7 @@ export default function BuffetCard({
               </div>
             )}
 
-            {/* =================================================
-                CASH COW DISH
-            ================================================== */}
+            {/* HOTEL DINING HIGHLIGHT */}
 
             {cashCowDish &&
               cashCowDish.trim() !== "" && (
@@ -456,14 +325,12 @@ export default function BuffetCard({
 
                   <div className="flex items-start gap-2">
 
-                    <span className="mt-0.5 text-base">
-                      🐄
-                    </span>
+                    <Utensils className="mt-0.5 h-4 w-4 shrink-0 text-[#806744]" />
 
                     <div className="min-w-0">
 
                       <p className="text-xs font-bold uppercase tracking-wide text-[#806744]">
-                        Cash Cow Dish
+                        Featured dish
                       </p>
 
                       <p className="mt-1 text-sm font-semibold text-slate-800">
@@ -506,16 +373,18 @@ export default function BuffetCard({
 
                 {/* COMMUNITY AVERAGE */}
 
-                {displayCommunityRating !== null &&
-                  displayCommunityRating !==
-                    undefined && (
+                {communityRating !== null &&
+                  communityRating !== undefined &&
+                  communityReviewCount !== null &&
+                  communityReviewCount !== undefined &&
+                  communityReviewCount > 0 && (
                     <div className="flex items-center gap-1">
 
                       <Star className="h-3.5 w-3.5 fill-[#c5a46d] text-[#c5a46d]" />
 
                       <span className="text-xs font-semibold text-slate-700">
                         {Number(
-                          displayCommunityRating
+                          communityRating
                         ).toFixed(1)}
                       </span>
 
@@ -566,19 +435,18 @@ export default function BuffetCard({
                 </div>
               ) : (
                 <p className="mt-2 text-xs text-slate-400">
-                  Guest reviews coming soon.
+                  No community reviews yet.
                 </p>
               )}
 
               {/* REVIEW COUNT */}
 
-              {displayCommunityReviewCount !==
-                null &&
-                displayCommunityReviewCount !==
-                  undefined && (
+              {communityReviewCount !== null &&
+                communityReviewCount !== undefined &&
+                communityReviewCount > 0 && (
                   <p className="mt-2 text-[11px] text-slate-400">
                     {displayCommunityReviewCount}{" "}
-                    {displayCommunityReviewCount ===
+                    {communityReviewCount ===
                     1
                       ? "review"
                       : "reviews"}

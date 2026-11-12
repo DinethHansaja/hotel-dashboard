@@ -33,16 +33,15 @@ export default function CashCowSection({
       <div className="mb-7 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="text-sm font-semibold text-[#c5a46d]">
-            CashCow
+            From hotel listings
           </p>
 
           <h2 className="section-title mt-1">
-            Must-Try Dishes
+            Hotel dining highlights
           </h2>
 
           <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 md:text-base">
-            Discover the signature dishes that make each dining
-            experience worth trying.
+            Explore dishes highlighted by participating hotels.
           </p>
         </div>
 
@@ -79,9 +78,8 @@ export default function CashCowSection({
                 </div>
               )}
 
-              {/* CashCow Badge */}
-              <div className="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1.5 text-xs font-bold text-[#c5a46d] shadow-sm backdrop-blur">
-                ⭐ CashCow Pick
+              <div className="ui-badge absolute left-4 top-4 bg-white/95">
+                Hotel highlight
               </div>
             </div>
 
@@ -97,7 +95,7 @@ export default function CashCowSection({
 
               <div className="mt-4 rounded-2xl bg-[#f3eee4] p-4">
                 <p className="text-xs font-semibold uppercase tracking-wide text-[#c5a46d]">
-                  Signature Dish
+                  Featured dish
                 </p>
 
                 <p className="mt-1 text-base font-bold text-slate-900">

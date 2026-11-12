@@ -15,7 +15,7 @@ export default function BuffetFilters() {
   const [showMoreFilters, setShowMoreFilters] = useState(false);
 
   const currentSort =
-    searchParams.get("sort") || "popular";
+    searchParams.get("sort") || "name-asc";
 
   const currentPrice =
     searchParams.get("price") || "all";
@@ -103,16 +103,12 @@ export default function BuffetFilters() {
             aria-label="Sort hotels"
             className="control h-[50px] min-w-[190px] cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c5a46d] focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20"
           >
-            <option value="popular">
-              Most Popular
-            </option>
-
             <option value="rating-desc">
-              Rating: High to Low
+              Listed Rating: High to Low
             </option>
 
             <option value="rating-asc">
-              Rating: Low to High
+              Listed Rating: Low to High
             </option>
 
             <option value="price-asc">

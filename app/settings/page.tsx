@@ -72,7 +72,7 @@ export default function SettingsPage() {
 
           <div className="p-6 md:p-8">
             <h3 className="text-sm font-semibold text-slate-800">Color theme</h3>
-            <div className="mt-4 grid gap-3 md:grid-cols-3">
+            <div role="radiogroup" aria-label="Color theme" className="mt-4 grid gap-3 md:grid-cols-3">
               {themeChoices.map(({ value, label, description, Icon }) => {
                 const selected = theme === value;
                 return (

@@ -19,6 +19,7 @@ export type { DirectoryBusiness };
 type BusinessDirectoryProps = {
   businesses: DirectoryBusiness[];
   kind: "cafe" | "restaurant";
+  initialArea?: string;
 };
 
 function getWebsiteUrl(value: string) {
@@ -45,31 +46,13 @@ function getMapUrl(business: DirectoryBusiness) {
   return null;
 }
 
-function DetailRow({
-  label,
-  value,
-}: {
-  label: string;
-  value: string | number | null;
-}) {
-  return (
-    <div className="grid grid-cols-1 gap-1 border-b border-slate-100 py-2 last:border-0 sm:grid-cols-[150px_1fr] sm:gap-3">
-      <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-        {label}
-      </dt>
-      <dd className="break-words text-sm text-slate-700">
-        {value === null || value === "" ? "Not provided" : String(value)}
-      </dd>
-    </div>
-  );
-}
-
 export default function BusinessDirectory({
   businesses,
   kind,
+  initialArea = "all",
 }: BusinessDirectoryProps) {
   const [search, setSearch] = useState("");
-  const [selectedArea, setSelectedArea] = useState("all");
+  const [selectedArea, setSelectedArea] = useState(initialArea);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sort, setSort] = useState("popular");
   const [selectedBusinessId, setSelectedBusinessId] = useState<string | null>(null);
@@ -263,7 +246,7 @@ export default function BusinessDirectory({
             </div>
             <div className="grid grid-cols-1 items-stretch gap-4 lg:grid-cols-2">
               <BusinessMap businesses={filteredBusinesses} kind={kind} selectedBusinessId={selectedBusiness?.id ?? null} onSelectBusiness={setSelectedBusinessId} />
-              <article className="flex h-[620px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card shadow-sm">
+              <article className="flex min-h-[380px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card shadow-sm lg:h-[560px]">
               {selectedBusiness ? (
                 <>
                   <div className="relative h-56 shrink-0 bg-slate-100">
@@ -273,12 +256,12 @@ export default function BusinessDirectory({
                   <div className="min-h-0 flex-1 overflow-y-auto p-5 md:p-6">
                     <h3 className="text-2xl font-bold text-slate-900">{selectedBusiness.name}</h3>
                     <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-600">
-                      {selectedBusiness.rating !== null && <span className="inline-flex items-center gap-1"><Star className="h-4 w-4 fill-amber-500 text-amber-500" />{selectedBusiness.rating.toFixed(1)}{selectedBusiness.reviewCount !== null && ` (${selectedBusiness.reviewCount.toLocaleString()} reviews)`}</span>}
+                      {selectedBusiness.rating !== null && <span className="inline-flex items-center gap-1"><Star className="h-4 w-4 fill-amber-500 text-amber-500" />{selectedBusiness.rating.toFixed(1)}<span>listed rating{selectedBusiness.reviewCount !== null ? ` · ${selectedBusiness.reviewCount.toLocaleString()} reviews` : ""}</span></span>}
                       {selectedBusiness.category && <span className="inline-flex items-center gap-1"><Coffee className="h-4 w-4 text-[#806744]" />{selectedBusiness.category}</span>}
                       {selectedBusiness.area && <span className="inline-flex items-center gap-1"><MapPin className="h-4 w-4 text-[#806744]" />{selectedBusiness.area}</span>}
                     </div>
                     {selectedBusiness.address && <p className="mt-4 text-sm leading-6 text-slate-600">{selectedBusiness.address}</p>}
-                    {selectedBusiness.specialties && <p className="mt-3 text-sm leading-6 text-slate-600"><strong className="text-slate-800">{kind === "cafe" ? "Popular items:" : "Signature dishes:"}</strong> {selectedBusiness.specialties}</p>}
+                    {selectedBusiness.specialties && <p className="mt-3 text-sm leading-6 text-slate-600"><strong className="text-slate-800">Specialties:</strong> {selectedBusiness.specialties}</p>}
                     <div className="mt-5 flex flex-wrap gap-2 border-b border-slate-100 pb-5">
                       {selectedBusiness.telephone && <a href={`tel:${selectedBusiness.telephone}`} className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium hover:border-[#c5a46d]"><Phone className="mr-2 inline h-4 w-4" />{selectedBusiness.telephone}</a>}
                       {selectedBusiness.website && <a href={getWebsiteUrl(selectedBusiness.website)} target="_blank" rel="noreferrer" className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium hover:border-[#c5a46d]"><Globe className="mr-2 inline h-4 w-4" />Website</a>}
@@ -375,9 +358,6 @@ export default function BusinessDirectory({
                             </p>
                           )}
 
-                          <p className="mt-1 text-xs text-slate-400">
-                            ID: {business.id}
-                          </p>
                         </div>
 
                         {business.priceRange && (
@@ -396,6 +376,7 @@ export default function BusinessDirectory({
                               <span className="font-semibold text-slate-800">
                                 {business.rating.toFixed(1)}
                               </span>
+                              <span className="text-xs text-slate-500">listed rating</span>
                             </>
                           )}
 
@@ -416,9 +397,7 @@ export default function BusinessDirectory({
 
                       {business.specialties && (
                         <p className="mt-3 text-sm leading-5 text-slate-600">
-                          <span className="font-medium text-slate-800">
-                            Signature dishes:
-                          </span>
+                          <span className="font-medium text-slate-800">Specialties: </span>
                           {business.specialties}
                         </p>
                       )}
@@ -463,6 +442,18 @@ export default function BusinessDirectory({
                           </a>
                         )}
 
+                        {business.sourceUrl && business.rating !== null && (
+                          <a
+                            href={business.sourceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:border-[#c5a46d] hover:text-[#806744]"
+                          >
+                            Business source
+                            <ArrowUpRight className="h-3 w-3" />
+                          </a>
+                        )}
+
                         {mapUrl && (
                           <a
                             href={mapUrl}
@@ -477,47 +468,6 @@ export default function BusinessDirectory({
                         )}
                       </div>
 
-                      <details className="mt-4 rounded-xl border border-slate-200 bg-slate-50 px-4">
-                        <summary className="cursor-pointer py-3 text-sm font-semibold text-slate-800">
-                          Full record details
-                        </summary>
-
-                        <dl className="pb-3">
-                          <DetailRow label="Business ID" value={business.id} />
-                          <DetailRow
-                            label={
-                              "Cuisine or category"
-                            }
-                            value={business.category}
-                          />
-                          <DetailRow label="Address" value={business.address} />
-                          <DetailRow label="Area" value={business.area} />
-                          <DetailRow label="Telephone" value={business.telephone} />
-                          <DetailRow label="Email" value={business.email} />
-                          <DetailRow label="Website" value={business.website} />
-                          <DetailRow label="Image URL" value={business.imageUrl} />
-                          <DetailRow label="Google Maps URL" value={business.mapsUrl} />
-                          <DetailRow label="Latitude" value={business.latitude} />
-                          <DetailRow label="Longitude" value={business.longitude} />
-                          <DetailRow label="Rating" value={business.rating} />
-                          <DetailRow label="Review count" value={business.reviewCount} />
-                          <DetailRow label="Price range" value={business.priceRange} />
-                          <DetailRow label="Opening hours" value={business.openingHours} />
-                          <DetailRow
-                            label={
-                              "Signature dishes"
-                            }
-                            value={business.specialties}
-                          />
-                          <DetailRow label="Source URL" value={business.sourceUrl} />
-                          <DetailRow
-                            label="Verification status"
-                            value={business.verificationStatus}
-                          />
-                          <DetailRow label="Last checked" value={business.lastChecked} />
-                          <DetailRow label="Notes" value={business.notes} />
-                        </dl>
-                      </details>
                     </div>
                   </article>
                 );

@@ -209,17 +209,9 @@ export default function ComparePage() {
        * if nothing is currently selected.
        */
       setSelectedIds((current) => {
-        if (current.length > 0) {
-          return current.filter((id) =>
-            combinedHotels.some(
-              (hotel) => normalizeId(hotel.hotel_id) === id
-            )
-          );
-        }
-
-        return combinedHotels
-          .slice(0, MAX_COMPARE)
-          .map((hotel) => normalizeId(hotel.hotel_id));
+        return current.filter((id) =>
+          combinedHotels.some((hotel) => normalizeId(hotel.hotel_id) === id)
+        );
       });
     } catch (err) {
       console.error("Error loading comparison data:", err);
@@ -500,9 +492,9 @@ export default function ComparePage() {
               </h2>
 
               <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
-                Add two or three hotels to compare their
-                ratings, prices, buffet times and contact
-                information.
+                Add hotels to compare their listed ratings,
+                buffet prices, meal times and contact information
+                where available.
               </p>
 
               <button
@@ -595,7 +587,7 @@ export default function ComparePage() {
                 {/* ================= RATING ================= */}
 
                 <CompareRow
-                  label="Rating"
+                  label="Listed hotel rating"
                   icon={
                     <Star className="h-5 w-5" />
                   }

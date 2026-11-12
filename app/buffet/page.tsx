@@ -75,7 +75,7 @@ export default async function BuffetPage({
   const search =
     params.search?.trim().toLowerCase() || "";
 
-  const sort = params.sort || "popular";
+  const sort = params.sort || "name-asc";
 
   const priceFilter = params.price || "all";
 
@@ -477,7 +477,9 @@ export default async function BuffetPage({
             : null,
 
         review_count:
-          communityReviewCount,
+          hotel.review_count !== null && hotel.review_count !== undefined
+            ? Number(hotel.review_count)
+            : null,
 
         buffet_time:
           buffetTimes[0] ?? null,
@@ -830,7 +832,7 @@ export default async function BuffetPage({
 
           case "popular":
           default:
-            return 0;
+            return a.hotel_name.localeCompare(b.hotel_name);
         }
       }
     );

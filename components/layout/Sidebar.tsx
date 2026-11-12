@@ -14,6 +14,9 @@ import {
   BarChart3,
   Settings,
   Landmark,
+  Heart,
+  BadgePercent,
+  Info,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -45,7 +48,7 @@ export const menuItems = [
   },
   {
     label: "Events & Weddings",
-    description: "Prices & Packages",
+    description: "Hotel contacts",
     href: "/events",
     icon: CalendarDays,
   },
@@ -60,6 +63,24 @@ export const menuItems = [
     description: "Compare Options",
     href: "/compare",
     icon: BarChart3,
+  },
+  {
+    label: "Favourites",
+    description: "Saved hotels",
+    href: "/favourites",
+    icon: Heart,
+  },
+  {
+    label: "Offers",
+    description: "Current promotions",
+    href: "/offers",
+    icon: BadgePercent,
+  },
+  {
+    label: "About Us",
+    description: "About the guide",
+    href: "/about",
+    icon: Info,
   },
 ];
 

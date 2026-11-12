@@ -6,10 +6,12 @@ import BusinessDirectory, {
 
 type CafeDirectoryProps = {
   cafes: DirectoryBusiness[];
+  initialArea?: string;
 };
 
 export default function CafeDirectory({
   cafes,
+  initialArea,
 }: CafeDirectoryProps) {
-  return <BusinessDirectory businesses={cafes} kind="cafe" />;
+  return <BusinessDirectory businesses={cafes} kind="cafe" initialArea={initialArea} />;
 }

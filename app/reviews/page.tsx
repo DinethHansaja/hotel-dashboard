@@ -351,7 +351,7 @@ export default function ReviewsPage() {
 
             <div>
               <p className="text-sm font-medium text-slate-500">
-                Guest feedback across our hotel collection
+                Hotel ratings and visitor-submitted reviews
               </p>
 
               <div className="mt-2 flex flex-wrap items-center gap-5">
@@ -368,7 +368,7 @@ export default function ReviewsPage() {
                   </span>
 
                   <span className="text-sm text-slate-500">
-                    hotel average
+                    listed hotel rating average
                   </span>
                 </div>
 
@@ -775,7 +775,7 @@ export default function ReviewsPage() {
                         <div className="mt-5 rounded-xl bg-[#f8f6f1] p-4">
 
                           <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
-                            Hotel rating
+                            Listed hotel rating
                           </p>
 
                           <div className="mt-1 flex items-center justify-between gap-4">
@@ -817,7 +817,7 @@ export default function ReviewsPage() {
                             <div className="text-right">
 
                               <p className="text-xs text-slate-400">
-                                Community
+                                Community reviews
                               </p>
 
                               <p className="mt-1 text-sm font-semibold text-slate-700">

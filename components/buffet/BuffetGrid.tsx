@@ -261,6 +261,7 @@ export default function BuffetGrid({
               disabled={
                 currentPage === 1
               }
+              aria-label="Previous page"
               onClick={() =>
                 goToPage(
                   currentPage - 1
@@ -288,6 +289,8 @@ export default function BuffetGrid({
                   <button
                     key={page}
                     type="button"
+                    aria-current={currentPage === page ? "page" : undefined}
+                    aria-label={`Page ${page}`}
                     onClick={() =>
                       goToPage(page)
                     }
@@ -312,6 +315,7 @@ export default function BuffetGrid({
                 currentPage ===
                 totalPages
               }
+              aria-label="Next page"
               onClick={() =>
                 goToPage(
                   currentPage + 1

@@ -6,6 +6,7 @@ import {
   UtensilsCrossed,
   ArrowRight,
 } from "lucide-react";
+import SaveHotelButton from "@/components/hotels/SaveHotelButton";
 
 export default async function HotelsPage() {
   // Fetch only the columns required by the hotel listing page.
@@ -18,7 +19,9 @@ export default async function HotelsPage() {
       restaurant_name,
       image_url,
       rating,
-      price
+      review_count,
+      address,
+      location
     `)
     .order("hotel_id");
 
@@ -101,10 +104,6 @@ export default async function HotelsPage() {
                     </div>
                   )}
 
-                  {/* Hotel Badge */}
-                  <div className="ui-badge absolute left-4 top-4">
-                    Hotel
-                  </div>
                 </div>
 
                 {/* =========================
@@ -128,45 +127,37 @@ export default async function HotelsPage() {
                   )}
 
                   {/* Location */}
-                  <div className="mt-3 flex items-center gap-2 text-sm text-slate-500">
-                    <MapPin className="h-4 w-4 shrink-0 text-[#c5a46d]" />
-
-                    <span>
-                      Colombo, Sri Lanka
-                    </span>
-                  </div>
+                  {(hotel.location || hotel.address) && <div className="mt-3 flex items-start gap-2 text-sm text-slate-500"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#c5a46d]" /><span className="line-clamp-2">{hotel.location || hotel.address}</span></div>}
 
                   {/* Rating + Price */}
                   <div className="mt-4 flex items-center justify-between">
                     {/* Rating */}
                     <div className="flex items-center gap-2">
-                      <Star className="h-4 w-4 fill-[#c5a46d] text-[#c5a46d]" />
-
+                      {hotel.rating !== null && hotel.rating !== undefined && <Star className="h-4 w-4 fill-[#c5a46d] text-[#c5a46d]" />}
                       <span className="text-sm font-semibold text-slate-800">
                         {hotel.rating !== null &&
                         hotel.rating !== undefined
                           ? Number(hotel.rating).toFixed(1)
-                          : "N/A"}
+                          : "Rating not listed"}
                       </span>
+                      {hotel.review_count != null && hotel.review_count > 0 && <span className="text-xs text-slate-500">({hotel.review_count} reviews)</span>}
                     </div>
 
                     {/* Price */}
-                    {hotel.price && (
-                      <span className="text-sm font-semibold text-slate-700">
-                        {hotel.price}
-                      </span>
-                    )}
                   </div>
 
                   {/* View Hotel Button */}
+                  <div className="mt-5 flex gap-2">
                   <Link
                     href={`/hotels/${hotel.hotel_id}`}
-                    className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                    className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
                   >
                     View Hotel
 
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </Link>
+                  <SaveHotelButton hotelId={hotel.hotel_id} hotelName={hotel.hotel_name} />
+                  </div>
                 </div>
               </article>
             ))}

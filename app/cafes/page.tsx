@@ -5,7 +5,13 @@ import { supabase } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
-export default async function CafesPage() {
+export default async function CafesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ area?: string | string[] }>;
+}) {
+  const params = await searchParams;
+  const initialArea = Array.isArray(params.area) ? params.area[0] : params.area;
   const { data, error } = await supabase
     .from("cafes")
     .select(
@@ -81,5 +87,5 @@ export default async function CafesPage() {
     notes: row.notes ?? null,
   }));
 
-  return <CafeDirectory cafes={cafes} />;
+  return <CafeDirectory cafes={cafes} initialArea={initialArea} />;
 }
