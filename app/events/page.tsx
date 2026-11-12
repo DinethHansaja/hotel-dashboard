@@ -713,17 +713,17 @@ export default function EventsPage() {
 
   return (
 
-    <main className="min-h-screen bg-[#f7f8fa] text-[#0b1625]">
+    <main className="min-h-screen bg-[#f8f6f1] text-[#0b1728]">
 
       {/* HERO */}
 
-      <section className="relative overflow-hidden bg-[#091423]">
+      <section className="relative overflow-hidden bg-[#0b1728]">
 
         <div className="absolute inset-0 opacity-10">
 
-          <div className="absolute -right-20 -top-20 h-80 w-80 rounded-full bg-[#d1a044] blur-3xl" />
+          <div className="absolute -right-20 -top-20 h-80 w-80 rounded-full bg-[#c5a46d] blur-3xl" />
 
-          <div className="absolute -bottom-24 left-1/3 h-72 w-72 rounded-full bg-[#d1a044] blur-3xl" />
+          <div className="absolute -bottom-24 left-1/3 h-72 w-72 rounded-full bg-[#c5a46d] blur-3xl" />
 
         </div>
 
@@ -733,7 +733,7 @@ export default function EventsPage() {
 
           <div className="max-w-3xl">
 
-            <p className="mb-3 text-sm font-bold uppercase tracking-[0.18em] text-[#d1a044]">
+            <p className="mb-3 text-sm font-bold uppercase tracking-[0.18em] text-[#c5a46d]">
 
               Events & Weddings
 
@@ -741,7 +741,7 @@ export default function EventsPage() {
 
 
 
-            <h1 className="text-4xl font-bold tracking-tight text-white md:text-5xl">
+            <h1 className="editorial-title text-4xl font-bold tracking-tight text-white md:text-5xl">
 
               Find the right venue for your next event
 
@@ -781,7 +781,7 @@ export default function EventsPage() {
 
                 placeholder="Search hotels, venues, weddings, corporate events..."
 
-                className="w-full bg-transparent px-4 py-3 text-sm text-[#0b1625] outline-none placeholder:text-slate-400"
+                className="w-full bg-transparent px-4 py-3 text-sm text-[#0b1728] outline-none placeholder:text-slate-400"
 
               />
 
@@ -791,7 +791,7 @@ export default function EventsPage() {
 
                 onClick={() => setSearch("")}
 
-                className="mr-1 rounded-xl bg-[#d1a044] px-5 py-3 text-sm font-semibold text-[#091423] transition hover:bg-[#e0b15a]"
+                className="ui-button mr-1 bg-[#c5a46d] px-5 py-3 text-sm font-semibold text-[#0b1728] transition hover:bg-[#ae8c55]"
 
               >
 
@@ -837,9 +837,9 @@ export default function EventsPage() {
 
                     active
 
-                      ? "border-[#d1a044] bg-[#d1a044] text-[#091423]"
+                      ? "border-[#c5a46d] bg-[#c5a46d] text-[#0b1728]"
 
-                      : "border-slate-200 bg-white text-slate-600 hover:border-[#d1a044] hover:text-[#091423]"
+                      : "border-slate-200 bg-white text-slate-600 hover:border-[#c5a46d] hover:text-[#0b1728]"
 
                   }`}
 
@@ -883,7 +883,7 @@ export default function EventsPage() {
 
                 onChange={(e) => setSortBy(e.target.value)}
 
-                className="appearance-none rounded-xl border border-slate-200 bg-white py-2.5 pl-4 pr-10 text-sm font-medium text-slate-700 outline-none focus:border-[#d1a044]"
+                className="control appearance-none py-2.5 pl-4 pr-10 text-sm font-medium text-slate-700 outline-none focus:border-[#c5a46d]"
 
               >
 
@@ -919,7 +919,7 @@ export default function EventsPage() {
 
                   key={item}
 
-                  className="overflow-hidden rounded-3xl border border-slate-200 bg-white"
+                  className="overflow-hidden rounded-3xl border border-slate-200 bg-white surface-card"
 
                 >
 
@@ -945,9 +945,9 @@ export default function EventsPage() {
 
           ) : filteredHotels.length === 0 ? (
 
-            <div className="rounded-3xl border border-slate-200 bg-white px-6 py-16 text-center">
+            <div className="rounded-3xl border border-slate-200 bg-white surface-card px-6 py-16 text-center">
 
-              <CalendarDays className="mx-auto h-10 w-10 text-[#d1a044]" />
+              <CalendarDays className="mx-auto h-10 w-10 text-[#c5a46d]" />
 
 
 
@@ -977,7 +977,7 @@ export default function EventsPage() {
 
                 }}
 
-                className="mt-6 rounded-xl bg-[#091423] px-5 py-3 text-sm font-semibold text-white"
+                className="mt-6 rounded-xl bg-[#0b1728] px-5 py-3 text-sm font-semibold text-white"
 
               >
 
@@ -1011,7 +1011,7 @@ export default function EventsPage() {
 
                     key={hotel.hotel_id}
 
-                    className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+                    className="group overflow-hidden rounded-3xl border border-slate-200 bg-white surface-card shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
 
                   >
 
@@ -1033,7 +1033,7 @@ export default function EventsPage() {
 
                       ) : (
 
-                        <div className="flex h-full items-center justify-center bg-[#091423] text-sm text-slate-300">
+                        <div className="flex h-full items-center justify-center bg-[#0b1728] text-sm text-slate-300">
 
                           No hotel image available
 
@@ -1045,7 +1045,7 @@ export default function EventsPage() {
 
                       <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
 
-                        <span className="rounded-full bg-[#091423]/90 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur">
+                        <span className="rounded-full bg-[#0b1728]/90 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur">
 
                           Events & Weddings
 
@@ -1073,9 +1073,9 @@ export default function EventsPage() {
 
                               isFavourite
 
-                                ? "fill-[#d1a044] text-[#d1a044]"
+                                ? "fill-[#c5a46d] text-[#c5a46d]"
 
-                                : "text-[#091423]"
+                                : "text-[#0b1728]"
 
                             }`}
 
@@ -1091,9 +1091,9 @@ export default function EventsPage() {
 
                         <div className="absolute bottom-4 left-4 flex items-center gap-1.5 rounded-full bg-white px-3 py-2 shadow-lg">
 
-                          <Star className="h-4 w-4 fill-[#d1a044] text-[#d1a044]" />
+                          <Star className="h-4 w-4 fill-[#c5a46d] text-[#c5a46d]" />
 
-                          <span className="text-sm font-bold text-[#091423]">
+                          <span className="text-sm font-bold text-[#0b1728]">
 
                             {rating.toFixed(1)}
 
@@ -1115,7 +1115,7 @@ export default function EventsPage() {
 
                         <div>
 
-                          <h2 className="text-xl font-bold tracking-tight text-[#0b1625]">
+                          <h2 className="text-xl font-bold tracking-tight text-[#0b1728]">
 
                             {hotel.hotel_name}
 
@@ -1125,7 +1125,7 @@ export default function EventsPage() {
 
                           <div className="mt-2 flex items-start gap-2 text-sm text-slate-500">
 
-                            <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#d1a044]" />
+                            <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#c5a46d]" />
 
 
 
@@ -1149,7 +1149,7 @@ export default function EventsPage() {
 
                             key={eventType}
 
-                            className="rounded-full bg-[#f8f3e8] px-3 py-1.5 text-xs font-semibold text-[#8c6826]"
+                            className="ui-badge"
 
                           >
 
@@ -1179,13 +1179,13 @@ export default function EventsPage() {
 
                       {/* VENUE */}
 
-                      <div className="mt-6 rounded-2xl border border-[#ead9b4] bg-[#fcf8ef] p-4">
+                      <div className="mt-6 rounded-2xl border border-[#e8e5de] bg-[#f3eee4] p-4">
 
                         <div className="flex items-start gap-3">
 
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#d1a044]">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#c5a46d]">
 
-                            <Sparkles className="h-5 w-5 text-[#091423]" />
+                            <Sparkles className="h-5 w-5 text-[#0b1728]" />
 
                           </div>
 
@@ -1193,7 +1193,7 @@ export default function EventsPage() {
 
                           <div>
 
-                            <p className="text-xs font-bold uppercase tracking-wide text-[#9a742b]">
+                            <p className="text-xs font-bold uppercase tracking-wide text-[#806744]">
 
                               Featured venue
 
@@ -1201,7 +1201,7 @@ export default function EventsPage() {
 
 
 
-                            <p className="mt-1 font-semibold text-[#091423]">
+                            <p className="mt-1 font-semibold text-[#0b1728]">
 
                               {profile.venue}
 
@@ -1229,7 +1229,7 @@ export default function EventsPage() {
 
                       <div className="mt-5">
 
-                        <p className="text-sm font-bold text-[#091423]">
+                        <p className="text-sm font-bold text-[#0b1728]">
 
                           What they provide
 
@@ -1275,7 +1275,7 @@ export default function EventsPage() {
 
                             rel="noopener noreferrer"
 
-                            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#091423] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#16263b]"
+                            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#0b1728] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#16263b]"
 
                           >
 
@@ -1295,7 +1295,7 @@ export default function EventsPage() {
 
                             href={`tel:${phone}`}
 
-                            className="flex h-12 w-12 items-center justify-center rounded-xl border border-slate-200 bg-white text-[#091423] transition hover:border-[#d1a044] hover:bg-[#fcf8ef]"
+                            className="ui-button ui-button-secondary flex h-12 w-12 items-center justify-center text-[#0b1728] transition hover:border-[#c5a46d] hover:bg-[#f3eee4]"
 
                             aria-label={`Call ${hotel.hotel_name}`}
 
@@ -1325,7 +1325,7 @@ export default function EventsPage() {
 
                             rel="noopener noreferrer"
 
-                            className="text-xs font-medium text-[#a57925] hover:underline"
+                            className="text-xs font-medium text-[#806744] hover:underline"
 
                           >
 
@@ -1355,9 +1355,9 @@ export default function EventsPage() {
 
         {/* FOOTER NOTE */}
 
-        <div className="mt-12 rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-6 text-slate-500">
+        <div className="mt-12 rounded-2xl border border-slate-200 bg-white surface-card p-5 text-sm leading-6 text-slate-500">
 
-          <strong className="text-[#091423]">
+          <strong className="text-[#0b1728]">
 
             Event information:
 

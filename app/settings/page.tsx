@@ -45,10 +45,10 @@ export default function SettingsPage() {
     <main className="min-h-full bg-slate-50 px-5 py-8 text-slate-900 md:px-8 md:py-10">
       <div className="mx-auto max-w-5xl">
         <div className="mb-8">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#b88b3d]">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#c5a46d]">
             Your experience
           </p>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+          <h1 className="page-title mt-2">
             Settings
           </h1>
           <p className="mt-3 max-w-2xl text-base leading-7 text-slate-500">
@@ -57,9 +57,9 @@ export default function SettingsPage() {
           </p>
         </div>
 
-        <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card shadow-sm">
           <div className="flex items-start gap-4 border-b border-slate-100 px-6 py-5 md:px-8">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c79a45]/10 text-[#9b722d]">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c5a46d]/10 text-[#806744]">
               <Settings2 className="h-5 w-5" />
             </span>
             <div>
@@ -82,18 +82,18 @@ export default function SettingsPage() {
                     role="radio"
                     aria-checked={selected}
                     onClick={() => setTheme(value)}
-                    className={`group card-interactive rounded-xl border p-4 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c79a45] ${
+                    className={`group card-interactive rounded-xl border p-4 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c5a46d] ${
                       selected
-                        ? "border-[#c79a45] bg-[#c79a45]/5 ring-1 ring-[#c79a45]/30"
-                        : "border-slate-200 hover:border-[#c79a45]/60 hover:bg-slate-50"
+                        ? "border-[#c5a46d] bg-[#c5a46d]/5 ring-1 ring-[#c5a46d]/30"
+                        : "border-slate-200 hover:border-[#c5a46d]/60 hover:bg-slate-50"
                     }`}
                   >
                     <span className="flex items-center justify-between">
-                      <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-600 group-hover:text-[#9b722d]">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-600 group-hover:text-[#806744]">
                         <Icon className="h-4 w-4" />
                       </span>
                       {selected && (
-                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#c79a45] text-white">
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#c5a46d] text-white">
                           <Check className="h-3 w-3" />
                         </span>
                       )}
@@ -111,10 +111,10 @@ export default function SettingsPage() {
           </div>
         </section>
 
-        <section className="mt-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+        <section className="mt-5 rounded-2xl border border-slate-200 bg-white surface-card p-6 shadow-sm md:p-8">
           <div className="flex items-start justify-between gap-5">
             <div className="flex items-start gap-4">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c79a45]/10 text-[#9b722d]">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c5a46d]/10 text-[#806744]">
                 <Accessibility className="h-5 w-5" />
               </span>
               <div>
@@ -131,8 +131,8 @@ export default function SettingsPage() {
               aria-checked={reduceMotion}
               aria-label="Reduce motion"
               onClick={() => setReduceMotion(!reduceMotion)}
-              className={`relative mt-1 inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c79a45] ${
-                reduceMotion ? "bg-[#8b682b]" : "bg-slate-300"
+              className={`relative mt-1 inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c5a46d] ${
+                reduceMotion ? "bg-[#806744]" : "bg-slate-300"
               }`}
             >
               <span
@@ -144,7 +144,7 @@ export default function SettingsPage() {
           </div>
         </section>
 
-        <section className="mt-5 flex flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:flex-row sm:items-center md:p-8">
+        <section className="mt-5 flex flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-white surface-card p-6 shadow-sm sm:flex-row sm:items-center md:p-8">
           <div>
             <h2 className="text-base font-semibold text-slate-900">Reset preferences</h2>
             <p className="mt-1 text-sm text-slate-500">
@@ -154,7 +154,7 @@ export default function SettingsPage() {
           <button
             type="button"
             onClick={resetPreferences}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 text-sm font-medium text-slate-700 transition-colors hover:border-[#c79a45] hover:text-[#805d26] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c79a45]"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 text-sm font-medium text-slate-700 transition-colors hover:border-[#c5a46d] hover:text-[#806744] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c5a46d]"
           >
             <RotateCcw className="h-4 w-4" />
             Reset settings

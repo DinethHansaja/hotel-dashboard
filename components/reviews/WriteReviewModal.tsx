@@ -190,7 +190,7 @@ export default function WriteReviewModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#091423]/70 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#0b1728]/70 p-4 backdrop-blur-sm"
       onClick={handleClose}
     >
       <div
@@ -200,11 +200,11 @@ export default function WriteReviewModal({
         {/* HEADER */}
         <div className="sticky top-0 z-10 flex items-start justify-between border-b border-slate-200 bg-white px-6 py-5">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#a47a27]">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#806744]">
               Share Your Experience
             </p>
 
-            <h2 className="mt-1 text-2xl font-bold text-[#091423]">
+            <h2 className="mt-1 text-2xl font-bold text-[#0b1728]">
               Write a Review
             </h2>
 
@@ -217,7 +217,7 @@ export default function WriteReviewModal({
             type="button"
             onClick={handleClose}
             disabled={submitting}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-[#091423] disabled:cursor-not-allowed"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-[#0b1728] disabled:cursor-not-allowed"
             aria-label="Close review form"
           >
             <X className="h-5 w-5" />
@@ -267,7 +267,7 @@ export default function WriteReviewModal({
           <div>
             <label
               htmlFor="hotel"
-              className="mb-2 block text-sm font-semibold text-[#091423]"
+              className="mb-2 block text-sm font-semibold text-[#0b1728]"
             >
               Select Hotel
             </label>
@@ -279,7 +279,7 @@ export default function WriteReviewModal({
                 setHotelId(event.target.value)
               }
               disabled={loadingHotels || submitting}
-              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#c79a45] focus:ring-2 focus:ring-[#c79a45]/20 disabled:bg-slate-100"
+              className="control w-full px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20 disabled:bg-slate-100"
             >
               <option value="">
                 {loadingHotels
@@ -300,7 +300,7 @@ export default function WriteReviewModal({
 
           {/* EXPERIENCE TYPE */}
           <div>
-            <label className="mb-2 block text-sm font-semibold text-[#091423]">
+            <label className="mb-2 block text-sm font-semibold text-[#0b1728]">
               What are you reviewing?
             </label>
 
@@ -311,8 +311,8 @@ export default function WriteReviewModal({
                 onClick={() => setReviewType("dining")}
                 className={`rounded-xl border px-4 py-3 text-sm font-semibold transition ${
                   reviewType === "dining"
-                    ? "border-[#c79a45] bg-[#c79a45]/10 text-[#091423]"
-                    : "border-slate-300 bg-white text-slate-600 hover:border-[#c79a45]"
+                    ? "border-[#c5a46d] bg-[#c5a46d]/10 text-[#0b1728]"
+                    : "border-slate-300 bg-white text-slate-600 hover:border-[#c5a46d]"
                 }`}
               >
                 Dining Experience
@@ -324,8 +324,8 @@ export default function WriteReviewModal({
                 onClick={() => setReviewType("stay")}
                 className={`rounded-xl border px-4 py-3 text-sm font-semibold transition ${
                   reviewType === "stay"
-                    ? "border-[#c79a45] bg-[#c79a45]/10 text-[#091423]"
-                    : "border-slate-300 bg-white text-slate-600 hover:border-[#c79a45]"
+                    ? "border-[#c5a46d] bg-[#c5a46d]/10 text-[#0b1728]"
+                    : "border-slate-300 bg-white text-slate-600 hover:border-[#c5a46d]"
                 }`}
               >
                 Stay Experience
@@ -337,7 +337,7 @@ export default function WriteReviewModal({
           <div>
             <label
               htmlFor="guestName"
-              className="mb-2 block text-sm font-semibold text-[#091423]"
+              className="mb-2 block text-sm font-semibold text-[#0b1728]"
             >
               Your Name
             </label>
@@ -352,13 +352,13 @@ export default function WriteReviewModal({
               disabled={submitting}
               maxLength={100}
               placeholder="Enter your name"
-              className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#c79a45] focus:ring-2 focus:ring-[#c79a45]/20 disabled:bg-slate-100"
+              className="control w-full px-4 py-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20 disabled:bg-slate-100"
             />
           </div>
 
           {/* RATING */}
           <div>
-            <label className="mb-2 block text-sm font-semibold text-[#091423]">
+            <label className="mb-2 block text-sm font-semibold text-[#0b1728]">
               Your Rating
             </label>
 
@@ -376,7 +376,7 @@ export default function WriteReviewModal({
                     <Star
                       className={`h-8 w-8 ${
                         star <= rating
-                          ? "fill-[#d1a044] text-[#d1a044]"
+                          ? "fill-[#c5a46d] text-[#c5a46d]"
                           : "text-slate-300"
                       }`}
                     />
@@ -396,7 +396,7 @@ export default function WriteReviewModal({
           <div>
             <label
               htmlFor="reviewText"
-              className="mb-2 block text-sm font-semibold text-[#091423]"
+              className="mb-2 block text-sm font-semibold text-[#0b1728]"
             >
               Your Review
             </label>
@@ -411,7 +411,7 @@ export default function WriteReviewModal({
               maxLength={1000}
               rows={6}
               placeholder="Tell us about your experience..."
-              className="w-full resize-none rounded-xl border border-slate-300 px-4 py-3 text-sm leading-6 text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#c79a45] focus:ring-2 focus:ring-[#c79a45]/20 disabled:bg-slate-100"
+              className="control w-full resize-none px-4 py-3 text-sm leading-6 text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20 disabled:bg-slate-100"
             />
 
             <div className="mt-1 text-right text-xs text-slate-400">
@@ -423,7 +423,7 @@ export default function WriteReviewModal({
           <div>
             <label
               htmlFor="visitDate"
-              className="mb-2 block text-sm font-semibold text-[#091423]"
+              className="mb-2 block text-sm font-semibold text-[#0b1728]"
             >
               Visit Date{" "}
               <span className="font-normal text-slate-400">
@@ -439,7 +439,7 @@ export default function WriteReviewModal({
                 setVisitDate(event.target.value)
               }
               disabled={submitting}
-              className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#c79a45] focus:ring-2 focus:ring-[#c79a45]/20 disabled:bg-slate-100"
+              className="control w-full px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20 disabled:bg-slate-100"
             />
           </div>
 
@@ -457,7 +457,7 @@ export default function WriteReviewModal({
             <button
               type="submit"
               disabled={submitting}
-              className="rounded-xl bg-[#091423] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#12233a] disabled:cursor-not-allowed disabled:opacity-60"
+              className="ui-button ui-button-primary px-6 py-3 text-sm text-white disabled:cursor-not-allowed disabled:opacity-60"
             >
               {submitting
                 ? "Submitting..."

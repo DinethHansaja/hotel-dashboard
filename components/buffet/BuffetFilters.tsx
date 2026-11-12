@@ -89,7 +89,7 @@ export default function BuffetFilters() {
     currentAvailability !== "all";
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
+    <div className="rounded-2xl border border-slate-200 bg-white surface-card p-3 shadow-sm">
       <div className="flex flex-wrap items-center gap-3">
 
         {/* ============================= */}
@@ -101,7 +101,7 @@ export default function BuffetFilters() {
             value={currentSort}
             onChange={handleSortChange}
             aria-label="Sort hotels"
-            className="h-[50px] min-w-[190px] cursor-pointer appearance-none rounded-xl border border-slate-200 bg-white px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c79a45] focus:border-[#c79a45] focus:ring-2 focus:ring-[#c79a45]/20"
+            className="control h-[50px] min-w-[190px] cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c5a46d] focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20"
           >
             <option value="popular">
               Most Popular
@@ -153,7 +153,7 @@ export default function BuffetFilters() {
               )
             }
             aria-label="Filter by price"
-            className="h-[50px] min-w-[165px] cursor-pointer appearance-none rounded-xl border border-slate-200 bg-white px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c79a45] focus:border-[#c79a45] focus:ring-2 focus:ring-[#c79a45]/20"
+            className="control h-[50px] min-w-[165px] cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c5a46d] focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20"
           >
             <option value="all">
               All Prices
@@ -201,7 +201,7 @@ export default function BuffetFilters() {
               )
             }
             aria-label="Filter by cuisine"
-            className="h-[50px] min-w-[170px] cursor-pointer appearance-none rounded-xl border border-slate-200 bg-white px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c79a45] focus:border-[#c79a45] focus:ring-2 focus:ring-[#c79a45]/20"
+            className="control h-[50px] min-w-[170px] cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c5a46d] focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20"
           >
             <option value="all">
               All Varieties
@@ -261,7 +261,7 @@ export default function BuffetFilters() {
               )
             }
             aria-label="Filter by rating"
-            className="h-[50px] min-w-[165px] cursor-pointer appearance-none rounded-xl border border-slate-200 bg-white px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c79a45] focus:border-[#c79a45] focus:ring-2 focus:ring-[#c79a45]/20"
+            className="control h-[50px] min-w-[165px] cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c5a46d] focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20"
           >
             <option value="all">
               All Ratings
@@ -304,8 +304,8 @@ export default function BuffetFilters() {
           }
           className={`flex h-[50px] items-center gap-2 rounded-xl border px-5 text-sm font-medium transition ${
             hasExtraFilters
-              ? "border-[#c79a45] bg-[#c79a45]/10 text-[#9a742e]"
-              : "border-slate-200 text-slate-700 hover:border-[#c79a45] hover:text-[#9a742e]"
+              ? "border-[#c5a46d] bg-[#c5a46d]/10 text-[#806744]"
+              : "border-slate-200 text-slate-700 hover:border-[#c5a46d] hover:text-[#806744]"
           }`}
         >
           <SlidersHorizontal className="h-4 w-4" />
@@ -346,7 +346,7 @@ export default function BuffetFilters() {
                       e.target.value
                     )
                   }
-                  className="h-11 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 pr-9 text-sm text-slate-700 outline-none focus:border-[#c79a45] focus:ring-2 focus:ring-[#c79a45]/20"
+                  className="control h-11 w-full appearance-none px-3 pr-9 text-sm text-slate-700 outline-none focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20"
                 >
                   <option value="all">
                     All Buffets

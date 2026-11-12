@@ -48,11 +48,11 @@ export default async function HotelsPage() {
       ========================== */}
       <section className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-[1500px] px-6 py-10 md:px-8">
-          <p className="text-sm font-semibold text-[#c58d24]">
+          <p className="text-sm font-semibold text-[#c5a46d]">
             Colombo Hotels
           </p>
 
-          <h1 className="mt-2 text-3xl font-bold tracking-tight md:text-4xl">
+          <h1 className="page-title mt-2">
             Explore Hotels
           </h1>
 
@@ -83,7 +83,7 @@ export default async function HotelsPage() {
             {hotels.map((hotel) => (
               <article
                 key={hotel.hotel_id}
-                className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg"
+                className="group overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg"
               >
                 {/* =========================
                     HOTEL IMAGE
@@ -102,7 +102,7 @@ export default async function HotelsPage() {
                   )}
 
                   {/* Hotel Badge */}
-                  <div className="absolute left-4 top-4 rounded-full bg-[#c79a45] px-3 py-1 text-xs font-semibold text-white shadow-sm">
+                  <div className="ui-badge absolute left-4 top-4">
                     Hotel
                   </div>
                 </div>
@@ -119,7 +119,7 @@ export default async function HotelsPage() {
                   {/* Restaurant */}
                   {hotel.restaurant_name && (
                     <div className="mt-2 flex items-start gap-2 text-sm text-slate-500">
-                      <UtensilsCrossed className="mt-0.5 h-4 w-4 shrink-0 text-[#c79a45]" />
+                      <UtensilsCrossed className="mt-0.5 h-4 w-4 shrink-0 text-[#c5a46d]" />
 
                       <span className="line-clamp-2">
                         {hotel.restaurant_name}
@@ -129,7 +129,7 @@ export default async function HotelsPage() {
 
                   {/* Location */}
                   <div className="mt-3 flex items-center gap-2 text-sm text-slate-500">
-                    <MapPin className="h-4 w-4 shrink-0 text-[#c79a45]" />
+                    <MapPin className="h-4 w-4 shrink-0 text-[#c5a46d]" />
 
                     <span>
                       Colombo, Sri Lanka
@@ -140,7 +140,7 @@ export default async function HotelsPage() {
                   <div className="mt-4 flex items-center justify-between">
                     {/* Rating */}
                     <div className="flex items-center gap-2">
-                      <Star className="h-4 w-4 fill-[#c79a45] text-[#c79a45]" />
+                      <Star className="h-4 w-4 fill-[#c5a46d] text-[#c5a46d]" />
 
                       <span className="text-sm font-semibold text-slate-800">
                         {hotel.rating !== null &&
@@ -175,7 +175,7 @@ export default async function HotelsPage() {
           /* =========================
              NO HOTELS
           ========================== */
-          <div className="rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-sm">
+          <div className="rounded-2xl border border-slate-200 bg-white surface-card p-10 text-center shadow-sm">
             <h2 className="text-xl font-semibold text-slate-900">
               No hotels available
             </h2>

@@ -187,7 +187,7 @@ export default function HotelMapClient({
 
               {/* Hotel details */}
               <div className="p-4">
-                <div className="mb-2 inline-flex rounded-full bg-[#c79a45] px-3 py-1 text-xs font-semibold text-white">
+                <div className="mb-2 inline-flex rounded-full bg-[#c5a46d] px-3 py-1 text-xs font-semibold text-[#0b1728]">
                   Hotel
                 </div>
 

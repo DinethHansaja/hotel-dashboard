@@ -33,11 +33,11 @@ export default function WhyChooseUs() {
       {/* HEADER */}
       <div>
 
-        <p className="text-sm font-semibold text-[#c58d24]">
+        <p className="text-sm font-semibold text-[#c5a46d]">
           Why Colombo Guide?
         </p>
 
-        <h2 className="mt-2 text-2xl font-bold leading-tight tracking-tight text-[#111827]">
+        <h2 className="section-title mt-2">
           Everything you need to explore Colombo
         </h2>
 
@@ -58,15 +58,15 @@ export default function WhyChooseUs() {
           return (
             <div
               key={feature.title}
-              className="rounded-2xl border border-slate-100 bg-slate-50 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#d9a441]/30 hover:bg-[#fffaf0] hover:shadow-sm"
+              className="rounded-2xl border border-slate-100 bg-slate-50 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#c5a46d]/30 hover:bg-[#f3eee4] hover:shadow-sm"
             >
 
               <div className="flex gap-4">
 
                 {/* ICON */}
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#fff2c9]">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#f3eee4]">
                   <Icon
-                    className="h-5 w-5 text-[#c58d24]"
+                    className="h-5 w-5 text-[#c5a46d]"
                     strokeWidth={2}
                   />
                 </div>
@@ -97,7 +97,7 @@ export default function WhyChooseUs() {
       {/* CTA */}
       <div className="mt-auto pt-5">
 
-        <div className="flex items-center justify-between rounded-2xl bg-[#07101f] p-5 text-white">
+        <div className="flex items-center justify-between rounded-2xl bg-[#0b1728] p-5 text-white">
 
           <div>
 
@@ -116,7 +116,7 @@ export default function WhyChooseUs() {
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/10">
 
             <ArrowRight
-              className="h-5 w-5 text-[#d9a441]"
+              className="h-5 w-5 text-[#c5a46d]"
               strokeWidth={2}
             />
 

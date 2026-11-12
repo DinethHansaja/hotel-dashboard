@@ -272,15 +272,15 @@ export default function ReviewsPage() {
   // --------------------------------------------------
 
   return (
-    <main className="min-h-screen bg-[#f7f8fa] text-slate-900">
+    <main className="min-h-screen bg-[#f8f6f1] text-slate-900">
 
       {/* ==================================================
           HERO
       ================================================== */}
 
-      <section className="relative overflow-hidden bg-[#091423]">
+      <section className="relative overflow-hidden bg-[#0b1728]">
         <div className="absolute inset-0">
-          <div className="absolute -right-32 -top-32 h-80 w-80 rounded-full bg-[#d1a044]/10 blur-3xl" />
+          <div className="absolute -right-32 -top-32 h-80 w-80 rounded-full bg-[#c5a46d]/10 blur-3xl" />
 
           <div className="absolute -bottom-40 left-1/3 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl" />
         </div>
@@ -288,15 +288,15 @@ export default function ReviewsPage() {
         <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">
           <div className="max-w-3xl">
 
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#d1a044]/30 bg-[#d1a044]/10 px-4 py-2 text-sm font-medium text-[#e3bd6d]">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#c5a46d]/30 bg-[#c5a46d]/10 px-4 py-2 text-sm font-medium text-[#c5a46d]">
               <MessageSquareText className="h-4 w-4" />
               Dining & Stay Reviews
             </div>
 
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
+            <h1 className="editorial-title text-4xl font-bold tracking-tight text-white sm:text-5xl">
               Discover what guests
 
-              <span className="block text-[#d1a044]">
+              <span className="block text-[#c5a46d]">
                 think about Colombo hotels.
               </span>
             </h1>
@@ -359,9 +359,9 @@ export default function ReviewsPage() {
                 {/* HOTEL RATING */}
 
                 <div className="flex items-center gap-2">
-                  <Star className="h-5 w-5 fill-[#d1a044] text-[#d1a044]" />
+                  <Star className="h-5 w-5 fill-[#c5a46d] text-[#c5a46d]" />
 
-                  <span className="text-xl font-bold text-[#091423]">
+                  <span className="text-xl font-bold text-[#0b1728]">
                     {averageRating > 0
                       ? averageRating.toFixed(1)
                       : "—"}
@@ -388,7 +388,7 @@ export default function ReviewsPage() {
                 {/* COMMUNITY REVIEWS */}
 
                 <div className="flex items-center gap-2">
-                  <MessageSquareText className="h-4 w-4 text-[#d1a044]" />
+                  <MessageSquareText className="h-4 w-4 text-[#c5a46d]" />
 
                   <span className="text-sm text-slate-500">
                     <span className="font-semibold text-slate-900">
@@ -403,7 +403,7 @@ export default function ReviewsPage() {
                     <div className="hidden h-5 w-px bg-slate-200 sm:block" />
 
                     <div className="flex items-center gap-2">
-                      <Star className="h-4 w-4 fill-[#d1a044] text-[#d1a044]" />
+                      <Star className="h-4 w-4 fill-[#c5a46d] text-[#c5a46d]" />
 
                       <span className="text-sm text-slate-500">
                         <span className="font-semibold text-slate-900">
@@ -424,7 +424,7 @@ export default function ReviewsPage() {
               onClick={() =>
                 setShowReviewModal(true)
               }
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#091423] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#12233a]"
+              className="ui-button ui-button-primary inline-flex items-center justify-center gap-2 px-5 py-3 text-sm text-white"
             >
               <PenLine className="h-4 w-4" />
               Write a Review
@@ -438,7 +438,7 @@ export default function ReviewsPage() {
           FILTERS
       ================================================== */}
 
-      <section className="sticky top-0 z-20 border-b border-slate-200 bg-[#f7f8fa]/95 backdrop-blur">
+      <section className="sticky top-0 z-20 border-b border-slate-200 bg-[#f8f6f1]/95 backdrop-blur">
         <div className="mx-auto max-w-7xl px-6 py-5 lg:px-8">
 
           <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
@@ -476,7 +476,7 @@ export default function ReviewsPage() {
                   }
                   className={`rounded-full px-4 py-2 text-sm font-medium transition ${
                     reviewType === item.value
-                      ? "bg-[#091423] text-white shadow-sm"
+                      ? "bg-[#0b1728] text-white shadow-sm"
                       : "border border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900"
                   }`}
                 >
@@ -515,7 +515,7 @@ export default function ReviewsPage() {
                   }
                   className={`rounded-full px-4 py-2 text-sm font-medium transition ${
                     ratingFilter === item.value
-                      ? "border border-[#d1a044] bg-[#d1a044]/10 text-[#8a651c]"
+                      ? "border border-[#c5a46d] bg-[#c5a46d]/10 text-[#806744]"
                       : "border border-slate-200 bg-white text-slate-600 hover:border-slate-300"
                   }`}
                 >
@@ -548,7 +548,7 @@ export default function ReviewsPage() {
 
         <div className="mb-7 flex items-end justify-between gap-4">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-[#091423]">
+            <h2 className="text-2xl font-bold tracking-tight text-[#0b1728]">
               {reviewType === "dining"
                 ? "Dining experiences"
                 : reviewType === "stay"
@@ -575,7 +575,7 @@ export default function ReviewsPage() {
               (item) => (
                 <div
                   key={item}
-                  className="overflow-hidden rounded-2xl border border-slate-200 bg-white"
+                  className="overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card"
                 >
                   <div className="h-56 animate-pulse bg-slate-200" />
 
@@ -616,13 +616,13 @@ export default function ReviewsPage() {
         {!loading &&
           !errorMessage &&
           filteredHotels.length === 0 && (
-            <div className="rounded-2xl border border-slate-200 bg-white px-6 py-16 text-center">
+            <div className="rounded-2xl border border-slate-200 bg-white surface-card px-6 py-16 text-center">
 
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100">
                 <Search className="h-6 w-6 text-slate-500" />
               </div>
 
-              <h3 className="mt-5 text-lg font-semibold text-[#091423]">
+              <h3 className="mt-5 text-lg font-semibold text-[#0b1728]">
                 No hotels found
               </h3>
 
@@ -634,7 +634,7 @@ export default function ReviewsPage() {
               <button
                 type="button"
                 onClick={clearFilters}
-                className="mt-5 rounded-xl bg-[#091423] px-5 py-3 text-sm font-semibold text-white"
+                className="ui-button ui-button-primary mt-5 px-5 py-3 text-sm text-white"
               >
                 Clear filters
               </button>
@@ -677,7 +677,7 @@ export default function ReviewsPage() {
                         hotel,
                         index
                       )}
-                      className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+                      className="group overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
                     >
 
                       {/* IMAGE */}
@@ -707,9 +707,9 @@ export default function ReviewsPage() {
 
                         <div className="absolute bottom-4 left-4">
 
-                          <div className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-sm font-semibold text-[#091423] shadow-lg">
+                          <div className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-sm font-semibold text-[#0b1728] shadow-lg">
 
-                            <Star className="h-4 w-4 fill-[#d1a044] text-[#d1a044]" />
+                            <Star className="h-4 w-4 fill-[#c5a46d] text-[#c5a46d]" />
 
                             {rating > 0
                               ? rating.toFixed(1)
@@ -723,7 +723,7 @@ export default function ReviewsPage() {
 
                         <div className="absolute right-4 top-4">
 
-                          <span className="rounded-full border border-white/20 bg-[#091423]/80 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur">
+                          <span className="rounded-full border border-white/20 bg-[#0b1728]/80 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur">
 
                             {reviewType ===
                             "dining"
@@ -743,13 +743,13 @@ export default function ReviewsPage() {
 
                       <div className="p-6">
 
-                        <h3 className="text-xl font-bold tracking-tight text-[#091423]">
+                        <h3 className="text-xl font-bold tracking-tight text-[#0b1728]">
                           {hotel.hotel_name ||
                             "Hotel"}
                         </h3>
 
                         {hotel.restaurant_name && (
-                          <p className="mt-1 text-sm font-medium text-[#a47a27]">
+                          <p className="mt-1 text-sm font-medium text-[#806744]">
                             {
                               hotel.restaurant_name
                             }
@@ -761,7 +761,7 @@ export default function ReviewsPage() {
                         {hotel.address && (
                           <div className="mt-4 flex items-start gap-2 text-sm text-slate-500">
 
-                            <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#d1a044]" />
+                            <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#c5a46d]" />
 
                             <span>
                               {hotel.address}
@@ -772,7 +772,7 @@ export default function ReviewsPage() {
 
                         {/* HOTEL RATING */}
 
-                        <div className="mt-5 rounded-xl bg-[#f7f8fa] p-4">
+                        <div className="mt-5 rounded-xl bg-[#f8f6f1] p-4">
 
                           <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
                             Hotel rating
@@ -782,7 +782,7 @@ export default function ReviewsPage() {
 
                             <div className="flex items-center gap-2">
 
-                              <span className="text-2xl font-bold text-[#091423]">
+                              <span className="text-2xl font-bold text-[#0b1728]">
                                 {rating > 0
                                   ? rating.toFixed(
                                       1
@@ -802,7 +802,7 @@ export default function ReviewsPage() {
                                           Math.round(
                                             rating
                                           )
-                                            ? "fill-[#d1a044] text-[#d1a044]"
+                                            ? "fill-[#c5a46d] text-[#c5a46d]"
                                             : "text-slate-300"
                                         }`}
                                       />
@@ -841,9 +841,9 @@ export default function ReviewsPage() {
                             }
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-[#d1a044] bg-white px-4 py-3 text-sm font-semibold text-[#8a651c] transition hover:bg-[#d1a044]/10 hover:shadow-sm"
+                            className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-[#c5a46d] bg-white px-4 py-3 text-sm font-semibold text-[#806744] transition hover:bg-[#c5a46d]/10 hover:shadow-sm"
                           >
-                            <Star className="h-4 w-4 fill-[#d1a044] text-[#d1a044]" />
+                            <Star className="h-4 w-4 fill-[#c5a46d] text-[#c5a46d]" />
 
                             View Google Reviews
 
@@ -856,12 +856,12 @@ export default function ReviewsPage() {
                         <div className="mt-5 flex flex-wrap gap-2">
 
                           <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600">
-                            <Utensils className="h-3.5 w-3.5 text-[#d1a044]" />
+                            <Utensils className="h-3.5 w-3.5 text-[#c5a46d]" />
                             Dining
                           </span>
 
                           <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600">
-                            <BedDouble className="h-3.5 w-3.5 text-[#d1a044]" />
+                            <BedDouble className="h-3.5 w-3.5 text-[#c5a46d]" />
                             Stay
                           </span>
 
@@ -882,7 +882,7 @@ export default function ReviewsPage() {
 
                             <div className="mb-4 flex items-center justify-between">
 
-                              <p className="text-sm font-semibold text-[#091423]">
+                              <p className="text-sm font-semibold text-[#0b1728]">
                                 Recent guest reviews
                               </p>
 
@@ -905,14 +905,14 @@ export default function ReviewsPage() {
                                       key={
                                         review.review_id
                                       }
-                                      className="rounded-xl bg-[#f7f8fa] p-4"
+                                      className="rounded-xl bg-[#f8f6f1] p-4"
                                     >
 
                                       <div className="flex items-start justify-between gap-3">
 
                                         <div>
 
-                                          <p className="text-sm font-semibold text-[#091423]">
+                                          <p className="text-sm font-semibold text-[#0b1728]">
                                             {
                                               review.guest_name
                                             }
@@ -937,7 +937,7 @@ export default function ReviewsPage() {
                                                   className={`h-3.5 w-3.5 ${
                                                     star <=
                                                     review.rating
-                                                      ? "fill-[#d1a044] text-[#d1a044]"
+                                                      ? "fill-[#c5a46d] text-[#c5a46d]"
                                                       : "text-slate-300"
                                                   }`}
                                                 />
@@ -994,7 +994,7 @@ export default function ReviewsPage() {
                                 true
                               )
                             }
-                            className="inline-flex items-center gap-2 text-sm font-semibold text-[#091423] transition hover:text-[#a47a27]"
+                            className="inline-flex items-center gap-2 text-sm font-semibold text-[#0b1728] transition hover:text-[#806744]"
                           >
                             <MessageSquareText className="h-4 w-4" />
                             Write a review
@@ -1037,11 +1037,11 @@ export default function ReviewsPage() {
 
             <div>
 
-              <p className="text-sm font-semibold uppercase tracking-widest text-[#a47a27]">
+              <p className="text-sm font-semibold uppercase tracking-widest text-[#806744]">
                 About our reviews
               </p>
 
-              <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#091423]">
+              <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#0b1728]">
                 Real hotel information,
 
                 <span className="block">
@@ -1059,13 +1059,13 @@ export default function ReviewsPage() {
 
             <div className="grid gap-4 sm:grid-cols-2">
 
-              <div className="rounded-2xl border border-slate-200 bg-[#f7f8fa] p-6">
+              <div className="rounded-2xl border border-slate-200 bg-[#f8f6f1] p-6">
 
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#091423] text-white">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0b1728] text-white">
                   <Star className="h-5 w-5" />
                 </div>
 
-                <h3 className="mt-5 font-semibold text-[#091423]">
+                <h3 className="mt-5 font-semibold text-[#0b1728]">
                   Hotel ratings
                 </h3>
 
@@ -1076,13 +1076,13 @@ export default function ReviewsPage() {
 
               </div>
 
-              <div className="rounded-2xl border border-slate-200 bg-[#f7f8fa] p-6">
+              <div className="rounded-2xl border border-slate-200 bg-[#f8f6f1] p-6">
 
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#d1a044] text-[#091423]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#c5a46d] text-[#0b1728]">
                   <MessageSquareText className="h-5 w-5" />
                 </div>
 
-                <h3 className="mt-5 font-semibold text-[#091423]">
+                <h3 className="mt-5 font-semibold text-[#0b1728]">
                   Guest reviews
                 </h3>
 

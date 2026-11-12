@@ -14,7 +14,7 @@ export default function Loading() {
           {Array.from({ length: 4 }, (_, index) => (
             <div
               key={index}
-              className="h-14 rounded-xl border border-slate-200 bg-white"
+              className="h-14 rounded-xl border border-slate-200 bg-white surface-card"
             />
           ))}
         </div>
@@ -23,7 +23,7 @@ export default function Loading() {
           {Array.from({ length: 6 }, (_, index) => (
             <div
               key={index}
-              className="overflow-hidden rounded-2xl border border-slate-200 bg-white"
+              className="overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card"
             >
               <div className="h-44 bg-slate-200" />
               <div className="space-y-3 p-5">

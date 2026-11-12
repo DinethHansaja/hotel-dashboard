@@ -152,7 +152,7 @@ export default function BusinessDirectory({
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <div className="mx-auto max-w-[1600px] p-5 md:p-8">
+      <div className="page-container p-5 md:p-8">
         <div className="mb-7">
           <div className="mb-3 text-sm text-slate-400">
             Home <span className="mx-2">›</span>
@@ -161,7 +161,7 @@ export default function BusinessDirectory({
 
           <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+              <h1 className="page-title">
                 {title}
               </h1>
 
@@ -183,10 +183,10 @@ export default function BusinessDirectory({
 
         <section
           aria-label={title + " search and filters"}
-          className="mb-7 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm"
+          className="mb-7 rounded-2xl border border-slate-200 bg-white surface-card p-3 shadow-sm"
         >
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
-            <label className="flex h-[50px] items-center rounded-xl border border-slate-200 px-4 focus-within:border-[#c79a45] focus-within:ring-2 focus-within:ring-[#c79a45]/20">
+            <label className="flex h-[50px] items-center rounded-xl border border-slate-200 px-4 focus-within:border-[#c5a46d] focus-within:ring-2 focus-within:ring-[#c5a46d]/20">
               <span className="sr-only">Search businesses</span>
               <input
                 type="search"
@@ -263,30 +263,30 @@ export default function BusinessDirectory({
             </div>
             <div className="grid grid-cols-1 items-stretch gap-4 lg:grid-cols-2">
               <BusinessMap businesses={filteredBusinesses} kind={kind} selectedBusinessId={selectedBusiness?.id ?? null} onSelectBusiness={setSelectedBusinessId} />
-              <article className="flex h-[620px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+              <article className="flex h-[620px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card shadow-sm">
               {selectedBusiness ? (
                 <>
                   <div className="relative h-56 shrink-0 bg-slate-100">
-                    {selectedBusiness.imageUrl ? <img src={selectedBusiness.imageUrl} alt={selectedBusiness.name} className="h-full w-full object-cover" /> : <div className="flex h-full items-center justify-center bg-gradient-to-br from-[#e8dfd1] to-[#c9b69a]"><Coffee className="h-14 w-14 text-[#79532c]" /></div>}
+                    {selectedBusiness.imageUrl ? <img src={selectedBusiness.imageUrl} alt={selectedBusiness.name} className="h-full w-full object-cover" /> : <div className="flex h-full items-center justify-center bg-[#f3eee4]"><Coffee className="h-14 w-14 text-[#806744]" /></div>}
                     {selectedBusiness.area && <span className="absolute right-4 top-4 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-slate-700 shadow">{selectedBusiness.area}</span>}
                   </div>
                   <div className="min-h-0 flex-1 overflow-y-auto p-5 md:p-6">
                     <h3 className="text-2xl font-bold text-slate-900">{selectedBusiness.name}</h3>
                     <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-600">
                       {selectedBusiness.rating !== null && <span className="inline-flex items-center gap-1"><Star className="h-4 w-4 fill-amber-500 text-amber-500" />{selectedBusiness.rating.toFixed(1)}{selectedBusiness.reviewCount !== null && ` (${selectedBusiness.reviewCount.toLocaleString()} reviews)`}</span>}
-                      {selectedBusiness.category && <span className="inline-flex items-center gap-1"><Coffee className="h-4 w-4 text-[#8b682b]" />{selectedBusiness.category}</span>}
-                      {selectedBusiness.area && <span className="inline-flex items-center gap-1"><MapPin className="h-4 w-4 text-[#8b682b]" />{selectedBusiness.area}</span>}
+                      {selectedBusiness.category && <span className="inline-flex items-center gap-1"><Coffee className="h-4 w-4 text-[#806744]" />{selectedBusiness.category}</span>}
+                      {selectedBusiness.area && <span className="inline-flex items-center gap-1"><MapPin className="h-4 w-4 text-[#806744]" />{selectedBusiness.area}</span>}
                     </div>
                     {selectedBusiness.address && <p className="mt-4 text-sm leading-6 text-slate-600">{selectedBusiness.address}</p>}
                     {selectedBusiness.specialties && <p className="mt-3 text-sm leading-6 text-slate-600"><strong className="text-slate-800">{kind === "cafe" ? "Popular items:" : "Signature dishes:"}</strong> {selectedBusiness.specialties}</p>}
                     <div className="mt-5 flex flex-wrap gap-2 border-b border-slate-100 pb-5">
-                      {selectedBusiness.telephone && <a href={`tel:${selectedBusiness.telephone}`} className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium hover:border-[#c79a45]"><Phone className="mr-2 inline h-4 w-4" />{selectedBusiness.telephone}</a>}
-                      {selectedBusiness.website && <a href={getWebsiteUrl(selectedBusiness.website)} target="_blank" rel="noreferrer" className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium hover:border-[#c79a45]"><Globe className="mr-2 inline h-4 w-4" />Website</a>}
-                      {getMapUrl(selectedBusiness) && <a href={getMapUrl(selectedBusiness)!} target="_blank" rel="noreferrer" className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium hover:border-[#c79a45]"><MapPin className="mr-2 inline h-4 w-4" />Directions</a>}
+                      {selectedBusiness.telephone && <a href={`tel:${selectedBusiness.telephone}`} className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium hover:border-[#c5a46d]"><Phone className="mr-2 inline h-4 w-4" />{selectedBusiness.telephone}</a>}
+                      {selectedBusiness.website && <a href={getWebsiteUrl(selectedBusiness.website)} target="_blank" rel="noreferrer" className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium hover:border-[#c5a46d]"><Globe className="mr-2 inline h-4 w-4" />Website</a>}
+                      {getMapUrl(selectedBusiness) && <a href={getMapUrl(selectedBusiness)!} target="_blank" rel="noreferrer" className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium hover:border-[#c5a46d]"><MapPin className="mr-2 inline h-4 w-4" />Directions</a>}
                     </div>
                     <div className="grid gap-5 pt-4 sm:grid-cols-2">
-                      <div><h4 className="font-semibold text-slate-800"><Clock3 className="mr-2 inline h-4 w-4 text-[#8b682b]" />Opening hours</h4><p className="mt-2 text-sm text-slate-600">{selectedBusiness.openingHours || "Hours not provided"}</p></div>
-                      <div><h4 className="font-semibold text-slate-800"><Icon className="mr-2 inline h-4 w-4 text-[#8b682b]" />{kind === "cafe" ? "Cafe details" : "Restaurant details"}</h4><p className="mt-2 text-sm text-slate-600">{selectedBusiness.priceRange || "Price range not provided"}</p></div>
+                      <div><h4 className="font-semibold text-slate-800"><Clock3 className="mr-2 inline h-4 w-4 text-[#806744]" />Opening hours</h4><p className="mt-2 text-sm text-slate-600">{selectedBusiness.openingHours || "Hours not provided"}</p></div>
+                      <div><h4 className="font-semibold text-slate-800"><Icon className="mr-2 inline h-4 w-4 text-[#806744]" />{kind === "cafe" ? "Cafe details" : "Restaurant details"}</h4><p className="mt-2 text-sm text-slate-600">{selectedBusiness.priceRange || "Price range not provided"}</p></div>
                     </div>
                   </div>
                 </>
@@ -309,7 +309,7 @@ export default function BusinessDirectory({
         )}
 
         {filteredBusinesses.length === 0 ? (
-          <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-sm">
+          <div className="rounded-2xl border border-slate-200 bg-white surface-card p-12 text-center shadow-sm">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-500">
               <Icon className="h-6 w-6" />
             </div>
@@ -340,9 +340,9 @@ export default function BusinessDirectory({
                 return (
                   <article
                     key={business.id}
-                    className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                    className="overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                   >
-                    <div className="relative h-40 bg-gradient-to-br from-[#0c1725] to-[#24364a]">
+                    <div className="relative h-40 bg-gradient-to-br from-[#14243a] to-[#24364a]">
                       {business.imageUrl ? (
                         <img
                           src={business.imageUrl}
@@ -351,12 +351,12 @@ export default function BusinessDirectory({
                         />
                       ) : (
                         <div className="flex h-full items-center justify-center">
-                          <Icon className="h-12 w-12 text-[#d2a64d]" />
+                          <Icon className="h-12 w-12 text-[#c5a46d]" />
                         </div>
                       )}
 
                       {business.area && (
-                        <span className="absolute right-4 top-4 rounded-full bg-[#c79a45] px-3 py-1 text-xs font-semibold text-white">
+                        <span className="absolute right-4 top-4 rounded-full bg-[#c5a46d] px-3 py-1 text-xs font-semibold text-[#0b1728]">
                           {business.area}
                         </span>
                       )}
@@ -381,7 +381,7 @@ export default function BusinessDirectory({
                         </div>
 
                         {business.priceRange && (
-                          <span className="shrink-0 rounded-lg bg-[#c79a45]/10 px-2.5 py-1 text-xs font-medium text-[#8b682b]">
+                          <span className="shrink-0 rounded-lg bg-[#c5a46d]/10 px-2.5 py-1 text-xs font-medium text-[#806744]">
                             {business.priceRange}
                           </span>
                         )}
@@ -392,7 +392,7 @@ export default function BusinessDirectory({
                         <div className="mt-4 flex items-center gap-2 text-sm">
                           {business.rating !== null && (
                             <>
-                              <Star className="h-4 w-4 fill-[#c79a45] text-[#c79a45]" />
+                              <Star className="h-4 w-4 fill-[#c5a46d] text-[#c5a46d]" />
                               <span className="font-semibold text-slate-800">
                                 {business.rating.toFixed(1)}
                               </span>
@@ -409,7 +409,7 @@ export default function BusinessDirectory({
 
                       {business.address && (
                         <p className="mt-4 flex gap-2 text-sm leading-5 text-slate-600">
-                          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#c79a45]" />
+                          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#c5a46d]" />
                           <span>{business.address}</span>
                         </p>
                       )}
@@ -425,7 +425,7 @@ export default function BusinessDirectory({
 
                       {business.openingHours && (
                         <p className="mt-3 flex gap-2 text-sm leading-5 text-slate-600">
-                          <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-[#c79a45]" />
+                          <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-[#c5a46d]" />
                           <span>{business.openingHours}</span>
                         </p>
                       )}
@@ -434,7 +434,7 @@ export default function BusinessDirectory({
                         {business.telephone && (
                           <a
                             href={"tel:" + business.telephone}
-                            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:border-[#c79a45] hover:text-[#8b682b]"
+                            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:border-[#c5a46d] hover:text-[#806744]"
                           >
                             <Phone className="h-3.5 w-3.5" />
                             Call
@@ -444,7 +444,7 @@ export default function BusinessDirectory({
                         {business.email && (
                           <a
                             href={"mailto:" + business.email}
-                            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:border-[#c79a45] hover:text-[#8b682b]"
+                            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:border-[#c5a46d] hover:text-[#806744]"
                           >
                             Email
                           </a>
@@ -455,7 +455,7 @@ export default function BusinessDirectory({
                             href={getWebsiteUrl(business.website)}
                             target="_blank"
                             rel="noreferrer"
-                            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:border-[#c79a45] hover:text-[#8b682b]"
+                            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:border-[#c5a46d] hover:text-[#806744]"
                           >
                             <Globe className="h-3.5 w-3.5" />
                             Website
@@ -468,7 +468,7 @@ export default function BusinessDirectory({
                             href={mapUrl}
                             target="_blank"
                             rel="noreferrer"
-                            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:border-[#c79a45] hover:text-[#8b682b]"
+                            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:border-[#c5a46d] hover:text-[#806744]"
                           >
                             <MapPin className="h-3.5 w-3.5" />
                             Map

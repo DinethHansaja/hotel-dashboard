@@ -103,7 +103,7 @@ export default function BusinessMapClient({
               sticky
               className="!border-0 !bg-transparent !p-0 !shadow-none"
             >
-              <div className="w-64 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
+              <div className="w-64 overflow-hidden rounded-xl border border-slate-200 bg-white surface-card shadow-xl">
                 {business.imageUrl && (
                   <img
                     src={business.imageUrl}
@@ -116,7 +116,7 @@ export default function BusinessMapClient({
                   />
                 )}
                 <div className="p-3">
-                  <span className="inline-flex rounded-full bg-[#c79a45]/15 px-2.5 py-1 text-[11px] font-semibold text-[#805d26]">
+                  <span className="inline-flex rounded-full bg-[#c5a46d]/15 px-2.5 py-1 text-[11px] font-semibold text-[#806744]">
                     {business.category || (kind === "cafe" ? "Cafe" : "Restaurant")}
                   </span>
                   <span className="mt-2 block font-semibold text-slate-900">{business.name}</span>
@@ -149,7 +149,7 @@ export default function BusinessMapClient({
                 )}
 
                 <div className="pt-3">
-                  <span className="inline-flex rounded-full bg-[#c79a45]/15 px-2.5 py-1 text-[11px] font-semibold text-[#805d26]">
+                  <span className="inline-flex rounded-full bg-[#c5a46d]/15 px-2.5 py-1 text-[11px] font-semibold text-[#806744]">
                     {business.category || (kind === "cafe" ? "Cafe" : "Restaurant")}
                   </span>
                   <h3 className="mt-2 text-base font-bold leading-5 text-slate-900">{business.name}</h3>
@@ -169,11 +169,11 @@ export default function BusinessMapClient({
                     <button
                       type="button"
                       onClick={() => onSelectBusiness?.(business.id)}
-                      className="rounded-lg bg-[#c79a45] px-3 py-2 text-xs font-semibold text-white transition hover:bg-[#a97f36]"
+                      className="rounded-lg bg-[#c5a46d] px-3 py-2 text-xs font-semibold text-[#0b1728] transition hover:bg-[#ae8c55]"
                     >
                       View details
                     </button>
-                    <a href={mapsUrl} target="_blank" rel="noreferrer" className="text-xs font-semibold text-slate-600 hover:text-[#805d26]">
+                    <a href={mapsUrl} target="_blank" rel="noreferrer" className="text-xs font-semibold text-slate-600 hover:text-[#806744]">
                       Get directions
                     </a>
                   </div>

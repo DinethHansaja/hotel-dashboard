@@ -114,7 +114,7 @@ export default function BuffetGrid({
 
   if (buffets.length === 0) {
     return (
-      <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-sm">
+      <div className="rounded-2xl border border-slate-200 bg-white surface-card p-12 text-center shadow-sm">
 
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-2xl">
           🔍
@@ -266,7 +266,7 @@ export default function BuffetGrid({
                   currentPage - 1
                 )
               }
-              className="flex h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium text-slate-600 transition hover:border-[#c79a45] hover:text-[#9a742e] disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium text-slate-600 transition hover:border-[#c5a46d] hover:text-[#806744] disabled:cursor-not-allowed disabled:opacity-40"
             >
               <ChevronLeft className="h-4 w-4" />
 
@@ -293,8 +293,8 @@ export default function BuffetGrid({
                     }
                     className={`flex h-10 w-10 items-center justify-center rounded-lg text-sm font-medium transition ${
                       currentPage === page
-                        ? "bg-[#c79a45] text-white shadow-sm"
-                        : "border border-slate-200 bg-white text-slate-600 hover:border-[#c79a45] hover:text-[#9a742e]"
+                        ? "bg-[#c5a46d] text-[#0b1728] shadow-sm"
+                        : "border border-slate-200 bg-white text-slate-600 hover:border-[#c5a46d] hover:text-[#806744]"
                     }`}
                   >
                     {page}
@@ -317,7 +317,7 @@ export default function BuffetGrid({
                   currentPage + 1
                 )
               }
-              className="flex h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium text-slate-600 transition hover:border-[#c79a45] hover:text-[#9a742e] disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium text-slate-600 transition hover:border-[#c5a46d] hover:text-[#806744] disabled:cursor-not-allowed disabled:opacity-40"
             >
               Next
 

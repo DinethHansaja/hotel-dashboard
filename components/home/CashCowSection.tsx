@@ -32,11 +32,11 @@ export default function CashCowSection({
       {/* Section Header */}
       <div className="mb-7 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="text-sm font-semibold text-[#c58d24]">
+          <p className="text-sm font-semibold text-[#c5a46d]">
             CashCow
           </p>
 
-          <h2 className="mt-1 text-3xl font-bold tracking-tight text-[#111827] md:text-4xl">
+          <h2 className="section-title mt-1">
             Must-Try Dishes
           </h2>
 
@@ -49,7 +49,7 @@ export default function CashCowSection({
         <div className="flex w-fit items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5">
           <UtensilsCrossed
             size={18}
-            className="text-[#c58d24]"
+            className="text-[#c5a46d]"
           />
 
           <span className="text-sm font-semibold text-slate-700">
@@ -80,7 +80,7 @@ export default function CashCowSection({
               )}
 
               {/* CashCow Badge */}
-              <div className="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1.5 text-xs font-bold text-[#c58d24] shadow-sm backdrop-blur">
+              <div className="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1.5 text-xs font-bold text-[#c5a46d] shadow-sm backdrop-blur">
                 ⭐ CashCow Pick
               </div>
             </div>
@@ -95,8 +95,8 @@ export default function CashCowSection({
                 {hotel.hotel_name}
               </h3>
 
-              <div className="mt-4 rounded-2xl bg-[#fffbf2] p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-[#c58d24]">
+              <div className="mt-4 rounded-2xl bg-[#f3eee4] p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-[#c5a46d]">
                   Signature Dish
                 </p>
 
@@ -114,7 +114,7 @@ export default function CashCowSection({
               {/* View Hotel */}
               <Link
                 href={`/hotels/${hotel.hotel_id}`}
-                className="mt-4 flex items-center justify-between rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-[#c58d24] hover:text-[#c58d24]"
+                className="mt-4 flex items-center justify-between rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-[#c5a46d] hover:text-[#c5a46d]"
               >
                 <span>View Hotel</span>
 

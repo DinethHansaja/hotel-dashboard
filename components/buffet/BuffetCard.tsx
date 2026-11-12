@@ -204,7 +204,7 @@ export default function BuffetCard({
     <article
       className={`group flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl ${
         isSelectedForComparison
-          ? "border-[#c79a45] ring-2 ring-[#c79a45]/20"
+          ? "border-[#c5a46d] ring-2 ring-[#c5a46d]/20"
           : "border-slate-200 hover:border-slate-300"
       }`}
     >
@@ -243,7 +243,7 @@ export default function BuffetCard({
 
         {/* Popular */}
 
-        <div className="absolute left-3 top-3 rounded-full bg-[#c79a45] px-3 py-1 text-xs font-semibold text-white shadow-md">
+        <div className="ui-badge absolute left-3 top-3">
           Popular
         </div>
 
@@ -260,7 +260,7 @@ export default function BuffetCard({
         {/* Comparison */}
 
         {isSelectedForComparison && (
-          <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-[#9a742e] shadow-md">
+          <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-[#806744] shadow-md">
 
             <GitCompare className="h-3.5 w-3.5" />
 
@@ -336,7 +336,7 @@ export default function BuffetCard({
 
           <div className="mt-4 flex flex-wrap items-center gap-2">
 
-            <Star className="h-4 w-4 fill-[#c79a45] text-[#c79a45]" />
+            <Star className="h-4 w-4 fill-[#c5a46d] text-[#c5a46d]" />
 
             <span className="text-sm font-semibold text-slate-800">
               {rating ?? "N/A"}
@@ -390,7 +390,7 @@ export default function BuffetCard({
 
             <div className="flex items-center gap-2 text-sm text-slate-500">
 
-              <Utensils className="h-4 w-4 shrink-0 text-[#c79a45]" />
+              <Utensils className="h-4 w-4 shrink-0 text-[#c5a46d]" />
 
               <span>
                 {mealType
@@ -402,7 +402,7 @@ export default function BuffetCard({
 
             {(buffetTimes?.length ? buffetTimes : buffetTime ? [buffetTime] : []).map((time) => (
               <div key={time} className="flex items-center gap-2 text-sm text-slate-500">
-                <Clock3 className="h-4 w-4 shrink-0 text-[#c79a45]" />
+                <Clock3 className="h-4 w-4 shrink-0 text-[#c5a46d]" />
                 <span>{time}</span>
               </div>
             ))}
@@ -422,7 +422,7 @@ export default function BuffetCard({
 
             <div className="flex items-center gap-2 text-sm text-slate-500">
 
-              <CalendarDays className="h-4 w-4 shrink-0 text-[#c79a45]" />
+              <CalendarDays className="h-4 w-4 shrink-0 text-[#c5a46d]" />
 
               <span>
                 Buffet Experience
@@ -462,7 +462,7 @@ export default function BuffetCard({
 
                     <div className="min-w-0">
 
-                      <p className="text-xs font-bold uppercase tracking-wide text-[#9a742e]">
+                      <p className="text-xs font-bold uppercase tracking-wide text-[#806744]">
                         Cash Cow Dish
                       </p>
 
@@ -496,7 +496,7 @@ export default function BuffetCard({
 
                 <div className="flex items-center gap-2">
 
-                  <MessageSquare className="h-4 w-4 text-[#c79a45]" />
+                  <MessageSquare className="h-4 w-4 text-[#c5a46d]" />
 
                   <span className="text-xs font-bold uppercase tracking-wide text-slate-700">
                     Guest Reviews
@@ -511,7 +511,7 @@ export default function BuffetCard({
                     undefined && (
                     <div className="flex items-center gap-1">
 
-                      <Star className="h-3.5 w-3.5 fill-[#c79a45] text-[#c79a45]" />
+                      <Star className="h-3.5 w-3.5 fill-[#c5a46d] text-[#c5a46d]" />
 
                       <span className="text-xs font-semibold text-slate-700">
                         {Number(
@@ -552,7 +552,7 @@ export default function BuffetCard({
                     {formattedLatestReviewRating && (
                       <div className="flex items-center gap-1">
 
-                        <Star className="h-3 w-3 fill-[#c79a45] text-[#c79a45]" />
+                        <Star className="h-3 w-3 fill-[#c5a46d] text-[#c5a46d]" />
 
                         <span className="text-[11px] font-semibold text-slate-600">
                           {formattedLatestReviewRating}
@@ -612,10 +612,10 @@ export default function BuffetCard({
                 }
                 className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-sm font-semibold transition ${
                   isSelectedForComparison
-                    ? "border-[#c79a45] bg-[#c79a45] text-white shadow-sm"
+                    ? "border-[#c5a46d] bg-[#c5a46d] text-[#0b1728] shadow-sm"
                     : compareDisabled
                       ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400"
-                      : "border-slate-200 bg-white text-slate-600 hover:border-[#c79a45] hover:text-[#9a742e]"
+                      : "border-slate-200 bg-white text-slate-600 hover:border-[#c5a46d] hover:text-[#806744]"
                 }`}
               >
 
@@ -632,7 +632,7 @@ export default function BuffetCard({
 
             <Link
               href={`/hotels/${hotelId}`}
-              className={`flex items-center justify-center gap-2 rounded-xl border border-[#c79a45] px-3 py-2.5 text-sm font-semibold text-[#9a742e] transition hover:bg-[#c79a45] hover:text-white ${
+              className={`flex items-center justify-center gap-2 rounded-xl border border-[#c5a46d] px-3 py-2.5 text-sm font-semibold text-[#806744] transition hover:bg-[#c5a46d] hover:text-[#0b1728] ${
                 !onToggleCompare
                   ? "col-span-2"
                   : ""

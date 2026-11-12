@@ -85,7 +85,7 @@ export default async function HomePage() {
   const { data: cashCowHotels } = cashCowResult;
 
   return (
-    <main className="min-h-screen bg-[#f8fafc]">
+    <main className="min-h-screen bg-[#f8f6f1]">
       <div className="mx-auto max-w-[1500px] space-y-8 px-5 py-6 md:px-8 md:py-8">
 
         {/* =====================================================
@@ -103,11 +103,11 @@ export default async function HomePage() {
           {/* Section Heading */}
           <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-sm font-semibold text-[#c58d24]">
+              <p className="text-sm font-semibold text-[#c5a46d]">
                 Explore Colombo
               </p>
 
-              <h2 className="mt-1 text-3xl font-bold tracking-tight text-[#111827] md:text-4xl">
+              <h2 className="section-title mt-1">
                 Explore Hotels on the Map
               </h2>
 
@@ -118,7 +118,7 @@ export default async function HomePage() {
             </div>
 
             {/* Hotel Count */}
-            <div className="flex w-fit items-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 shadow-sm">
+            <div className="flex w-fit items-center gap-2 rounded-2xl border border-slate-200 bg-white surface-card px-5 py-3 shadow-sm">
               <span className="text-2xl font-bold text-slate-900">
                 {hotelLocations.length}
               </span>
@@ -148,11 +148,11 @@ export default async function HomePage() {
 
               {/* COLOMBO DINING GUIDE */}
               <section className="rounded-[24px] border border-slate-200 bg-white px-6 py-7 shadow-sm md:px-8 md:py-8">
-                <p className="text-sm font-semibold text-[#c58d24]">
+                <p className="text-sm font-semibold text-[#c5a46d]">
                   Colombo Dining Guide
                 </p>
 
-                <h2 className="mt-2 max-w-4xl text-2xl font-bold tracking-tight text-[#111827] md:text-3xl">
+                <h2 className="mt-2 max-w-4xl text-2xl font-bold tracking-tight text-[#14243a] md:text-3xl">
                   Everything you need for your next dining experience
                 </h2>
 

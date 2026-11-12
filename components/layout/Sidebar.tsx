@@ -18,7 +18,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-const menuItems = [
+export const menuItems = [
   {
     label: "Welcome",
     description: "",
@@ -144,7 +144,7 @@ export default function Sidebar() {
     <aside
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`relative hidden h-screen shrink-0 overflow-visible bg-[#0c1725] text-white transition-[width] duration-150 ease-out lg:flex lg:flex-col ${
+      className={`relative hidden h-screen shrink-0 overflow-visible bg-[#14243a] text-white transition-[width] duration-150 ease-out lg:flex lg:flex-col ${
         expanded ? "w-[272px]" : "w-[82px]"
       }`}
     >
@@ -163,10 +163,10 @@ export default function Sidebar() {
           }`}
         >
           <div
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[#c79a45] transition hover:bg-white/10"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[#c5a46d] transition hover:bg-white/10"
             aria-label="Colombo Dining & Events Guide"
           >
-            <Landmark className="h-6 w-6 text-[#d2a64d]" />
+            <Landmark className="h-6 w-6 text-[#c5a46d]" />
           </div>
 
           {expanded && (
@@ -175,7 +175,7 @@ export default function Sidebar() {
                 Colombo
               </h1>
 
-              <p className="text-sm tracking-wide text-[#d2a64d]">
+              <p className="text-sm tracking-wide text-[#c5a46d]">
                 Dining & Events Guide
               </p>
             </div>
@@ -206,7 +206,7 @@ export default function Sidebar() {
                     : "justify-center px-3 py-3.5"
                 } ${
                   isActive
-                    ? "bg-[#8b682b] text-white shadow-sm"
+                    ? "bg-[#806744] text-white shadow-sm"
                     : "text-slate-200 hover:bg-white/10"
                 }`}
               >

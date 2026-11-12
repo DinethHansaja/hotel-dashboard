@@ -1,11 +1,10 @@
 "use client";
 
 import {
-  Bell,
   ChevronDown,
+  Menu,
   MapPin,
   Search,
-  User,
   X,
 } from "lucide-react";
 
@@ -20,6 +19,8 @@ import {
   useRouter,
   useSearchParams,
 } from "next/navigation";
+import Link from "next/link";
+import { menuItems } from "@/components/layout/Sidebar";
 
 type City = {
   name: string;
@@ -60,6 +61,9 @@ export default function Header() {
     useState("Colombo");
 
   const [cityOpen, setCityOpen] =
+    useState(false);
+
+  const [mobileNavOpen, setMobileNavOpen] =
     useState(false);
 
   const cityRef =
@@ -173,6 +177,17 @@ export default function Header() {
     <header className="z-40 shrink-0 border-b border-slate-200 bg-white">
       <div className="flex h-[76px] items-center gap-4 px-5 md:px-8">
 
+        <button
+          type="button"
+          onClick={() => setMobileNavOpen((open) => !open)}
+          aria-label={mobileNavOpen ? "Close navigation" : "Open navigation"}
+          aria-expanded={mobileNavOpen}
+          aria-controls="mobile-site-navigation"
+          className="ui-button ui-button-secondary flex h-11 w-11 shrink-0 items-center justify-center lg:hidden"
+        >
+          {mobileNavOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+
         {/* ============================= */}
         {/* LOCATION / CITY SELECTOR */}
         {/* ============================= */}
@@ -190,9 +205,9 @@ export default function Header() {
             }
             aria-haspopup="listbox"
             aria-expanded={cityOpen}
-            className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm transition hover:border-[#c79a45] hover:shadow-md"
+            className="ui-button ui-button-secondary flex items-center gap-3 px-4 py-3 shadow-sm transition hover:border-[#c5a46d] hover:shadow-md"
           >
-            <MapPin className="h-5 w-5 text-[#b88b3d]" />
+            <MapPin className="h-5 w-5 text-[#c5a46d]" />
 
             <div className="text-left">
               <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
@@ -220,7 +235,7 @@ export default function Header() {
           {cityOpen && (
             <div
               role="listbox"
-              className="absolute left-0 top-[calc(100%+8px)] z-50 w-72 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl"
+              className="absolute left-0 top-[calc(100%+8px)] z-50 w-72 overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card shadow-xl"
             >
               {/* Header */}
 
@@ -269,14 +284,14 @@ export default function Header() {
                         <div
                           className={`flex h-9 w-9 items-center justify-center rounded-lg ${
                             isSelected
-                              ? "bg-[#d4a84f]/15"
+                              ? "bg-[#c5a46d]/15"
                               : "bg-slate-100"
                           }`}
                         >
                           <MapPin
                             className={`h-4 w-4 ${
                               isSelected
-                                ? "text-[#b88b3d]"
+                                ? "text-[#c5a46d]"
                                 : "text-slate-400"
                             }`}
                           />
@@ -299,7 +314,7 @@ export default function Header() {
                         <span
                           className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
                             isSelected
-                              ? "bg-[#d4a84f]/15 text-[#9a742e]"
+                              ? "bg-[#c5a46d]/15 text-[#806744]"
                               : "bg-emerald-50 text-emerald-600"
                           }`}
                         >
@@ -349,7 +364,7 @@ export default function Header() {
             }
             placeholder="Search for hotels, restaurants, cuisines..."
             aria-label="Search hotels, restaurants and cuisines"
-            className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-12 pr-24 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#c79a45] focus:bg-white focus:ring-2 focus:ring-[#c79a45]/20"
+            className="control h-12 w-full bg-slate-50 pl-12 pr-24 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-[#c5a46d] focus:bg-white focus:ring-2 focus:ring-[#c5a46d]/20"
           />
 
           {/* Clear */}
@@ -370,39 +385,57 @@ export default function Header() {
           <button
             type="submit"
             aria-label="Search"
-            className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-[#9a742e]"
+            className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-[#806744]"
           >
             <Search className="h-5 w-5" />
           </button>
         </form>
 
-        {/* ============================= */}
-        {/* NOTIFICATIONS */}
-        {/* ============================= */}
-
-        <button
-          type="button"
-          aria-label="Notifications"
-          className="relative hidden h-11 w-11 shrink-0 items-center justify-center rounded-full text-slate-700 transition hover:bg-slate-100 sm:flex"
-        >
-          <Bell className="h-5 w-5" />
-
-          <span className="absolute right-2.5 top-2 h-2 w-2 rounded-full bg-[#c79a45]" />
-        </button>
-
-        {/* ============================= */}
-        {/* PROFILE */}
-        {/* ============================= */}
-
-        <button
-          type="button"
-          aria-label="Profile"
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#d4a84f] text-white shadow-sm transition hover:bg-[#bd913d]"
-        >
-          <User className="h-5 w-5" />
-        </button>
-
       </div>
+
+      {mobileNavOpen && (
+        <nav
+          id="mobile-site-navigation"
+          aria-label="Main navigation"
+          className="border-t border-slate-200 bg-white px-4 py-3 lg:hidden"
+        >
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            {menuItems.map((item) => {
+              const active = item.href === "/"
+                ? pathname === "/"
+                : pathname === item.href || pathname.startsWith(`${item.href}/`);
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileNavOpen(false)}
+                  aria-current={active ? "page" : undefined}
+                  className={`flex min-h-11 items-center rounded-xl px-3 py-2 text-sm font-medium transition-colors ${
+                    active
+                      ? "bg-[#14243a] text-white"
+                      : "text-slate-700 hover:bg-slate-100"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+            <Link
+              href="/settings"
+              onClick={() => setMobileNavOpen(false)}
+              aria-current={pathname === "/settings" ? "page" : undefined}
+              className={`flex min-h-11 items-center rounded-xl px-3 py-2 text-sm font-medium transition-colors ${
+                pathname === "/settings"
+                  ? "bg-[#14243a] text-white"
+                  : "text-slate-700 hover:bg-slate-100"
+              }`}
+            >
+              Settings
+            </Link>
+          </div>
+        </nav>
+      )}
     </header>
   );
 }

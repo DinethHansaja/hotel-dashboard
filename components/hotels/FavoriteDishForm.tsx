@@ -116,14 +116,14 @@ export default function FavoriteDishForm({
   };
 
   return (
-    <section className="mx-6 mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+    <section className="mx-6 mt-6 rounded-2xl border border-slate-200 bg-white surface-card p-6 shadow-sm md:p-8">
 
       {/* Header */}
 
       <div className="flex items-start gap-4">
 
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c79a45]/10">
-          <Utensils className="h-5 w-5 text-[#c79a45]" />
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c5a46d]/10">
+          <Utensils className="h-5 w-5 text-[#c5a46d]" />
         </div>
 
         <div>
@@ -171,7 +171,7 @@ export default function FavoriteDishForm({
             placeholder="e.g. Seafood Paella"
             maxLength={150}
             disabled={isSubmitting}
-            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#c79a45] focus:ring-2 focus:ring-[#c79a45]/20 disabled:cursor-not-allowed disabled:bg-slate-50"
+            className="control w-full px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20 disabled:cursor-not-allowed disabled:bg-slate-50"
           />
 
           <p className="mt-1.5 text-xs text-slate-400">
@@ -202,7 +202,7 @@ export default function FavoriteDishForm({
             placeholder="Enter your name"
             maxLength={100}
             disabled={isSubmitting}
-            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#c79a45] focus:ring-2 focus:ring-[#c79a45]/20 disabled:cursor-not-allowed disabled:bg-slate-50"
+            className="control w-full px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20 disabled:cursor-not-allowed disabled:bg-slate-50"
           />
         </div>
 
@@ -231,7 +231,7 @@ export default function FavoriteDishForm({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#c79a45] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#b88936] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+          className="ui-button inline-flex w-full items-center justify-center gap-2 bg-[#c5a46d] px-5 py-3 text-sm font-semibold text-[#0b1728] transition hover:bg-[#ae8c55] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
         >
           <Send className="h-4 w-4" />
 

@@ -183,7 +183,7 @@ export default async function HotelDetailsPage({
       <div className="px-6 pt-6">
         <Link
           href="/buffet"
-          className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-[#9a742e]"
+          className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-[#806744]"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Buffet Guide
@@ -194,7 +194,7 @@ export default async function HotelDetailsPage({
           HERO SECTION
       ========================================================= */}
 
-      <section className="mx-6 mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <section className="mx-6 mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card shadow-sm">
 
         <div className="relative h-[360px] w-full">
 
@@ -218,11 +218,11 @@ export default async function HotelDetailsPage({
 
           <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
 
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-[#c79a45] px-3 py-1 text-xs font-semibold shadow-sm">
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-[#c5a46d] px-3 py-1 text-xs font-semibold shadow-sm">
               Popular Hotel
             </div>
 
-            <h1 className="text-3xl font-bold md:text-4xl">
+            <h1 className="page-title">
               {hotel.hotel_name}
             </h1>
 
@@ -246,8 +246,8 @@ export default async function HotelDetailsPage({
 
           <div className="flex items-center gap-3">
 
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c79a45]/10">
-              <Star className="h-5 w-5 fill-[#c79a45] text-[#c79a45]" />
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c5a46d]/10">
+              <Star className="h-5 w-5 fill-[#c5a46d] text-[#c5a46d]" />
             </div>
 
             <div>
@@ -266,8 +266,8 @@ export default async function HotelDetailsPage({
 
           <div className="flex items-center gap-3">
 
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c79a45]/10">
-              <MapPin className="h-5 w-5 text-[#c79a45]" />
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c5a46d]/10">
+              <MapPin className="h-5 w-5 text-[#c5a46d]" />
             </div>
 
             <div className="min-w-0">
@@ -288,8 +288,8 @@ export default async function HotelDetailsPage({
 
           <div className="flex items-center gap-3">
 
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c79a45]/10">
-              <Phone className="h-5 w-5 text-[#c79a45]" />
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c5a46d]/10">
+              <Phone className="h-5 w-5 text-[#c5a46d]" />
             </div>
 
             <div className="min-w-0">
@@ -311,8 +311,8 @@ export default async function HotelDetailsPage({
 
           <div className="flex items-center gap-3">
 
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c79a45]/10">
-              <Globe className="h-5 w-5 text-[#c79a45]" />
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c5a46d]/10">
+              <Globe className="h-5 w-5 text-[#c5a46d]" />
             </div>
 
             <div className="min-w-0">
@@ -326,7 +326,7 @@ export default async function HotelDetailsPage({
                   href={hotel.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block truncate font-semibold text-[#9a742e] hover:underline"
+                  className="block truncate font-semibold text-[#806744] hover:underline"
                 >
                   Visit Website
                 </a>
@@ -353,12 +353,12 @@ export default async function HotelDetailsPage({
             ABOUT HOTEL
         ======================================================= */}
 
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:col-span-2">
+        <section className="rounded-2xl border border-slate-200 bg-white surface-card p-6 shadow-sm lg:col-span-2">
 
           <div className="flex items-center gap-3">
 
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#c79a45]/10">
-              <Info className="h-5 w-5 text-[#c79a45]" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#c5a46d]/10">
+              <Info className="h-5 w-5 text-[#c5a46d]" />
             </div>
 
             <div>
@@ -392,7 +392,7 @@ export default async function HotelDetailsPage({
 
                 <div className="flex items-start gap-3">
 
-                  <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-[#c79a45]" />
+                  <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-[#c5a46d]" />
 
                   <div>
 
@@ -418,12 +418,12 @@ export default async function HotelDetailsPage({
             BUFFET EXPERIENCE
         ======================================================= */}
 
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <section className="rounded-2xl border border-slate-200 bg-white surface-card p-6 shadow-sm">
 
           <div className="flex items-center gap-3">
 
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#c79a45]/10">
-              <UtensilsCrossed className="h-5 w-5 text-[#c79a45]" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#c5a46d]/10">
+              <UtensilsCrossed className="h-5 w-5 text-[#c5a46d]" />
             </div>
 
             <div>
@@ -458,7 +458,7 @@ export default async function HotelDetailsPage({
                         {schedule.meal_type || "Buffet"}
                       </p>
 
-                      <p className="mt-1 text-xs font-medium text-[#9a742e]">
+                      <p className="mt-1 text-xs font-medium text-[#806744]">
                         {schedule.day_group}
                       </p>
 
@@ -478,7 +478,7 @@ export default async function HotelDetailsPage({
                   {schedule.buffet_time && (
                     <div className="mt-3 flex items-center gap-2 text-sm text-slate-500">
 
-                      <Clock3 className="h-4 w-4 text-[#c79a45]" />
+                      <Clock3 className="h-4 w-4 text-[#c5a46d]" />
 
                       {schedule.buffet_time}
 
@@ -524,12 +524,12 @@ export default async function HotelDetailsPage({
       ========================================================= */}
 
       {hotelFeatures.length > 0 && (
-        <section className="mx-6 mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <section className="mx-6 mt-6 rounded-2xl border border-slate-200 bg-white surface-card p-6 shadow-sm">
 
           <div className="flex items-center gap-3">
 
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#c79a45]/10">
-              <CheckCircle2 className="h-5 w-5 text-[#c79a45]" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#c5a46d]/10">
+              <CheckCircle2 className="h-5 w-5 text-[#c5a46d]" />
             </div>
 
             <div>
@@ -552,7 +552,7 @@ export default async function HotelDetailsPage({
 
               <div
                 key={feature.feature_id}
-                className="rounded-xl border border-[#c79a45]/20 bg-[#c79a45]/5 px-4 py-3"
+                className="rounded-xl border border-[#c5a46d]/20 bg-[#c5a46d]/5 px-4 py-3"
               >
 
                 <p className="text-sm font-semibold text-slate-800">
@@ -582,7 +582,7 @@ export default async function HotelDetailsPage({
 
         <div className="flex items-start gap-3">
 
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#c79a45]/10 text-lg">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#c5a46d]/10 text-lg">
             🐄
           </div>
 
@@ -604,7 +604,7 @@ export default async function HotelDetailsPage({
 
           <div className="mt-5 rounded-xl border border-amber-200 bg-white p-4">
 
-            <p className="text-base font-bold text-[#9a742e]">
+            <p className="text-base font-bold text-[#806744]">
               {hotel.cash_cow_dish}
             </p>
 
@@ -634,7 +634,7 @@ export default async function HotelDetailsPage({
           SPECIAL NOTES
       ========================================================= */}
 
-      <section className="mx-6 mb-6 mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="mx-6 mb-6 mt-6 rounded-2xl border border-slate-200 bg-white surface-card p-6 shadow-sm">
 
         <h2 className="text-xl font-bold">
           Special Notes
@@ -686,7 +686,7 @@ export default async function HotelDetailsPage({
           FAVORITE DISH FORM
       ========================================================= */}
 
-      <section className="mx-6 mb-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="mx-6 mb-6 rounded-2xl border border-slate-200 bg-white surface-card p-6 shadow-sm">
 
         <FavoriteDishForm
           hotelId={hotel.hotel_id}
@@ -699,12 +699,12 @@ export default async function HotelDetailsPage({
           CUSTOMER FAVORITE DISHES
       ========================================================= */}
 
-      <section className="mx-6 mb-10 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="mx-6 mb-10 rounded-2xl border border-slate-200 bg-white surface-card p-6 shadow-sm">
 
         <div className="flex items-start gap-3">
 
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#c79a45]/10">
-            <UtensilsCrossed className="h-5 w-5 text-[#c79a45]" />
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#c5a46d]/10">
+            <UtensilsCrossed className="h-5 w-5 text-[#c5a46d]" />
           </div>
 
           <div>

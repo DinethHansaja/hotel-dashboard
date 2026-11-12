@@ -20,7 +20,7 @@ export default function Pagination({
       {currentPage > 1 ? (
         <Link
           href={`/buffet?page=${currentPage - 1}`}
-          className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-[#c79a45] hover:text-[#9a742e]"
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-[#c5a46d] hover:text-[#806744]"
         >
           <ChevronLeft className="h-4 w-4" />
         </Link>
@@ -40,8 +40,8 @@ export default function Pagination({
             href={`/buffet?page=${page}`}
             className={`flex h-10 min-w-10 items-center justify-center rounded-lg px-3 text-sm font-medium transition ${
               page === currentPage
-                ? "bg-[#c79a45] text-white shadow-sm"
-                : "border border-slate-200 bg-white text-slate-600 hover:border-[#c79a45] hover:text-[#9a742e]"
+                ? "bg-[#c5a46d] text-[#0b1728] shadow-sm"
+                : "border border-slate-200 bg-white text-slate-600 hover:border-[#c5a46d] hover:text-[#806744]"
             }`}
           >
             {page}
@@ -53,7 +53,7 @@ export default function Pagination({
       {currentPage < totalPages ? (
         <Link
           href={`/buffet?page=${currentPage + 1}`}
-          className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-[#c79a45] hover:text-[#9a742e]"
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-[#c5a46d] hover:text-[#806744]"
         >
           <ChevronRight className="h-4 w-4" />
         </Link>
