@@ -73,7 +73,6 @@ export default async function HotelDetailsPage({
         latitude,
         longitude,
         Rating,
-        review_count,
         google_review_url,
         rate_verified_at,
         cash_cow_dish,
@@ -263,7 +262,6 @@ export default async function HotelDetailsPage({
                 {rating}
               </p>
               {formatDataDate(hotel.rate_verified_at) && <p className="text-xs text-slate-500">Rating information last checked {formatDataDate(hotel.rate_verified_at)}</p>}
-              {hotel.review_count != null && Number(hotel.review_count) > 0 && <p className="text-xs text-slate-500">{Number(hotel.review_count).toLocaleString()} listed reviews</p>}
               {googleReviewUrl && <a href={googleReviewUrl} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-[#806744] hover:underline">Google Reviews <Globe className="h-3 w-3" /></a>}
             </div>
 

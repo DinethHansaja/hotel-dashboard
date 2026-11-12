@@ -24,7 +24,6 @@ export default async function HotelsPage() {
       restaurant_name,
       image_url,
       Rating,
-      review_count,
       google_review_url,
       address,
       location
@@ -147,7 +146,6 @@ export default async function HotelsPage() {
                           ? Number(hotel.Rating).toFixed(1)
                           : "Rating not listed"}
                       </span>
-                      {hotel.review_count != null && hotel.review_count > 0 && <span className="text-xs text-slate-500">({hotel.review_count} reviews)</span>}
                     </div>
 
                     {/* Price */}
