@@ -244,7 +244,7 @@ export default function BusinessDirectory({
               <h2 className="text-xl font-semibold text-slate-900">{title} map</h2>
               <p className="mt-1 text-sm text-slate-500">Hover over a marker for a preview, or select one to see the {singular} details.</p>
             </div>
-            <div className="grid grid-cols-1 items-stretch gap-4 lg:grid-cols-2">
+            <div className="grid min-w-0 grid-cols-1 items-stretch gap-4 lg:grid-cols-2">
               <BusinessMap businesses={filteredBusinesses} kind={kind} selectedBusinessId={selectedBusiness?.id ?? null} onSelectBusiness={setSelectedBusinessId} />
               <article className="flex min-h-[380px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card shadow-sm lg:h-[560px]">
               {selectedBusiness ? (

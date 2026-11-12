@@ -11,11 +11,8 @@ export default function Header() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentQuery = searchParams.get("q") ?? "";
-  const [query, setQuery] = useState(currentQuery);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
-  useEffect(() => setQuery(currentQuery), [currentQuery]);
-  useEffect(() => setMobileNavOpen(false), [pathname]);
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") setMobileNavOpen(false);
@@ -26,7 +23,8 @@ export default function Header() {
 
   function handleSearch(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const value = query.trim();
+    const form = new FormData(event.currentTarget);
+    const value = String(form.get("q") ?? "").trim();
     router.push(value ? `/search?q=${encodeURIComponent(value)}` : "/search");
   }
 
@@ -56,9 +54,10 @@ export default function Header() {
         <form onSubmit={handleSearch} role="search" className="relative ml-auto flex-1 lg:ml-0">
           <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
           <input
+            key={currentQuery}
             type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            name="q"
+            defaultValue={currentQuery}
             placeholder="Search hotels, buffets, restaurants or cafés"
             aria-label="Search hotels, buffets, restaurants and cafés"
             className="control h-12 w-full bg-slate-50 pl-12 pr-12 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-[#c5a46d] focus:bg-white focus:ring-2 focus:ring-[#c5a46d]/20"

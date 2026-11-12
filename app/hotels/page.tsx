@@ -19,7 +19,7 @@ export default async function HotelsPage() {
       hotel_name,
       restaurant_name,
       image_url,
-      rating,
+      Rating,
       review_count,
       address,
       location
@@ -135,11 +135,11 @@ export default async function HotelsPage() {
                   <div className="mt-4 flex items-center justify-between">
                     {/* Rating */}
                     <div className="flex items-center gap-2">
-                      {hotel.rating !== null && hotel.rating !== undefined && <Star className="h-4 w-4 fill-[#c5a46d] text-[#c5a46d]" />}
+                      {hotel.Rating !== null && hotel.Rating !== undefined && <Star className="h-4 w-4 fill-[#c5a46d] text-[#c5a46d]" />}
                       <span className="text-sm font-semibold text-slate-800">
-                        {hotel.rating !== null &&
-                        hotel.rating !== undefined
-                          ? Number(hotel.rating).toFixed(1)
+                        {hotel.Rating !== null &&
+                        hotel.Rating !== undefined
+                          ? Number(hotel.Rating).toFixed(1)
                           : "Rating not listed"}
                       </span>
                       {hotel.review_count != null && hotel.review_count > 0 && <span className="text-xs text-slate-500">({hotel.review_count} reviews)</span>}

@@ -99,7 +99,7 @@ function PlaceCard({ place }: { place: FeaturedPlace }) {
 
 export function FeaturedHotelsPanel({ hotels }: { hotels: FeaturedHotel[] }) {
   return (
-    <aside className="surface-card h-full p-5 md:p-6" aria-labelledby="featured-hotels-heading">
+    <aside className="surface-card h-full min-w-0 p-5 md:p-6" aria-labelledby="featured-hotels-heading">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#806744]">Stay and dine</p>

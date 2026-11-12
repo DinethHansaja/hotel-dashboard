@@ -90,18 +90,18 @@ export default function BuffetFilters() {
 
   return (
     <div className="rounded-2xl border border-slate-200 bg-white surface-card p-3 shadow-sm">
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="grid grid-cols-1 items-center gap-3 sm:grid-cols-2 xl:grid-cols-[1.25fr_1fr_1.1fr_1fr_auto]">
 
         {/* ============================= */}
         {/* SORT */}
         {/* ============================= */}
 
-        <div className="relative">
+        <div className="relative min-w-0">
           <select
             value={currentSort}
             onChange={handleSortChange}
             aria-label="Sort hotels"
-            className="control h-[50px] min-w-[190px] cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c5a46d] focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20"
+            className="control h-[50px] w-full min-w-0 cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c5a46d] focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20"
           >
             <option value="rating-desc">
               Listed Rating: High to Low
@@ -139,7 +139,7 @@ export default function BuffetFilters() {
         {/* PRICE */}
         {/* ============================= */}
 
-        <div className="relative">
+        <div className="relative min-w-0">
           <select
             value={currentPrice}
             onChange={(e) =>
@@ -149,7 +149,7 @@ export default function BuffetFilters() {
               )
             }
             aria-label="Filter by price"
-            className="control h-[50px] min-w-[165px] cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c5a46d] focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20"
+            className="control h-[50px] w-full min-w-0 cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c5a46d] focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20"
           >
             <option value="all">
               All Prices
@@ -187,7 +187,7 @@ export default function BuffetFilters() {
         {/* CUISINE */}
         {/* ============================= */}
 
-        <div className="relative">
+        <div className="relative min-w-0">
           <select
             value={currentCuisine}
             onChange={(e) =>
@@ -197,7 +197,7 @@ export default function BuffetFilters() {
               )
             }
             aria-label="Filter by cuisine"
-            className="control h-[50px] min-w-[170px] cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c5a46d] focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20"
+            className="control h-[50px] w-full min-w-0 cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c5a46d] focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20"
           >
             <option value="all">
               All Varieties
@@ -247,7 +247,7 @@ export default function BuffetFilters() {
         {/* RATING */}
         {/* ============================= */}
 
-        <div className="relative">
+        <div className="relative min-w-0">
           <select
             value={currentRating}
             onChange={(e) =>
@@ -257,7 +257,7 @@ export default function BuffetFilters() {
               )
             }
             aria-label="Filter by rating"
-            className="control h-[50px] min-w-[165px] cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c5a46d] focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20"
+            className="control h-[50px] w-full min-w-0 cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c5a46d] focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20"
           >
             <option value="all">
               All Ratings
@@ -298,7 +298,7 @@ export default function BuffetFilters() {
               !showMoreFilters
             )
           }
-          className={`flex h-[50px] items-center gap-2 rounded-xl border px-5 text-sm font-medium transition ${
+          className={`flex h-[50px] w-full items-center justify-center gap-2 rounded-xl border px-4 text-sm font-medium transition sm:col-span-2 xl:col-span-1 xl:w-auto ${
             hasExtraFilters
               ? "border-[#c5a46d] bg-[#c5a46d]/10 text-[#806744]"
               : "border-slate-200 text-slate-700 hover:border-[#c5a46d] hover:text-[#806744]"
@@ -328,7 +328,7 @@ export default function BuffetFilters() {
 
             {/* Buffet Availability */}
 
-            <div className="min-w-[220px]">
+          <div className="w-full min-w-0 sm:w-auto sm:min-w-[220px]">
               <label className="mb-2 block text-xs font-medium text-slate-500">
                 Buffet Availability
               </label>

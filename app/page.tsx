@@ -56,7 +56,7 @@ export default async function HomePage() {
     await Promise.all([
       supabase
         .from("hotels")
-        .select("hotel_id, hotel_name, restaurant_name, image_url, location, latitude, longitude, rating", { count: "exact" })
+        .select("hotel_id, hotel_name, restaurant_name, image_url, location, latitude, longitude, Rating", { count: "exact" })
         .order("hotel_id"),
       supabase
         .from("hotels")
@@ -96,7 +96,7 @@ export default async function HomePage() {
   ).length;
 
   const featuredHotels: FeaturedHotel[] = [...hotels]
-    .sort((first, second) => (toNumber(second.rating) ?? -1) - (toNumber(first.rating) ?? -1))
+    .sort((first, second) => (toNumber(second.Rating) ?? -1) - (toNumber(first.Rating) ?? -1))
     .slice(0, 4)
     .map((hotel) => ({
       hotel_id: hotel.hotel_id,
@@ -104,7 +104,7 @@ export default async function HomePage() {
       restaurant_name: hotel.restaurant_name ?? null,
       image_url: hotel.image_url ?? null,
       location: hotel.location ?? null,
-      rating: toNumber(hotel.rating),
+      rating: toNumber(hotel.Rating),
     }));
 
   const restaurants = restaurantResult.data ?? [];
@@ -165,8 +165,8 @@ export default async function HomePage() {
               </p>
             )}
 
-            <div className="grid items-stretch gap-4 lg:grid-cols-[minmax(0,1.7fr)_minmax(300px,0.8fr)]">
-              <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-1.5 surface-card">
+            <div className="grid min-w-0 items-stretch gap-4 lg:grid-cols-[minmax(0,1.7fr)_minmax(300px,0.8fr)]">
+              <div className="min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white p-1.5 surface-card">
                 <div className="h-[360px] overflow-hidden rounded-xl sm:h-[400px] lg:h-[460px]" role="region" aria-label="Interactive map of Colombo hotels">
                   <HotelMap hotels={hotelLocations} />
                 </div>

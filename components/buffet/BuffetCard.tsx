@@ -445,7 +445,7 @@ export default function BuffetCard({
                 communityReviewCount !== undefined &&
                 communityReviewCount > 0 && (
                   <p className="mt-2 text-[11px] text-slate-400">
-                    {displayCommunityReviewCount}{" "}
+                    {communityReviewCount}{" "}
                     {communityReviewCount ===
                     1
                       ? "review"

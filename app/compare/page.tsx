@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import {
   ChevronDown,
   ChevronUp,
@@ -507,7 +508,43 @@ export default function ComparePage() {
               </button>
             </div>
           ) : (
-            <div className="overflow-x-auto">
+            <>
+            <div className="space-y-4 p-4 lg:hidden">
+              {selectedHotels.map((hotel) => {
+                const id = normalizeId(hotel.hotel_id);
+                const rating = getRating(hotel);
+                const price = getPrice(hotel.schedules);
+                const times = getBuffetTimes(hotel.schedules);
+                const phone = getPhone(hotel);
+                const website = getWebsite(hotel);
+
+                return (
+                  <article key={id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card">
+                    <div className="relative aspect-[16/9] bg-slate-100">
+                      {hotel.image_url ? <img src={hotel.image_url} alt={hotel.hotel_name || "Hotel"} className="h-full w-full object-cover" /> : <div className="flex h-full items-center justify-center"><HotelIcon className="h-10 w-10 text-slate-300" /></div>}
+                      <button type="button" onClick={() => removeHotel(id)} aria-label={`Remove ${hotel.hotel_name || "hotel"}`} className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white text-slate-600 shadow"><X className="h-4 w-4" /></button>
+                    </div>
+                    <div className="p-5">
+                      <h2 className="text-xl font-semibold text-[#0b1728]">{hotel.hotel_name || "Unnamed hotel"}</h2>
+                      {hotel.restaurant_name && <p className="mt-1 text-sm text-slate-500">{hotel.restaurant_name}</p>}
+                      <dl className="mt-4 divide-y divide-slate-100 rounded-xl border border-slate-100 px-4">
+                        <div className="flex items-start justify-between gap-4 py-3"><dt className="text-sm text-slate-500">Listed rating</dt><dd className="text-right text-sm font-semibold text-slate-800">{rating === null ? "Not available" : `${rating.toFixed(1)} / 5`}</dd></div>
+                        <div className="flex items-start justify-between gap-4 py-3"><dt className="text-sm text-slate-500">Buffet price</dt><dd className="text-right text-sm font-semibold text-slate-800">{formatPrice(price)}</dd></div>
+                        <div className="flex items-start justify-between gap-4 py-3"><dt className="text-sm text-slate-500">Buffet times</dt><dd className="max-w-[65%] text-right text-sm text-slate-700">{times.length ? times.join(" · ") : "Not available"}</dd></div>
+                        <div className="flex items-start justify-between gap-4 py-3"><dt className="text-sm text-slate-500">Location</dt><dd className="max-w-[65%] text-right text-sm text-slate-700">{getLocation(hotel) || "Not available"}</dd></div>
+                        <div className="flex items-start justify-between gap-4 py-3"><dt className="text-sm text-slate-500">Contact</dt><dd className="max-w-[65%] break-words text-right text-sm text-slate-700">{phone || "Not available"}</dd></div>
+                      </dl>
+                      {showAllDetails && <p className="mt-4 text-sm leading-6 text-slate-600">{hotel.description || "No description available."}</p>}
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        <Link href={`/hotels/${hotel.hotel_id}`} className="ui-button ui-button-primary flex-1 px-4 py-3 text-center text-sm text-white">View hotel</Link>
+                        {website && <a href={getWebsiteUrl(website)} target="_blank" rel="noopener noreferrer" className="ui-button ui-button-secondary inline-flex items-center gap-2 px-4 py-3 text-sm">Website <Globe className="h-4 w-4" /></a>}
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+            <div className="hidden overflow-x-auto lg:block">
               <div
                 className="min-w-[900px]"
                 style={{
@@ -854,6 +891,7 @@ export default function ComparePage() {
                 </div>
               </div>
             </div>
+            </>
           )}
 
           {/* ================= MORE DETAILS ================= */}
