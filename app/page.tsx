@@ -1,5 +1,8 @@
 import { supabase } from "@/lib/supabase";
 
+// This page reads live hotel, restaurant and café records from Supabase.
+export const dynamic = "force-dynamic";
+
 import HeroSection from "@/components/home/HeroSection";
 import HotelMap from "@/components/home/HotelMap";
 import CashCowSection from "@/components/home/CashCowSection";

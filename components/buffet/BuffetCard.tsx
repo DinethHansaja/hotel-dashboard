@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useSavedHotels } from "@/lib/useSavedHotels";
+import { formatDataDate, toExternalUrl } from "@/lib/commercialData";
 
 import {
   Heart,
@@ -51,17 +52,12 @@ type BuffetCardProps = {
 };
 
 // ======================================================
-// RATE VERIFIED TEXT
+// RATING DATA FRESHNESS
 // ======================================================
 
-function getVerifiedText(dateString?: string | null) {
-  if (!dateString) return null;
-  const date = new Date(dateString);
-  if (Number.isNaN(date.getTime())) return null;
-  if (date.getTime() > Date.now()) return null;
-  return `Price last verified ${new Intl.DateTimeFormat("en-LK", {
-    day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Colombo",
-  }).format(date)}`;
+function getRatingCheckedText(dateString?: string | null) {
+  const date = formatDataDate(dateString);
+  return date ? `Rating information last checked ${date}` : null;
 }
 
 // ======================================================
@@ -97,7 +93,7 @@ export default function BuffetCard({
   onToggleCompare,
   compareDisabled = false,
 }: BuffetCardProps) {
-  const verifiedText = getVerifiedText(rateVerifiedAt);
+  const ratingCheckedText = getRatingCheckedText(rateVerifiedAt);
   const { savedHotelIds, toggleHotel } = useSavedHotels();
   const isSaved = savedHotelIds.includes(hotelId);
 
@@ -241,7 +237,7 @@ export default function BuffetCard({
               RATING
           ================================================== */}
 
-          {(rating !== null && rating !== undefined || (googleReviewUrl && googleReviewUrl.trim())) && (
+          {(rating !== null && rating !== undefined || (googleReviewUrl && googleReviewUrl.trim()) || ratingCheckedText) && (
             <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
               {rating !== null && rating !== undefined && (
                 <span className="inline-flex items-center gap-1.5 text-slate-700">
@@ -250,11 +246,12 @@ export default function BuffetCard({
                   <span className="text-xs text-slate-500">Listed hotel rating{reviewCount != null ? ` · ${reviewCount} reviews` : ""}</span>
                 </span>
               )}
-              {googleReviewUrl && googleReviewUrl.trim() && (
-                <a href={googleReviewUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-[#806744] hover:underline">
-                  View source <ExternalLink className="h-3 w-3" />
+              {toExternalUrl(googleReviewUrl) && (
+                <a href={toExternalUrl(googleReviewUrl)!} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-[#806744] hover:underline">
+                  Google Reviews <ExternalLink className="h-3 w-3" />
                 </a>
               )}
+              {ratingCheckedText && <span className="w-full text-xs text-slate-500">{ratingCheckedText}</span>}
             </div>
           )}
 
@@ -304,18 +301,8 @@ export default function BuffetCard({
             )}
 
             {/* =================================================
-                RATE VERIFIED
+                RATING DATA CHECK
             ================================================== */}
-
-            {verifiedText && (
-              <div className="flex items-center gap-2 text-xs text-slate-500">
-
-                <span>
-                  {verifiedText}
-                </span>
-
-              </div>
-            )}
 
             {/* HOTEL DINING HIGHLIGHT */}
 

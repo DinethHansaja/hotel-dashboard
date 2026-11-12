@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CalendarDays, ExternalLink, Heart, MapPin, Phone, Search } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useSavedHotels } from "@/lib/useSavedHotels";
+import { toExternalUrl } from "@/lib/commercialData";
 
 type Hotel = {
   hotel_id: number;
@@ -65,13 +66,13 @@ export default function EventsPage() {
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {visibleHotels.map((hotel) => {
               const phone = hotel.contact_number;
-              const website = hotel.website;
+              const website = toExternalUrl(hotel.website);
               return <article key={hotel.hotel_id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card">
                 <div className="relative aspect-[16/9] bg-slate-100">{hotel.image_url ? <img src={hotel.image_url} alt={hotel.hotel_name} className="h-full w-full object-cover" /> : <div className="flex h-full items-center justify-center text-sm text-slate-400"><CalendarDays className="mr-2 h-5 w-5"/>Hotel image unavailable</div>}<button type="button" aria-label={savedHotelIds.includes(hotel.hotel_id) ? `Remove ${hotel.hotel_name} from favourites` : `Save ${hotel.hotel_name} to favourites`} aria-pressed={savedHotelIds.includes(hotel.hotel_id)} onClick={() => toggleHotel(hotel.hotel_id)} className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white text-slate-700 shadow-sm"><Heart className={`h-5 w-5 ${savedHotelIds.includes(hotel.hotel_id) ? "fill-rose-700 text-rose-700" : ""}`}/></button></div>
                 <div className="p-5"><h3 className="text-lg font-semibold">{hotel.hotel_name}</h3>
                   {(hotel.address || hotel.location) && <p className="mt-2 flex gap-2 text-sm leading-5 text-slate-600"><MapPin className="h-4 w-4 shrink-0 text-[#806744]"/>{hotel.address || hotel.location}</p>}
                   <p className="mt-3 text-sm leading-6 text-slate-500">Contact the property to confirm event facilities, terms and availability.</p>
-                  <div className="mt-4 flex flex-wrap gap-2">{phone && <a className="ui-button ui-button-secondary px-3 py-2 text-sm" href={`tel:${phone}`}><Phone className="mr-2 inline h-4 w-4"/>Call hotel</a>}{website && <a className="ui-button ui-button-secondary px-3 py-2 text-sm" href={/^https?:\/\//i.test(website) ? website : `https://${website}`} target="_blank" rel="noopener noreferrer">Property website <ExternalLink className="ml-1 inline h-3.5 w-3.5"/></a>}</div>
+                  <div className="mt-4 flex flex-wrap gap-2">{phone && <a className="ui-button ui-button-secondary px-3 py-2 text-sm" href={`tel:${phone}`}><Phone className="mr-2 inline h-4 w-4"/>Call hotel</a>}{website && <a className="ui-button ui-button-secondary px-3 py-2 text-sm" href={website} target="_blank" rel="noopener noreferrer">Property website <ExternalLink className="ml-1 inline h-3.5 w-3.5"/></a>}</div>
                   <Link href={`/hotels/${hotel.hotel_id}`} className="mt-3 inline-flex text-sm font-semibold text-[#806744] hover:underline">View hotel details <span className="sr-only"> for {hotel.hotel_name}</span></Link>
                 </div>
               </article>;

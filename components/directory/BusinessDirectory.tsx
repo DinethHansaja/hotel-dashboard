@@ -14,6 +14,7 @@ import {
 import BusinessMap from "@/components/directory/BusinessMap";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import type { DirectoryBusiness } from "@/types/database";
+import { formatDataDate, toExternalUrl } from "@/lib/commercialData";
 
 export type { DirectoryBusiness };
 
@@ -25,7 +26,7 @@ type BusinessDirectoryProps = {
 };
 
 function getWebsiteUrl(value: string) {
-  return /^https?:\/\//i.test(value) ? value : "https://" + value;
+  return toExternalUrl(value) ?? "#";
 }
 
 function getMapUrl(business: DirectoryBusiness) {
@@ -256,7 +257,7 @@ export default function BusinessDirectory({
                   <div className="min-h-0 flex-1 overflow-y-auto p-5 md:p-6">
                     <h3 className="text-2xl font-bold text-slate-900">{selectedBusiness.name}</h3>
                     <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-600">
-                      {selectedBusiness.rating !== null && <span className="inline-flex items-center gap-1"><Star className="h-4 w-4 fill-amber-500 text-amber-500" />{selectedBusiness.rating.toFixed(1)}<span>listed rating{selectedBusiness.reviewCount !== null ? ` · ${selectedBusiness.reviewCount.toLocaleString()} reviews` : ""}</span></span>}
+                      {selectedBusiness.rating !== null && <span className="inline-flex items-center gap-1"><Star className="h-4 w-4 fill-amber-500 text-amber-500" />{selectedBusiness.rating.toFixed(1)}<span>listed rating{selectedBusiness.reviewCount !== null ? ` · ${selectedBusiness.reviewCount.toLocaleString()} listed reviews` : ""}</span></span>}
                       {selectedBusiness.category && <span className="inline-flex items-center gap-1"><Coffee className="h-4 w-4 text-[#806744]" />{selectedBusiness.category}</span>}
                       {selectedBusiness.area && <span className="inline-flex items-center gap-1"><MapPin className="h-4 w-4 text-[#806744]" />{selectedBusiness.area}</span>}
                     </div>
@@ -264,16 +265,18 @@ export default function BusinessDirectory({
                     {selectedBusiness.specialties && <p className="mt-3 text-sm leading-6 text-slate-600"><strong className="text-slate-800">Specialties:</strong> {selectedBusiness.specialties}</p>}
                     <div className="mt-5 flex flex-wrap gap-2 border-b border-slate-100 pb-5">
                       {selectedBusiness.telephone && <a href={`tel:${selectedBusiness.telephone}`} className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium hover:border-[#c5a46d]"><Phone className="mr-2 inline h-4 w-4" />{selectedBusiness.telephone}</a>}
-                      {selectedBusiness.website && <a href={getWebsiteUrl(selectedBusiness.website)} target="_blank" rel="noreferrer" className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium hover:border-[#c5a46d]"><Globe className="mr-2 inline h-4 w-4" />Website</a>}
-                      {getMapUrl(selectedBusiness) && <a href={getMapUrl(selectedBusiness)!} target="_blank" rel="noreferrer" className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium hover:border-[#c5a46d]"><MapPin className="mr-2 inline h-4 w-4" />Directions</a>}
+                      {toExternalUrl(selectedBusiness.website) && <a href={getWebsiteUrl(selectedBusiness.website!)} target="_blank" rel="noopener noreferrer" className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium hover:border-[#c5a46d]"><Globe className="mr-2 inline h-4 w-4" />Website</a>}
+                      {getMapUrl(selectedBusiness) && toExternalUrl(getMapUrl(selectedBusiness)) && <a href={toExternalUrl(getMapUrl(selectedBusiness))!} target="_blank" rel="noopener noreferrer" className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium hover:border-[#c5a46d]"><MapPin className="mr-2 inline h-4 w-4" />Google Maps</a>}
+                      {selectedBusiness.email && <a href={`mailto:${selectedBusiness.email}`} className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium hover:border-[#c5a46d]">Email</a>}
                     </div>
+                    {formatDataDate(selectedBusiness.lastChecked) && <p className="mt-4 text-xs text-slate-500">Listing information last checked {formatDataDate(selectedBusiness.lastChecked)}.</p>}
                     <div className="grid gap-5 pt-4 sm:grid-cols-2">
                       <div><h4 className="font-semibold text-slate-800"><Clock3 className="mr-2 inline h-4 w-4 text-[#806744]" />Opening hours</h4><p className="mt-2 text-sm text-slate-600">{selectedBusiness.openingHours || "Hours not provided"}</p></div>
                       <div><h4 className="font-semibold text-slate-800"><Icon className="mr-2 inline h-4 w-4 text-[#806744]" />{kind === "cafe" ? "Cafe details" : "Restaurant details"}</h4><p className="mt-2 text-sm text-slate-600">{selectedBusiness.priceRange || "Price range not provided"}</p></div>
                     </div>
                   </div>
                 </>
-              ) : <div className="flex h-full items-center justify-center p-8 text-center text-slate-500">No cafes match the selected filters.</div>}
+              ) : <div className="flex h-full items-center justify-center p-8 text-center text-slate-500">No {singular}s match the selected filters.</div>}
               </article>
             </div>
           </section>
@@ -382,7 +385,7 @@ export default function BusinessDirectory({
 
                           {business.reviewCount !== null && (
                             <span className="text-slate-500">
-                              {business.reviewCount.toLocaleString()} reviews
+                              {business.reviewCount.toLocaleString()} listed reviews
                             </span>
                           )}
                         </div>
@@ -429,9 +432,9 @@ export default function BusinessDirectory({
                           </a>
                         )}
 
-                        {business.website && (
+                        {toExternalUrl(business.website) && (
                           <a
-                            href={getWebsiteUrl(business.website)}
+                            href={getWebsiteUrl(business.website!)}
                             target="_blank"
                             rel="noreferrer"
                             className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:border-[#c5a46d] hover:text-[#806744]"
@@ -442,31 +445,33 @@ export default function BusinessDirectory({
                           </a>
                         )}
 
-                        {business.sourceUrl && business.rating !== null && (
+                        {toExternalUrl(business.sourceUrl) && (
                           <a
-                            href={business.sourceUrl}
+                            href={toExternalUrl(business.sourceUrl)!}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:border-[#c5a46d] hover:text-[#806744]"
                           >
-                            Business source
+                            Information source
                             <ArrowUpRight className="h-3 w-3" />
                           </a>
                         )}
 
-                        {mapUrl && (
+                        {mapUrl && toExternalUrl(mapUrl) && (
                           <a
-                            href={mapUrl}
+                            href={toExternalUrl(mapUrl)!}
                             target="_blank"
                             rel="noreferrer"
                             className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:border-[#c5a46d] hover:text-[#806744]"
                           >
                             <MapPin className="h-3.5 w-3.5" />
-                            Map
+                            Google Maps
                             <ArrowUpRight className="h-3 w-3" />
                           </a>
                         )}
                       </div>
+                      {formatDataDate(business.lastChecked) && <p className="mt-3 text-xs text-slate-500">Listing information last checked {formatDataDate(business.lastChecked)}.</p>}
+                      {!business.telephone && !business.email && !business.website && <p className="mt-3 text-xs text-slate-500">Contact details are not currently listed.</p>}
 
                     </div>
                   </article>

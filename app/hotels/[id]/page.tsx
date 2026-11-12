@@ -1,11 +1,11 @@
 import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 
 import FavoriteDishForm from "@/components/hotels/FavoriteDishForm";
 import SaveHotelButton from "@/components/hotels/SaveHotelButton";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import type { FavoriteDish } from "@/types/database";
+import { formatDataDate, toExternalUrl } from "@/lib/commercialData";
 
 import {
   Star,
@@ -73,6 +73,7 @@ export default async function HotelDetailsPage({
         latitude,
         longitude,
         Rating,
+        review_count,
         google_review_url,
         rate_verified_at,
         cash_cow_dish,
@@ -173,6 +174,12 @@ export default async function HotelDetailsPage({
 
   const customerFavorites: FavoriteDish[] =
     (favoriteDishes as FavoriteDish[] | null) ?? [];
+  const websiteUrl = toExternalUrl(hotel.website);
+  const googleReviewUrl = toExternalUrl(hotel.google_review_url);
+  const mapQuery = hotel.latitude != null && hotel.longitude != null
+    ? `${hotel.latitude},${hotel.longitude}`
+    : hotel.address || hotel.location || hotel.hotel_name;
+  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
@@ -252,6 +259,9 @@ export default async function HotelDetailsPage({
               <p className="font-semibold text-slate-900">
                 {rating}
               </p>
+              {formatDataDate(hotel.rate_verified_at) && <p className="text-xs text-slate-500">Rating information last checked {formatDataDate(hotel.rate_verified_at)}</p>}
+              {hotel.review_count != null && Number(hotel.review_count) > 0 && <p className="text-xs text-slate-500">{Number(hotel.review_count).toLocaleString()} listed reviews</p>}
+              {googleReviewUrl && <a href={googleReviewUrl} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-[#806744] hover:underline">Google Reviews <Globe className="h-3 w-3" /></a>}
             </div>
 
           </div>
@@ -273,6 +283,7 @@ export default async function HotelDetailsPage({
               <p className="truncate font-semibold text-slate-900">
                 {hotel.location || "Colombo"}
               </p>
+              <a href={mapUrl} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-[#806744] hover:underline"><MapPin className="h-3 w-3" />Google Maps</a>
 
             </div>
 
@@ -292,10 +303,7 @@ export default async function HotelDetailsPage({
                 Telephone
               </p>
 
-              <p className="truncate font-semibold text-slate-900">
-                {hotel.contact_number?.trim() ||
-                  "Not available"}
-              </p>
+              {hotel.contact_number?.trim() ? <a href={`tel:${hotel.contact_number.trim()}`} className="block truncate font-semibold text-[#806744] hover:underline">{hotel.contact_number.trim()}</a> : <p className="font-semibold text-slate-900">Not available</p>}
 
             </div>
 
@@ -315,9 +323,9 @@ export default async function HotelDetailsPage({
                 Website
               </p>
 
-              {hotel.website ? (
+              {websiteUrl ? (
                 <a
-                  href={hotel.website}
+                  href={websiteUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block truncate font-semibold text-[#806744] hover:underline"
@@ -394,9 +402,8 @@ export default async function HotelDetailsPage({
                       Address
                     </p>
 
-                    <p className="mt-1 text-sm leading-6 text-slate-500">
-                      {hotel.address}
-                    </p>
+                    <p className="mt-1 text-sm leading-6 text-slate-600">{hotel.address}</p>
+                    <a href={mapUrl} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-[#806744] hover:underline"><MapPin className="h-4 w-4" />View on Google Maps</a>
 
                   </div>
 
@@ -433,6 +440,8 @@ export default async function HotelDetailsPage({
             </div>
 
           </div>
+
+          <p className="mt-4 text-xs leading-5 text-slate-500">Prices and schedules are listing information and may change. Contact the hotel to confirm current details.</p>
 
           <div className="mt-6 space-y-3">
 

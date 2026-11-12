@@ -24,7 +24,7 @@ export default async function RestaurantsPage({
       <main className="min-h-screen bg-slate-50 p-5 text-slate-900 md:p-8">
         <div className="mx-auto max-w-[1600px] rounded-2xl border border-red-200 bg-red-50 p-6 text-red-700">
           <h1 className="font-semibold">Unable to load restaurants</h1>
-          <p className="mt-2 text-sm">{error.message}</p>
+          <p className="mt-2 text-sm">Restaurant listings could not be loaded. Please try again later.</p>
         </div>
       </main>
     );

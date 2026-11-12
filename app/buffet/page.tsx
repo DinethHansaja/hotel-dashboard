@@ -866,6 +866,7 @@ export default async function BuffetPage({
                 Compare prices, varieties and reviews to find
                 your perfect dining experience.
               </p>
+              <p className="mt-2 max-w-3xl text-xs leading-5 text-slate-500">Prices and schedules are listing information and may change. Contact the hotel to confirm current details before visiting.</p>
             </div>
 
             {/* COUNT */}

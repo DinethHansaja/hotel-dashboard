@@ -18,6 +18,7 @@ import {
 
 import { supabase } from "@/lib/supabase";
 import WriteReviewModal from "@/components/reviews/WriteReviewModal";
+import { toExternalUrl } from "@/lib/commercialData";
 
 type Hotel = {
   hotel_id?: number | string;
@@ -302,7 +303,7 @@ export default function ReviewsPage() {
             </h1>
 
             <p className="mt-6 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
-              Explore hotel ratings and real guest
+              Explore listed hotel ratings and visitor-submitted
               experiences across Colombo. Share your own
               dining or stay experience with other visitors.
             </p>
@@ -834,11 +835,9 @@ export default function ReviewsPage() {
 
                         {/* GOOGLE REVIEWS */}
 
-                        {hotel.google_review_url && (
+                        {toExternalUrl(hotel.google_review_url) && (
                           <a
-                            href={
-                              hotel.google_review_url
-                            }
+                            href={toExternalUrl(hotel.google_review_url)!}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-[#c5a46d] bg-white px-4 py-3 text-sm font-semibold text-[#806744] transition hover:bg-[#c5a46d]/10 hover:shadow-sm"
@@ -1042,10 +1041,10 @@ export default function ReviewsPage() {
               </p>
 
               <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#0b1728]">
-                Real hotel information,
+                Listed hotel information,
 
                 <span className="block">
-                  real guest experiences.
+                  visitor-submitted experiences.
                 </span>
               </h2>
 

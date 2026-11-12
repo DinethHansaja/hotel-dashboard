@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { MapContainer, Marker, Popup, TileLayer, Tooltip } from "react-leaflet";
 import L from "leaflet";
 import type { DirectoryBusiness } from "@/components/directory/BusinessDirectory";
+import { toExternalUrl } from "@/lib/commercialData";
 import "leaflet/dist/leaflet.css";
 
 const businessIcon = L.icon({
@@ -83,12 +84,13 @@ export default function BusinessMapClient({
       />
 
       {locatedBusinesses.map((business) => {
-        const mapsUrl =
+        const mapsUrl = toExternalUrl(
           business.mapsUrl ||
           "https://www.google.com/maps/search/?api=1&query=" +
             encodeURIComponent(
               Number(business.latitude) + "," + Number(business.longitude)
-            );
+            )
+        );
 
         return (
           <Marker
@@ -126,7 +128,7 @@ export default function BusinessMapClient({
                   {business.rating !== null && (
                     <span className="mt-2 block text-xs font-medium text-slate-700">
                       <span className="text-amber-500">★</span> {business.rating.toFixed(1)}
-                      {business.reviewCount !== null && ` · ${business.reviewCount.toLocaleString()} reviews`}
+                      <span className="ml-1">listed rating{business.reviewCount !== null ? ` · ${business.reviewCount.toLocaleString()} listed reviews` : ""}</span>
                     </span>
                   )}
                 </div>
@@ -156,7 +158,7 @@ export default function BusinessMapClient({
                   {business.rating !== null && (
                     <p className="mt-2 text-sm font-medium text-slate-700">
                       <span className="text-amber-500">★</span> {business.rating.toFixed(1)}
-                      {business.reviewCount !== null && <span className="font-normal text-slate-500"> · {business.reviewCount.toLocaleString()} reviews</span>}
+                      <span className="font-normal text-slate-500"> listed rating{business.reviewCount !== null ? ` · ${business.reviewCount.toLocaleString()} listed reviews` : ""}</span>
                     </p>
                   )}
                   {(business.address || business.area) && (
@@ -173,9 +175,9 @@ export default function BusinessMapClient({
                     >
                       View details
                     </button>
-                    <a href={mapsUrl} target="_blank" rel="noreferrer" className="text-xs font-semibold text-slate-600 hover:text-[#806744]">
+                    {mapsUrl && <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-slate-600 hover:text-[#806744]">
                       Get directions
-                    </a>
+                    </a>}
                   </div>
                 </div>
               </div>

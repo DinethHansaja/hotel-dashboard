@@ -51,7 +51,7 @@ export default async function CafesPage({
           <h1 className="font-semibold">
             Unable to load cafes
           </h1>
-          <p className="mt-2 text-sm">{error.message}</p>
+          <p className="mt-2 text-sm">Café listings could not be loaded. Please try again later.</p>
         </div>
       </main>
     );

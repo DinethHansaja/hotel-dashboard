@@ -8,6 +8,10 @@ import {
 } from "lucide-react";
 import SaveHotelButton from "@/components/hotels/SaveHotelButton";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
+import { toExternalUrl } from "@/lib/commercialData";
+
+// Render live property records at request time instead of caching build-time data.
+export const dynamic = "force-dynamic";
 
 export default async function HotelsPage() {
   // Fetch only the columns required by the hotel listing page.
@@ -21,6 +25,7 @@ export default async function HotelsPage() {
       image_url,
       Rating,
       review_count,
+      google_review_url,
       address,
       location
     `)
@@ -36,9 +41,7 @@ export default async function HotelsPage() {
               Unable to load hotels
             </h2>
 
-            <p className="mt-2 text-sm">
-              {error.message}
-            </p>
+            <p className="mt-2 text-sm">Hotel listings could not be loaded. Please try again later.</p>
           </div>
         </div>
       </main>
@@ -136,7 +139,7 @@ export default async function HotelsPage() {
                     {/* Rating */}
                     <div className="flex items-center gap-2">
                       {hotel.Rating !== null && hotel.Rating !== undefined && <Star className="h-4 w-4 fill-[#c5a46d] text-[#c5a46d]" />}
-                      <span className="text-sm font-semibold text-slate-800">
+                      <span className="text-sm font-semibold text-slate-800" aria-label={hotel.Rating != null ? `Listed hotel rating ${Number(hotel.Rating).toFixed(1)}` : undefined}>
                         {hotel.Rating !== null &&
                         hotel.Rating !== undefined
                           ? Number(hotel.Rating).toFixed(1)
@@ -147,6 +150,7 @@ export default async function HotelsPage() {
 
                     {/* Price */}
                   </div>
+                  {toExternalUrl(hotel.google_review_url) && <a href={toExternalUrl(hotel.google_review_url)!} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-[#806744] hover:underline">Google Reviews <ArrowRight className="h-3 w-3" /></a>}
 
                   {/* View Hotel Button */}
                   <div className="mt-5 flex gap-2">

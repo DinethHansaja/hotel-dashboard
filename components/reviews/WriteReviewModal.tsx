@@ -153,8 +153,7 @@ export default function WriteReviewModal({
       console.error("Review submission error:", error);
 
       setErrorMessage(
-        error.message ||
-          "Unable to submit your review. Please try again."
+        "We couldn't submit your review right now. Please try again."
       );
 
       setSubmitting(false);
