@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import { Suspense } from "react";
 import "./globals.css";
 
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
+import { ThemeProvider } from "@/components/layout/ThemeProvider";
 
 const geistSans = localFont({
   src: "../public/fonts/geist-latin.woff2",
@@ -30,10 +32,21 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
       <body className="h-screen overflow-hidden bg-slate-50 text-slate-900">
-        <div className="flex h-screen overflow-hidden">
+        <Script id="theme-preference-init" strategy="beforeInteractive">
+          {`try {
+            const savedTheme = localStorage.getItem("colombo-guide-theme") || "system";
+            const useDark = savedTheme === "dark" || (savedTheme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+            document.documentElement.dataset.theme = useDark ? "dark" : "light";
+            document.documentElement.style.colorScheme = useDark ? "dark" : "light";
+            document.documentElement.dataset.reduceMotion = localStorage.getItem("colombo-guide-reduce-motion") === "true" ? "true" : "false";
+          } catch {}`}
+        </Script>
+        <ThemeProvider>
+          <div className="flex h-screen overflow-hidden">
 
           {/* Fixed Sidebar */}
           <Sidebar />
@@ -54,7 +67,8 @@ export default function RootLayout({
             </main>
 
           </div>
-        </div>
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

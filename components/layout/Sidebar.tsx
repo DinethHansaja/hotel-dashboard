@@ -144,13 +144,13 @@ export default function Sidebar() {
     <aside
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`relative hidden h-screen shrink-0 overflow-visible bg-[#0c1725] text-white transition-all duration-300 ease-in-out lg:flex lg:flex-col ${
+      className={`relative hidden h-screen shrink-0 overflow-visible bg-[#0c1725] text-white transition-[width] duration-150 ease-out lg:flex lg:flex-col ${
         expanded ? "w-[272px]" : "w-[82px]"
       }`}
     >
       {/* LOGO */}
       <div
-        className={`flex shrink-0 items-center py-7 transition-all duration-300 ${
+        className={`flex shrink-0 items-center py-7 transition-[padding] duration-150 ease-out ${
           expanded
             ? "justify-start px-6"
             : "justify-center px-3"
@@ -200,7 +200,7 @@ export default function Sidebar() {
                 key={item.label}
                 href={item.href}
                 title={!expanded ? item.label : undefined}
-                className={`group flex items-center rounded-xl transition-all duration-200 ${
+                className={`group flex items-center rounded-xl transition-colors duration-150 ${
                   expanded
                     ? "gap-4 px-4 py-3"
                     : "justify-center px-3 py-3.5"
