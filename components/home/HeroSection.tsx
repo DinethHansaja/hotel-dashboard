@@ -16,7 +16,7 @@ export default function HeroSection() {
         </div>
 
         {/* Heading */}
-        <h1 className="max-w-4xl text-4xl font-bold leading-[1.05] tracking-tight md:text-5xl lg:text-6xl">
+        <h1 className="max-w-4xl text-4xl font-bold leading-[1.05] tracking-tight md:text-5xl">
           Discover the Best
           <span className="block text-[#ffb900]">
             Hotels in Colombo

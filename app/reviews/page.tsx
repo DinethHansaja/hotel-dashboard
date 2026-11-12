@@ -293,7 +293,7 @@ export default function ReviewsPage() {
               Dining & Stay Reviews
             </div>
 
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
               Discover what guests
 
               <span className="block text-[#d1a044]">
@@ -948,7 +948,7 @@ export default function ReviewsPage() {
 
                                         </div>
 
-                                        <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold capitalize text-slate-500">
+                                        <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold capitalize text-slate-500">
                                           {
                                             review.review_type
                                           }

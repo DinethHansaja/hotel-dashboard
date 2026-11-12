@@ -195,7 +195,7 @@ export default function Header() {
             <MapPin className="h-5 w-5 text-[#b88b3d]" />
 
             <div className="text-left">
-              <p className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
+              <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
                 Location
               </p>
 
@@ -297,7 +297,7 @@ export default function Header() {
 
                       {city.available ? (
                         <span
-                          className={`rounded-full px-2.5 py-1 text-[10px] font-semibold ${
+                          className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
                             isSelected
                               ? "bg-[#d4a84f]/15 text-[#9a742e]"
                               : "bg-emerald-50 text-emerald-600"
@@ -308,7 +308,7 @@ export default function Header() {
                             : "Available"}
                         </span>
                       ) : (
-                        <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-semibold text-slate-500">
+                        <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-500">
                           Coming Soon
                         </span>
                       )}
