@@ -47,7 +47,7 @@ export default function RootLayout({
           } catch {}`}
         </Script>
         <ThemeProvider>
-          <a href="#main-content" className="sr-only z-[100] rounded-lg bg-white px-4 py-3 text-sm font-semibold text-[#0b1728] focus:not-sr-only focus:fixed focus:left-4 focus:top-4">
+          <a href="#main-content" className="sr-only z-[100] rounded-lg bg-white px-4 py-3 text-sm font-semibold text-[#0b1420] focus:not-sr-only focus:fixed focus:left-4 focus:top-4">
             Skip to content
           </a>
           <div className="flex h-screen overflow-hidden">

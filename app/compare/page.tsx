@@ -325,7 +325,7 @@ export default function ComparePage() {
               <RefreshCw className="h-6 w-6 text-red-600" />
             </div>
 
-            <h1 className="mt-5 text-2xl font-bold text-[#0b1728]">
+            <h1 className="mt-5 text-2xl font-bold text-[#0b1420]">
               Something went wrong
             </h1>
 
@@ -336,7 +336,7 @@ export default function ComparePage() {
             <button
               type="button"
               onClick={loadHotels}
-              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#0b1728] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#12243a]"
+              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#0b1420] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#12243a]"
             >
               <RefreshCw className="h-4 w-4" />
               Try again
@@ -359,7 +359,7 @@ export default function ComparePage() {
             <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
 
               <div>
-                <p className="text-sm font-bold uppercase tracking-[0.12em] text-[#806744]">
+                <p className="text-sm font-bold uppercase tracking-[0.12em] text-[#8b682b]">
                   Comparison
                 </p>
 
@@ -374,7 +374,7 @@ export default function ComparePage() {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="rounded-xl bg-[#f3eee4] px-4 py-2.5 text-sm font-semibold text-[#806744]">
+                <div className="rounded-xl bg-[#f3eee4] px-4 py-2.5 text-sm font-semibold text-[#8b682b]">
                   {selectedHotels.length} of {MAX_COMPARE} selected
                 </div>
 
@@ -397,7 +397,7 @@ export default function ComparePage() {
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
               <div>
-                <h2 className="font-semibold text-[#0b1728]">
+                <h2 className="font-semibold text-[#0b1420]">
                   Hotels to compare
                 </h2>
 
@@ -436,7 +436,7 @@ export default function ComparePage() {
                       setSearchTerm(event.target.value)
                     }
                     placeholder="Search hotel or restaurant..."
-                    className="control w-full py-3 pl-11 pr-4 text-sm outline-none placeholder:text-slate-400 focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/10"
+                    className="control w-full py-3 pl-11 pr-4 text-sm outline-none placeholder:text-slate-400 focus:border-[#c79a45] focus:ring-2 focus:ring-[#c79a45]/10"
                   />
                 </div>
 
@@ -460,7 +460,7 @@ export default function ComparePage() {
                           className="flex w-full items-center justify-between rounded-xl px-3 py-3 text-left transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           <div>
-                            <p className="font-semibold text-[#0b1728]">
+                            <p className="font-semibold text-[#0b1420]">
                               {hotel.hotel_name ||
                                 "Unnamed hotel"}
                             </p>
@@ -473,7 +473,7 @@ export default function ComparePage() {
                           </div>
 
                           {alreadySelected && (
-                            <span className="text-xs font-semibold text-[#806744]">
+                            <span className="text-xs font-semibold text-[#8b682b]">
                               Selected
                             </span>
                           )}
@@ -491,10 +491,10 @@ export default function ComparePage() {
           {selectedHotels.length === 0 ? (
             <div className="px-6 py-20 text-center md:px-8">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#f3eee4]">
-                <HotelIcon className="h-7 w-7 text-[#806744]" />
+                <HotelIcon className="h-7 w-7 text-[#8b682b]" />
               </div>
 
-              <h2 className="mt-5 text-xl font-bold text-[#0b1728]">
+              <h2 className="mt-5 text-xl font-bold text-[#0b1420]">
                 Start your comparison
               </h2>
 
@@ -530,7 +530,7 @@ export default function ComparePage() {
                       <button type="button" onClick={() => removeHotel(id)} aria-label={`Remove ${hotel.hotel_name || "hotel"}`} className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white text-slate-600 shadow"><X className="h-4 w-4" /></button>
                     </div>
                     <div className="p-5">
-                      <h2 className="text-xl font-semibold text-[#0b1728]">{hotel.hotel_name || "Unnamed hotel"}</h2>
+                      <h2 className="text-xl font-semibold text-[#0b1420]">{hotel.hotel_name || "Unnamed hotel"}</h2>
                       {hotel.restaurant_name && <p className="mt-1 text-sm text-slate-500">{hotel.restaurant_name}</p>}
                       <dl className="mt-4 divide-y divide-slate-100 rounded-xl border border-slate-100 px-4">
                         <div className="flex items-start justify-between gap-4 py-3"><dt className="text-sm text-slate-500">Listed rating</dt><dd className="text-right text-sm font-semibold text-slate-800">{rating === null ? "Not available" : `${rating.toFixed(1)} / 5`}</dd></div>
@@ -613,7 +613,7 @@ export default function ComparePage() {
                           )}
                         </div>
 
-                        <h2 className="mt-4 pr-10 text-xl font-bold leading-7 text-[#0b1728]">
+                        <h2 className="mt-4 pr-10 text-xl font-bold leading-7 text-[#0b1420]">
                           {hotel.hotel_name ||
                             "Unnamed hotel"}
                         </h2>
@@ -651,7 +651,7 @@ export default function ComparePage() {
                     }
 
                     return (
-                      <span key={normalizeId(hotel.hotel_id)} className="inline-flex items-center gap-2 font-semibold text-[#0b1728]">
+                      <span key={normalizeId(hotel.hotel_id)} className="inline-flex items-center gap-2 font-semibold text-[#0b1420]">
                         <span>{rating.toFixed(1)}</span>
 
                         <span className="flex items-center gap-0.5">
@@ -663,7 +663,7 @@ export default function ComparePage() {
                               className={`h-3.5 w-3.5 ${
                                 index <
                                 Math.round(rating)
-                                  ? "fill-[#c5a46d] text-[#c5a46d]"
+                                  ? "fill-[#c79a45] text-[#c79a45]"
                                   : "text-slate-200"
                               }`}
                             />
@@ -701,7 +701,7 @@ export default function ComparePage() {
 
                     return (
                       <div key={normalizeId(hotel.hotel_id)}>
-                        <p className="font-bold text-[#0b1728]">
+                        <p className="font-bold text-[#0b1420]">
                           {formatPrice(price)}
                         </p>
 
@@ -802,7 +802,7 @@ export default function ComparePage() {
                       <a
                         key={normalizeId(hotel.hotel_id)}
                         href={`tel:${phone}`}
-                        className="font-semibold text-[#806744] hover:underline"
+                        className="font-semibold text-[#8b682b] hover:underline"
                       >
                         {phone}
                       </a>
@@ -834,7 +834,7 @@ export default function ComparePage() {
                         href={getWebsiteUrl(website)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 font-semibold text-[#806744] hover:underline"
+                        className="inline-flex items-center gap-1.5 font-semibold text-[#8b682b] hover:underline"
                       >
                         {formatWebsite(website)}
                         <span>↗</span>
@@ -880,7 +880,7 @@ export default function ComparePage() {
                             href={getWebsiteUrl(website)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#0b1728] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#172b43]"
+                            className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#0b1420] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#172b43]"
                           >
                             Visit website
                             <span>↗</span>
@@ -912,7 +912,7 @@ export default function ComparePage() {
                 onClick={() =>
                   setShowAllDetails((value) => !value)
                 }
-                className="inline-flex items-center gap-2 text-sm font-semibold text-[#0b1728]"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#0b1420]"
               >
                 {showAllDetails
                   ? "Hide additional details"
@@ -968,7 +968,7 @@ function CompareRow({
         }`}
       >
         {icon && (
-          <span className="mt-0.5 text-[#806744]">
+          <span className="mt-0.5 text-[#8b682b]">
             {icon}
           </span>
         )}

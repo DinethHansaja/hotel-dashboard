@@ -150,7 +150,7 @@ export default async function HomePage() {
           <section id="hotel-map" className="scroll-mt-24" aria-labelledby="hotel-map-heading">
             <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#806744]">Discover stays</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#8b682b]">Discover stays</p>
                 <h2 id="hotel-map-heading" className="section-title mt-1">Find a hotel on the map</h2>
                 <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 md:text-base">
                   Explore hotel locations and open a listing for more details.

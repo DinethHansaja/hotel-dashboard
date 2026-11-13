@@ -33,7 +33,7 @@ export default function WhyChooseUs() {
       {/* HEADER */}
       <div>
 
-        <p className="text-sm font-semibold text-[#806744]">
+        <p className="text-sm font-semibold text-[#8b682b]">
           Why Colombo Guide?
         </p>
 
@@ -58,7 +58,7 @@ export default function WhyChooseUs() {
           return (
             <div
               key={feature.title}
-              className="rounded-2xl border border-slate-100 bg-slate-50 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#c5a46d]/30 hover:bg-[#f3eee4] hover:shadow-sm"
+              className="rounded-2xl border border-slate-100 bg-slate-50 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#c79a45]/30 hover:bg-[#f3eee4] hover:shadow-sm"
             >
 
               <div className="flex gap-4">
@@ -66,7 +66,7 @@ export default function WhyChooseUs() {
                 {/* ICON */}
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#f3eee4]">
                   <Icon
-                    className="h-5 w-5 text-[#c5a46d]"
+                    className="h-5 w-5 text-[#c79a45]"
                     strokeWidth={2}
                   />
                 </div>
@@ -97,7 +97,7 @@ export default function WhyChooseUs() {
       {/* CTA */}
       <div className="mt-auto pt-5">
 
-        <div className="flex items-center justify-between rounded-2xl bg-[#0b1728] p-5 text-white">
+        <div className="flex items-center justify-between rounded-2xl bg-[#0b1420] p-5 text-white">
 
           <div>
 
@@ -116,7 +116,7 @@ export default function WhyChooseUs() {
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/10">
 
             <ArrowRight
-              className="h-5 w-5 text-[#c5a46d]"
+              className="h-5 w-5 text-[#c79a45]"
               strokeWidth={2}
             />
 

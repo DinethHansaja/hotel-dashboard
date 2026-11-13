@@ -87,7 +87,7 @@ export default function Sidebar() {
     <aside
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`relative hidden h-screen shrink-0 overflow-visible bg-[#14243a] text-white transition-[width] duration-150 ease-out lg:flex lg:flex-col ${
+      className={`relative hidden h-screen shrink-0 overflow-visible bg-[#0c1725] text-white transition-[width] duration-150 ease-out lg:flex lg:flex-col ${
         expanded ? "w-[272px]" : "w-[82px]"
       }`}
     >
@@ -106,10 +106,10 @@ export default function Sidebar() {
           }`}
         >
           <div
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[#c5a46d] transition hover:bg-white/10"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[#c79a45] transition hover:bg-white/10"
             aria-label="Colombo Dining & Events Guide"
           >
-            <Landmark className="h-6 w-6 text-[#c5a46d]" />
+            <Landmark className="h-6 w-6 text-[#d2a64d]" />
           </div>
 
           {expanded && (
@@ -118,7 +118,7 @@ export default function Sidebar() {
                 Colombo
               </span>
 
-              <p className="text-sm tracking-wide text-[#c5a46d]">
+              <p className="text-sm tracking-wide text-[#d2a64d]">
                 Dining & Events Guide
               </p>
             </div>
@@ -150,7 +150,7 @@ export default function Sidebar() {
                     : "justify-center px-3 py-3.5"
                 } ${
                   isActive
-                    ? "bg-[#806744] text-white shadow-sm"
+                    ? "bg-[#8b682b] text-white shadow-sm"
                     : "text-slate-200 hover:bg-white/10"
                 }`}
               >
@@ -163,7 +163,7 @@ export default function Sidebar() {
                     </div>
 
                     {item.description && (
-                      <div className="mt-0.5 text-xs text-slate-400">
+                      <div className={`mt-0.5 text-xs ${isActive ? "text-white" : "text-[#a6b2c2]"}`}>
                         {item.description}
                       </div>
                     )}
@@ -181,7 +181,7 @@ export default function Sidebar() {
           href="/settings"
           title={!expanded ? "Settings" : undefined}
           aria-current={pathname === "/settings" ? "page" : undefined}
-          className={`mb-2 flex items-center rounded-xl transition ${pathname === "/settings" ? "bg-[#806744] text-white" : "text-slate-200 hover:bg-white/10"} ${
+          className={`mb-2 flex items-center rounded-xl transition ${pathname === "/settings" ? "bg-[#8b682b] text-white" : "text-slate-200 hover:bg-white/10"} ${
             expanded
               ? "gap-4 px-4 py-3"
               : "justify-center px-3 py-3.5"
@@ -195,7 +195,7 @@ export default function Sidebar() {
                 Settings
               </div>
 
-              <div className="text-xs text-slate-400">
+              <div className="text-xs text-[#a6b2c2]">
                 Preferences
               </div>
             </div>

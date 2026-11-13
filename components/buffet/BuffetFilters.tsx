@@ -101,7 +101,7 @@ export default function BuffetFilters() {
             value={currentSort}
             onChange={handleSortChange}
             aria-label="Sort hotels"
-            className="control h-[50px] w-full min-w-0 cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c5a46d] focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20"
+            className="control h-[50px] w-full min-w-0 cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c79a45] focus:border-[#c79a45] focus:ring-2 focus:ring-[#c79a45]/20"
           >
             <option value="rating-desc">
               Listed Rating: High to Low
@@ -149,7 +149,7 @@ export default function BuffetFilters() {
               )
             }
             aria-label="Filter by price"
-            className="control h-[50px] w-full min-w-0 cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c5a46d] focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20"
+            className="control h-[50px] w-full min-w-0 cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c79a45] focus:border-[#c79a45] focus:ring-2 focus:ring-[#c79a45]/20"
           >
             <option value="all">
               All Prices
@@ -197,7 +197,7 @@ export default function BuffetFilters() {
               )
             }
             aria-label="Filter by cuisine"
-            className="control h-[50px] w-full min-w-0 cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c5a46d] focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20"
+            className="control h-[50px] w-full min-w-0 cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c79a45] focus:border-[#c79a45] focus:ring-2 focus:ring-[#c79a45]/20"
           >
             <option value="all">
               All Varieties
@@ -257,7 +257,7 @@ export default function BuffetFilters() {
               )
             }
             aria-label="Filter by rating"
-            className="control h-[50px] w-full min-w-0 cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c5a46d] focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20"
+            className="control h-[50px] w-full min-w-0 cursor-pointer appearance-none px-4 pr-10 text-sm text-slate-700 outline-none transition hover:border-[#c79a45] focus:border-[#c79a45] focus:ring-2 focus:ring-[#c79a45]/20"
           >
             <option value="all">
               All Ratings
@@ -300,8 +300,8 @@ export default function BuffetFilters() {
           }
           className={`flex h-[50px] w-full items-center justify-center gap-2 rounded-xl border px-4 text-sm font-medium transition sm:col-span-2 xl:col-span-1 xl:w-auto ${
             hasExtraFilters
-              ? "border-[#c5a46d] bg-[#c5a46d]/10 text-[#806744]"
-              : "border-slate-200 text-slate-700 hover:border-[#c5a46d] hover:text-[#806744]"
+              ? "border-[#c79a45] bg-[#c79a45]/10 text-[#8b682b]"
+              : "border-slate-200 text-slate-700 hover:border-[#c79a45] hover:text-[#8b682b]"
           }`}
         >
           <SlidersHorizontal className="h-4 w-4" />
@@ -342,7 +342,7 @@ export default function BuffetFilters() {
                       e.target.value
                     )
                   }
-                  className="control h-11 w-full appearance-none px-3 pr-9 text-sm text-slate-700 outline-none focus:border-[#c5a46d] focus:ring-2 focus:ring-[#c5a46d]/20"
+                  className="control h-11 w-full appearance-none px-3 pr-9 text-sm text-slate-700 outline-none focus:border-[#c79a45] focus:ring-2 focus:ring-[#c79a45]/20"
                 >
                   <option value="all">
                     All Buffets

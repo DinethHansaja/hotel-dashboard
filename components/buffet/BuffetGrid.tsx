@@ -267,7 +267,7 @@ export default function BuffetGrid({
                   currentPage - 1
                 )
               }
-              className="flex h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium text-slate-600 transition hover:border-[#c5a46d] hover:text-[#806744] disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium text-slate-600 transition hover:border-[#c79a45] hover:text-[#8b682b] disabled:cursor-not-allowed disabled:opacity-40"
             >
               <ChevronLeft className="h-4 w-4" />
 
@@ -296,8 +296,8 @@ export default function BuffetGrid({
                     }
                     className={`flex h-10 w-10 items-center justify-center rounded-lg text-sm font-medium transition ${
                       currentPage === page
-                        ? "bg-[#c5a46d] text-[#0b1728] shadow-sm"
-                        : "border border-slate-200 bg-white text-slate-600 hover:border-[#c5a46d] hover:text-[#806744]"
+                        ? "bg-[#c79a45] text-[#0b1420] shadow-sm"
+                        : "border border-slate-200 bg-white text-slate-600 hover:border-[#c79a45] hover:text-[#8b682b]"
                     }`}
                   >
                     {page}
@@ -321,7 +321,7 @@ export default function BuffetGrid({
                   currentPage + 1
                 )
               }
-              className="flex h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium text-slate-600 transition hover:border-[#c5a46d] hover:text-[#806744] disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium text-slate-600 transition hover:border-[#c79a45] hover:text-[#8b682b] disabled:cursor-not-allowed disabled:opacity-40"
             >
               Next
 

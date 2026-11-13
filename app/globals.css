@@ -2,14 +2,14 @@
 
 :root {
   --background: #f8f6f1;
-  --foreground: #0b1728;
-  --navy: #14243a;
-  --midnight: #0b1728;
+  --foreground: #0b1420;
+  --navy: #0c1725;
+  --midnight: #0b1420;
   --ivory: #f8f6f1;
   --surface: #ffffff;
-  --champagne: #c5a46d;
+  --champagne: #c79a45;
   --muted: #626c78;
-  --focus-ring: #806744;
+  --focus-ring: #8b682b;
   --border: #e8e5de;
   --surface-subtle: #f1efe9;
   --font-editorial: Georgia, "Times New Roman", serif;
@@ -41,13 +41,13 @@
 }
 
 html[data-theme="dark"] {
-  --background: #0b1728;
+  --background: #0b1420;
   --foreground: #f1efe9;
-  --navy: #14243a;
-  --midnight: #0b1728;
-  --ivory: #0b1728;
-  --surface: #14243a;
-  --champagne: #c5a46d;
+  --navy: #0c1725;
+  --midnight: #0b1420;
+  --ivory: #0b1420;
+  --surface: #0c1725;
+  --champagne: #c79a45;
   --muted: #a4adba;
   --focus-ring: #e3d2b3;
   --color-slate-400: #a4adba;
@@ -93,7 +93,7 @@ body {
   border: 1px solid var(--border);
   border-radius: 1rem;
   background: var(--surface);
-  box-shadow: 0 1px 2px rgb(20 36 58 / 4%);
+  box-shadow: 0 1px 2px rgb(12 23 37 / 4%);
 }
 
 .control {
@@ -151,10 +151,10 @@ html[data-theme="dark"] .ui-button-secondary {
 .ui-badge {
   display: inline-flex;
   align-items: center;
-  border: 1px solid rgb(197 164 109 / 30%);
+  border: 1px solid rgb(199 154 69 / 30%);
   border-radius: 999px;
-  background: rgb(197 164 109 / 12%);
-  color: #725b37;
+  background: rgb(199 154 69 / 12%);
+  color: #8b682b;
   font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.25rem;
@@ -250,13 +250,13 @@ html[data-theme="dark"] .bg-emerald-50 {
 
 html[data-theme="dark"] .text-slate-900,
 html[data-theme="dark"] .text-slate-800,
-html[data-theme="dark"] [class*="text-[#0b1728]"],
-html[data-theme="dark"] [class*="text-[#14243a]"],
+html[data-theme="dark"] [class*="text-[#0b1420]"],
+html[data-theme="dark"] [class*="text-[#0c1725]"],
 html[data-theme="dark"] .text-slate-950 {
   color: var(--foreground) !important;
 }
 
-html[data-theme="dark"] [class*="text-[#806744]"] {
+html[data-theme="dark"] [class*="text-[#8b682b]"] {
   color: #d7c6a7 !important;
 }
 

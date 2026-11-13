@@ -61,7 +61,7 @@ function PlaceCard({ place }: { place: FeaturedPlace }) {
             />
           ) : (
             <div className="flex h-full items-center justify-center bg-[#f3eee4]">
-              <Icon className="h-10 w-10 text-[#806744]" aria-hidden="true" />
+              <Icon className="h-10 w-10 text-[#8b682b]" aria-hidden="true" />
             </div>
           )}
           {place.area && <span className="ui-badge absolute left-4 top-4">{place.area}</span>}
@@ -77,13 +77,13 @@ function PlaceCard({ place }: { place: FeaturedPlace }) {
                 {place.name}
               </h3>
             </div>
-            <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-[#806744] transition-transform group-hover:translate-x-1" aria-hidden="true" />
+            <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-[#8b682b] transition-transform group-hover:translate-x-1" aria-hidden="true" />
           </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-600">
             {place.rating !== null && (
               <span className="inline-flex items-center gap-1.5">
-                <Star className="h-4 w-4 fill-[#c5a46d] text-[#c5a46d]" aria-hidden="true" />
+                <Star className="h-4 w-4 fill-[#c79a45] text-[#c79a45]" aria-hidden="true" />
                 {place.rating.toFixed(1)}
                 {place.reviewCount !== null && place.reviewCount > 0 && (
                   <span className="text-slate-500">({place.reviewCount.toLocaleString()})</span>
@@ -103,10 +103,10 @@ export function FeaturedHotelsPanel({ hotels }: { hotels: FeaturedHotel[] }) {
     <aside className="surface-card h-full min-w-0 p-5 md:p-6" aria-labelledby="featured-hotels-heading">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#806744]">Stay and dine</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#8b682b]">Stay and dine</p>
           <h3 id="featured-hotels-heading" className="mt-1 text-xl font-semibold tracking-tight text-slate-900">Hotels around Colombo</h3>
         </div>
-        <Link href="/hotels" className="text-sm font-semibold text-slate-600 hover:text-[#806744]">View all</Link>
+        <Link href="/hotels" className="text-sm font-semibold text-slate-600 hover:text-[#8b682b]">View all</Link>
       </div>
 
       {hotels.length > 0 ? (
@@ -121,14 +121,14 @@ export function FeaturedHotelsPanel({ hotels }: { hotels: FeaturedHotel[] }) {
                 )}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-semibold text-slate-900 group-hover:text-[#806744]">{hotel.hotel_name}</p>
+                <p className="truncate text-sm font-semibold text-slate-900 group-hover:text-[#8b682b]">{hotel.hotel_name}</p>
                 <p className="mt-1 truncate text-xs text-slate-500">
                   {hotel.location || hotel.restaurant_name || "Colombo"}
                 </p>
               </div>
               {hotel.rating !== null && hotel.rating > 0 && (
                 <span className="flex shrink-0 items-start gap-1 text-sm font-semibold text-slate-700">
-                  <Star className="mt-0.5 h-3.5 w-3.5 fill-[#c5a46d] text-[#c5a46d]" aria-hidden="true" />
+                  <Star className="mt-0.5 h-3.5 w-3.5 fill-[#c79a45] text-[#c79a45]" aria-hidden="true" />
                   {hotel.rating.toFixed(1)}
                 </span>
               )}
@@ -152,15 +152,15 @@ export function FeaturedDiningSection({ places }: { places: FeaturedPlace[] }) {
     <section aria-labelledby="featured-dining-heading" className="space-y-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#806744]">A good place to start</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#8b682b]">A good place to start</p>
           <h2 id="featured-dining-heading" className="section-title mt-1">Restaurants and cafés to explore</h2>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
             Browse highly rated places from the Colombo directory.
           </p>
         </div>
         <div className="flex gap-3 text-sm font-semibold">
-          <Link className="text-slate-700 transition hover:text-[#806744]" href="/restaurants">All restaurants</Link>
-          <Link className="text-slate-700 transition hover:text-[#806744]" href="/cafes">All cafés</Link>
+          <Link className="text-slate-700 transition hover:text-[#8b682b]" href="/restaurants">All restaurants</Link>
+          <Link className="text-slate-700 transition hover:text-[#8b682b]" href="/cafes">All cafés</Link>
         </div>
       </div>
 
@@ -177,24 +177,24 @@ export function DiningAreasSection({ areas }: { areas: DiningArea[] }) {
   return (
     <section aria-labelledby="dining-areas-heading">
       <div className="mb-5">
-        <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#806744]">Explore by neighbourhood</p>
+        <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#8b682b]">Explore by neighbourhood</p>
         <h2 id="dining-areas-heading" className="section-title mt-1">Find a table around Colombo</h2>
       </div>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {areas.map((area) => (
           <article key={area.name} className="surface-card p-5">
-            <div className="flex items-center gap-2 text-[#806744]">
+            <div className="flex items-center gap-2 text-[#8b682b]">
               <MapPin className="h-4 w-4" aria-hidden="true" />
               <h3 className="font-semibold text-slate-900">{area.name}</h3>
             </div>
             <div className="mt-4 flex flex-wrap gap-3 text-sm">
               {area.restaurantCount > 0 && (
-                <Link href={`/restaurants?area=${encodeURIComponent(area.name)}`} className="font-medium text-slate-600 hover:text-[#806744]">
+                <Link href={`/restaurants?area=${encodeURIComponent(area.name)}`} className="font-medium text-slate-600 hover:text-[#8b682b]">
                   {area.restaurantCount} {area.restaurantCount === 1 ? "restaurant" : "restaurants"}
                 </Link>
               )}
               {area.cafeCount > 0 && (
-                <Link href={`/cafes?area=${encodeURIComponent(area.name)}`} className="font-medium text-slate-600 hover:text-[#806744]">
+                <Link href={`/cafes?area=${encodeURIComponent(area.name)}`} className="font-medium text-slate-600 hover:text-[#8b682b]">
                   {area.cafeCount} {area.cafeCount === 1 ? "café" : "cafés"}
                 </Link>
               )}
@@ -220,7 +220,7 @@ export function DirectoryTrustSection({ stats }: { stats: DirectoryStats }) {
     <section className="rounded-2xl border border-slate-200 bg-white px-5 py-6 surface-card md:px-8" aria-label="Guide directory totals">
       <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
         <div className="max-w-md">
-          <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#806744]">A local guide, at a glance</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#8b682b]">A local guide, at a glance</p>
           <h2 className="mt-1 text-xl font-semibold tracking-tight text-slate-900">Colombo hospitality listings</h2>
           <p className="mt-2 text-sm leading-6 text-slate-500">Counts reflect listings and visitor reviews currently available in the guide.</p>
         </div>
@@ -241,7 +241,7 @@ export function SiteFooter() {
   const links = menuItems.filter((item) => item.href !== "/");
 
   return (
-    <footer className="bg-[#0b1728] px-5 py-8 text-white md:px-8">
+    <footer className="bg-[#0b1420] px-5 py-8 text-white md:px-8">
       <div className="mx-auto flex max-w-[1500px] flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <Link href="/" className="editorial-title text-xl hover:text-[#e5d2b1]">Colombo</Link>

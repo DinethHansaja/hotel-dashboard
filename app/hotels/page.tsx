@@ -7,6 +7,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import SaveHotelButton from "@/components/hotels/SaveHotelButton";
+import RetryHotelsButton from "@/components/hotels/RetryHotelsButton";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import { toExternalUrl } from "@/lib/commercialData";
 
@@ -32,15 +33,18 @@ export default async function HotelsPage() {
 
   // Handle Supabase errors
   if (error) {
+    console.error("Unable to load hotel listings:", error.message);
+
     return (
       <main className="min-h-screen bg-slate-50 px-6 py-8">
         <div className="mx-auto max-w-[1500px]">
-          <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-red-700">
+          <div role="alert" className="rounded-2xl border border-red-200 bg-red-50 p-6 text-red-700">
             <h2 className="font-semibold">
               Unable to load hotels
             </h2>
 
-            <p className="mt-2 text-sm">Hotel listings could not be loaded. Please try again later.</p>
+            <p className="mt-2 text-sm">Hotel listings could not be loaded. Please try again.</p>
+            <RetryHotelsButton />
           </div>
         </div>
       </main>
@@ -55,7 +59,7 @@ export default async function HotelsPage() {
       <section className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-[1500px] px-6 py-10 md:px-8">
           <Breadcrumbs items={[{ label: "Hotels" }]} />
-          <p className="text-sm font-semibold text-[#806744]">
+          <p className="text-sm font-semibold text-[#8b682b]">
             Colombo Hotels
           </p>
 
@@ -124,7 +128,7 @@ export default async function HotelsPage() {
                   {/* Restaurant */}
                   {hotel.restaurant_name && (
                     <div className="mt-2 flex items-start gap-2 text-sm text-slate-500">
-                      <UtensilsCrossed className="mt-0.5 h-4 w-4 shrink-0 text-[#c5a46d]" />
+                      <UtensilsCrossed className="mt-0.5 h-4 w-4 shrink-0 text-[#c79a45]" />
 
                       <span className="line-clamp-2">
                         {hotel.restaurant_name}
@@ -133,13 +137,13 @@ export default async function HotelsPage() {
                   )}
 
                   {/* Location */}
-                  {(hotel.location || hotel.address) && <div className="mt-3 flex items-start gap-2 text-sm text-slate-500"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#c5a46d]" /><span className="line-clamp-2">{hotel.location || hotel.address}</span></div>}
+                  {(hotel.location || hotel.address) && <div className="mt-3 flex items-start gap-2 text-sm text-slate-500"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#c79a45]" /><span className="line-clamp-2">{hotel.location || hotel.address}</span></div>}
 
                   {/* Rating + Price */}
                   <div className="mt-4 flex items-center justify-between">
                     {/* Rating */}
                     <div className="flex items-center gap-2">
-                      {hotel.Rating !== null && hotel.Rating !== undefined && <Star className="h-4 w-4 fill-[#c5a46d] text-[#c5a46d]" />}
+                      {hotel.Rating !== null && hotel.Rating !== undefined && <Star className="h-4 w-4 fill-[#c79a45] text-[#c79a45]" />}
                       <span className="text-sm font-semibold text-slate-800" aria-label={hotel.Rating != null ? `Listed hotel rating ${Number(hotel.Rating).toFixed(1)}` : undefined}>
                         {hotel.Rating !== null &&
                         hotel.Rating !== undefined
@@ -150,7 +154,7 @@ export default async function HotelsPage() {
 
                     {/* Price */}
                   </div>
-                  {toExternalUrl(hotel.google_review_url) && <a href={toExternalUrl(hotel.google_review_url)!} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-[#806744] hover:underline">Google Reviews <ArrowRight className="h-3 w-3" /></a>}
+                  {toExternalUrl(hotel.google_review_url) && <a href={toExternalUrl(hotel.google_review_url)!} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-[#8b682b] hover:underline">Google Reviews <ArrowRight className="h-3 w-3" /></a>}
 
                   {/* View Hotel Button */}
                   <div className="mt-5 flex gap-2">

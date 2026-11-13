@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function HeroSection({ heroImage }: { heroImage?: string | null }) {
   return (
-    <section className="relative isolate overflow-hidden rounded-3xl bg-[#0b1728] px-6 py-12 text-white md:px-12 md:py-16 lg:px-16 lg:py-20">
+    <section className="relative isolate overflow-hidden rounded-3xl bg-[#0b1420] px-6 py-12 text-white md:px-12 md:py-16 lg:px-16 lg:py-20">
       {heroImage && (
         <img
           src={heroImage}
@@ -14,7 +14,7 @@ export default function HeroSection({ heroImage }: { heroImage?: string | null }
           className="absolute inset-0 -z-20 h-full w-full object-cover"
         />
       )}
-      <div className="absolute inset-0 -z-10 bg-[#0b1728]/75" />
+      <div className="absolute inset-0 -z-10 bg-[#0b1420]/75" />
 
       <div className="relative max-w-4xl">
         <div className="mb-5 inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1.5">
@@ -34,7 +34,7 @@ export default function HeroSection({ heroImage }: { heroImage?: string | null }
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Link
             href="/buffet"
-            className="ui-button inline-flex items-center justify-center bg-[#c5a46d] px-6 py-3.5 text-sm font-semibold text-[#0b1728] transition hover:bg-[#ae8c55]"
+            className="ui-button inline-flex items-center justify-center bg-[#c79a45] px-6 py-3.5 text-sm font-semibold text-[#0b1420] transition hover:bg-[#a97f36]"
           >
             Browse buffets
           </Link>

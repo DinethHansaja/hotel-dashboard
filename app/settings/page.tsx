@@ -45,7 +45,7 @@ export default function SettingsPage() {
     <main className="min-h-full bg-slate-50 px-5 py-8 text-slate-900 md:px-8 md:py-10">
       <div className="mx-auto max-w-5xl">
         <div className="mb-8">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#806744]">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#8b682b]">
             Your experience
           </p>
           <h1 className="page-title mt-2">
@@ -59,7 +59,7 @@ export default function SettingsPage() {
 
         <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card shadow-sm">
           <div className="flex items-start gap-4 border-b border-slate-100 px-6 py-5 md:px-8">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c5a46d]/10 text-[#806744]">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c79a45]/10 text-[#8b682b]">
               <Settings2 className="h-5 w-5" />
             </span>
             <div>
@@ -81,17 +81,17 @@ export default function SettingsPage() {
                     key={value}
                     className={`group card-interactive relative cursor-pointer rounded-xl border p-4 text-left transition-colors focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[var(--focus-ring)] ${
                       selected
-                        ? "border-[#c5a46d] bg-[#c5a46d]/5 ring-1 ring-[#c5a46d]/30"
-                        : "border-slate-200 hover:border-[#c5a46d]/60 hover:bg-slate-50"
+                        ? "border-[#c79a45] bg-[#c79a45]/5 ring-1 ring-[#c79a45]/30"
+                        : "border-slate-200 hover:border-[#c79a45]/60 hover:bg-slate-50"
                     }`}
                   >
                     <input className="peer sr-only" type="radio" name="theme" value={value} checked={selected} onChange={() => setTheme(value)} aria-label={label} />
                     <span className="flex items-center justify-between">
-                      <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-600 group-hover:text-[#806744]">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-600 group-hover:text-[#8b682b]">
                         <Icon className="h-4 w-4" />
                       </span>
                       {selected && (
-                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#c5a46d] text-white">
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#8b682b] text-white">
                           <Check className="h-3 w-3" />
                         </span>
                       )}
@@ -113,7 +113,7 @@ export default function SettingsPage() {
         <section className="mt-5 rounded-2xl border border-slate-200 bg-white surface-card p-6 shadow-sm md:p-8">
           <div className="flex items-start justify-between gap-5">
             <div className="flex items-start gap-4">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c5a46d]/10 text-[#806744]">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c79a45]/10 text-[#8b682b]">
                 <Accessibility className="h-5 w-5" />
               </span>
               <div>
@@ -131,7 +131,7 @@ export default function SettingsPage() {
               aria-label="Reduce motion"
               onClick={() => setReduceMotion(!reduceMotion)}
               className={`relative mt-1 inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)] ${
-                reduceMotion ? "bg-[#806744]" : "bg-slate-300"
+                reduceMotion ? "bg-[#8b682b]" : "bg-slate-300"
               }`}
             >
               <span
@@ -153,7 +153,7 @@ export default function SettingsPage() {
           <button
             type="button"
             onClick={resetPreferences}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 text-sm font-medium text-slate-700 transition-colors hover:border-[#c5a46d] hover:text-[#806744] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 text-sm font-medium text-slate-700 transition-colors hover:border-[#c79a45] hover:text-[#8b682b] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
           >
             <RotateCcw className="h-4 w-4" />
             Reset settings

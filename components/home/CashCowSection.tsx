@@ -32,7 +32,7 @@ export default function CashCowSection({
       {/* Section Header */}
       <div className="mb-7 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="text-sm font-semibold text-[#806744]">
+          <p className="text-sm font-semibold text-[#8b682b]">
             From hotel listings
           </p>
 
@@ -48,7 +48,7 @@ export default function CashCowSection({
         <div className="flex w-fit items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5">
           <UtensilsCrossed
             size={18}
-            className="text-[#c5a46d]"
+            className="text-[#c79a45]"
           />
 
           <span className="text-sm font-semibold text-slate-700">
@@ -96,7 +96,7 @@ export default function CashCowSection({
               </h3>
 
               <div className="mt-4 rounded-2xl bg-[#f3eee4] p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-[#806744]">
+                <p className="text-xs font-semibold uppercase tracking-wide text-[#8b682b]">
                   Featured dish
                 </p>
 
@@ -114,7 +114,7 @@ export default function CashCowSection({
               {/* View Hotel */}
               <Link
                 href={`/hotels/${hotel.hotel_id}`}
-                className="mt-4 flex items-center justify-between rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-[#c5a46d] hover:text-[#806744]"
+                className="mt-4 flex items-center justify-between rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-[#c79a45] hover:text-[#8b682b]"
               >
                 <span>View Hotel</span>
 

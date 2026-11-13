@@ -42,12 +42,12 @@ export default function Header() {
           {mobileNavOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
 
-        <Link href="/" className="shrink-0 font-semibold text-[#14243a] lg:hidden" aria-label="Colombo Dining and Events Guide home">
+        <Link href="/" className="shrink-0 font-semibold text-[#0c1725] lg:hidden" aria-label="Colombo Dining and Events Guide home">
           Colombo
         </Link>
 
         <div className="hidden shrink-0 items-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700 md:flex">
-          <MapPin className="h-4 w-4 text-[#806744]" aria-hidden="true" />
+          <MapPin className="h-4 w-4 text-[#8b682b]" aria-hidden="true" />
           <span>Colombo, Sri Lanka</span>
         </div>
 
@@ -60,9 +60,9 @@ export default function Header() {
             defaultValue={currentQuery}
             placeholder="Search hotels, buffets, restaurants or cafés"
             aria-label="Search hotels, buffets, restaurants and cafés"
-            className="control h-12 w-full bg-slate-50 pl-12 pr-12 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-[#c5a46d] focus:bg-white focus:ring-2 focus:ring-[#c5a46d]/20"
+            className="control h-12 w-full bg-slate-50 pl-12 pr-12 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-[#c79a45] focus:bg-white focus:ring-2 focus:ring-[#c79a45]/20"
           />
-          <button type="submit" aria-label="Search" className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-[#806744]">
+          <button type="submit" aria-label="Search" className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-[#8b682b]">
             <Search className="h-5 w-5" aria-hidden="true" />
           </button>
         </form>
@@ -73,7 +73,7 @@ export default function Header() {
           type="button"
           aria-label="Close navigation"
           onClick={() => setMobileNavOpen(false)}
-          className="fixed inset-x-0 bottom-0 top-[76px] z-10 bg-[#0b1728]/20 lg:hidden"
+          className="fixed inset-x-0 bottom-0 top-[76px] z-10 bg-[#0b1420]/20 lg:hidden"
         />
       )}
 
@@ -95,7 +95,7 @@ export default function Header() {
                   href={item.href}
                   onClick={() => setMobileNavOpen(false)}
                   aria-current={active ? "page" : undefined}
-                  className={`flex min-h-12 items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${active ? "bg-[#14243a] text-white" : "text-slate-700 hover:bg-slate-100"}`}
+                  className={`flex min-h-12 items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${active ? "bg-[#0c1725] text-white" : "text-slate-700 hover:bg-slate-100"}`}
                 >
                   <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
                   <span>{item.label}</span>
@@ -106,7 +106,7 @@ export default function Header() {
               href="/settings"
               onClick={() => setMobileNavOpen(false)}
               aria-current={pathname === "/settings" ? "page" : undefined}
-              className={`flex min-h-12 items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium ${pathname === "/settings" ? "bg-[#14243a] text-white" : "text-slate-700 hover:bg-slate-100"}`}
+              className={`flex min-h-12 items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium ${pathname === "/settings" ? "bg-[#0c1725] text-white" : "text-slate-700 hover:bg-slate-100"}`}
             >
               <Settings className="h-4 w-4 shrink-0" aria-hidden="true" /> Settings
             </Link>

@@ -249,8 +249,8 @@ export default async function HotelDetailsPage({
 
           <div className="flex items-center gap-3">
 
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c5a46d]/10">
-              <Star className="h-5 w-5 fill-[#c5a46d] text-[#c5a46d]" />
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c79a45]/10">
+              <Star className="h-5 w-5 fill-[#c79a45] text-[#c79a45]" />
             </div>
 
             <div>
@@ -262,7 +262,7 @@ export default async function HotelDetailsPage({
                 {rating}
               </p>
               {formatDataDate(hotel.rate_verified_at) && <p className="text-xs text-slate-500">Rating information last checked {formatDataDate(hotel.rate_verified_at)}</p>}
-              {googleReviewUrl && <a href={googleReviewUrl} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-[#806744] hover:underline">Google Reviews <Globe className="h-3 w-3" /></a>}
+              {googleReviewUrl && <a href={googleReviewUrl} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-[#8b682b] hover:underline">Google Reviews <Globe className="h-3 w-3" /></a>}
             </div>
 
           </div>
@@ -271,8 +271,8 @@ export default async function HotelDetailsPage({
 
           <div className="flex items-center gap-3">
 
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c5a46d]/10">
-              <MapPin className="h-5 w-5 text-[#c5a46d]" />
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c79a45]/10">
+              <MapPin className="h-5 w-5 text-[#c79a45]" />
             </div>
 
             <div className="min-w-0">
@@ -284,7 +284,7 @@ export default async function HotelDetailsPage({
               <p className="truncate font-semibold text-slate-900">
                 {hotel.location || "Colombo"}
               </p>
-              <a href={mapUrl} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-[#806744] hover:underline"><MapPin className="h-3 w-3" />Google Maps</a>
+              <a href={mapUrl} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-[#8b682b] hover:underline"><MapPin className="h-3 w-3" />Google Maps</a>
 
             </div>
 
@@ -294,8 +294,8 @@ export default async function HotelDetailsPage({
 
           <div className="flex items-center gap-3">
 
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c5a46d]/10">
-              <Phone className="h-5 w-5 text-[#c5a46d]" />
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c79a45]/10">
+              <Phone className="h-5 w-5 text-[#c79a45]" />
             </div>
 
             <div className="min-w-0">
@@ -304,7 +304,7 @@ export default async function HotelDetailsPage({
                 Telephone
               </p>
 
-              {hotel.contact_number?.trim() ? <a href={`tel:${hotel.contact_number.trim()}`} className="block truncate font-semibold text-[#806744] hover:underline">{hotel.contact_number.trim()}</a> : <p className="font-semibold text-slate-900">Not available</p>}
+              {hotel.contact_number?.trim() ? <a href={`tel:${hotel.contact_number.trim()}`} className="block truncate font-semibold text-[#8b682b] hover:underline">{hotel.contact_number.trim()}</a> : <p className="font-semibold text-slate-900">Not available</p>}
 
             </div>
 
@@ -314,8 +314,8 @@ export default async function HotelDetailsPage({
 
           <div className="flex items-center gap-3">
 
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c5a46d]/10">
-              <Globe className="h-5 w-5 text-[#c5a46d]" />
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#c79a45]/10">
+              <Globe className="h-5 w-5 text-[#c79a45]" />
             </div>
 
             <div className="min-w-0">
@@ -329,7 +329,7 @@ export default async function HotelDetailsPage({
                   href={websiteUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block truncate font-semibold text-[#806744] hover:underline"
+                  className="block truncate font-semibold text-[#8b682b] hover:underline"
                 >
                   Visit Website
                 </a>
@@ -360,8 +360,8 @@ export default async function HotelDetailsPage({
 
           <div className="flex items-center gap-3">
 
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#c5a46d]/10">
-              <Info className="h-5 w-5 text-[#c5a46d]" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#c79a45]/10">
+              <Info className="h-5 w-5 text-[#c79a45]" />
             </div>
 
             <div>
@@ -395,7 +395,7 @@ export default async function HotelDetailsPage({
 
                 <div className="flex items-start gap-3">
 
-                  <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-[#c5a46d]" />
+                  <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-[#c79a45]" />
 
                   <div>
 
@@ -404,7 +404,7 @@ export default async function HotelDetailsPage({
                     </p>
 
                     <p className="mt-1 text-sm leading-6 text-slate-600">{hotel.address}</p>
-                    <a href={mapUrl} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-[#806744] hover:underline"><MapPin className="h-4 w-4" />View on Google Maps</a>
+                    <a href={mapUrl} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-[#8b682b] hover:underline"><MapPin className="h-4 w-4" />View on Google Maps</a>
 
                   </div>
 
@@ -424,8 +424,8 @@ export default async function HotelDetailsPage({
 
           <div className="flex items-center gap-3">
 
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#c5a46d]/10">
-              <UtensilsCrossed className="h-5 w-5 text-[#c5a46d]" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#c79a45]/10">
+              <UtensilsCrossed className="h-5 w-5 text-[#c79a45]" />
             </div>
 
             <div>
@@ -462,7 +462,7 @@ export default async function HotelDetailsPage({
                         {schedule.meal_type || "Buffet"}
                       </p>
 
-                      <p className="mt-1 text-xs font-medium text-[#806744]">
+                      <p className="mt-1 text-xs font-medium text-[#8b682b]">
                         {schedule.day_group}
                       </p>
 
@@ -482,7 +482,7 @@ export default async function HotelDetailsPage({
                   {schedule.buffet_time && (
                     <div className="mt-3 flex items-center gap-2 text-sm text-slate-500">
 
-                      <Clock3 className="h-4 w-4 text-[#c5a46d]" />
+                      <Clock3 className="h-4 w-4 text-[#c79a45]" />
 
                       {schedule.buffet_time}
 
@@ -532,8 +532,8 @@ export default async function HotelDetailsPage({
 
           <div className="flex items-center gap-3">
 
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#c5a46d]/10">
-              <CheckCircle2 className="h-5 w-5 text-[#c5a46d]" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#c79a45]/10">
+              <CheckCircle2 className="h-5 w-5 text-[#c79a45]" />
             </div>
 
             <div>
@@ -556,7 +556,7 @@ export default async function HotelDetailsPage({
 
               <div
                 key={feature.feature_id}
-                className="rounded-xl border border-[#c5a46d]/20 bg-[#c5a46d]/5 px-4 py-3"
+                className="rounded-xl border border-[#c79a45]/20 bg-[#c79a45]/5 px-4 py-3"
               >
 
                 <p className="text-sm font-semibold text-slate-800">
@@ -586,7 +586,7 @@ export default async function HotelDetailsPage({
 
         <div className="flex items-start gap-3">
 
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#c5a46d]/10 text-lg">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#c79a45]/10 text-lg">
             🐄
           </div>
 
@@ -608,7 +608,7 @@ export default async function HotelDetailsPage({
 
           <div className="mt-5 rounded-xl border border-amber-200 bg-white p-4">
 
-            <p className="text-base font-bold text-[#806744]">
+            <p className="text-base font-bold text-[#8b682b]">
               {hotel.cash_cow_dish}
             </p>
 
@@ -707,8 +707,8 @@ export default async function HotelDetailsPage({
 
         <div className="flex items-start gap-3">
 
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#c5a46d]/10">
-            <UtensilsCrossed className="h-5 w-5 text-[#c5a46d]" />
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#c79a45]/10">
+            <UtensilsCrossed className="h-5 w-5 text-[#c79a45]" />
           </div>
 
           <div>

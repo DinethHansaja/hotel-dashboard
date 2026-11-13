@@ -113,7 +113,7 @@ export default function BuffetCard({
     <article
       className={`group flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl ${
         isSelectedForComparison
-          ? "border-[#c5a46d] ring-2 ring-[#c5a46d]/20"
+          ? "border-[#c79a45] ring-2 ring-[#c79a45]/20"
           : "border-slate-200 hover:border-slate-300"
       }`}
     >
@@ -163,7 +163,7 @@ export default function BuffetCard({
         {/* Comparison */}
 
         {isSelectedForComparison && (
-          <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-[#806744] shadow-md">
+          <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-[#8b682b] shadow-md">
 
             <GitCompare className="h-3.5 w-3.5" />
 
@@ -241,13 +241,13 @@ export default function BuffetCard({
             <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
               {rating !== null && rating !== undefined && (
                 <span className="inline-flex items-center gap-1.5 text-slate-700">
-                  <Star className="h-4 w-4 fill-[#c5a46d] text-[#c5a46d]" />
+                  <Star className="h-4 w-4 fill-[#c79a45] text-[#c79a45]" />
                   <strong>{Number(rating).toFixed(1)}</strong>
                   <span className="text-xs text-slate-500">Listed hotel rating{reviewCount != null ? ` · ${reviewCount} reviews` : ""}</span>
                 </span>
               )}
               {toExternalUrl(googleReviewUrl) && (
-                <a href={toExternalUrl(googleReviewUrl)!} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-[#806744] hover:underline">
+                <a href={toExternalUrl(googleReviewUrl)!} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-[#8b682b] hover:underline">
                   Google Reviews <ExternalLink className="h-3 w-3" />
                 </a>
               )}
@@ -277,14 +277,14 @@ export default function BuffetCard({
 
             {mealType && (
               <div className="flex items-center gap-2 text-sm text-slate-500">
-                <Utensils className="h-4 w-4 shrink-0 text-[#c5a46d]" />
+                <Utensils className="h-4 w-4 shrink-0 text-[#c79a45]" />
                 <span>{mealType} buffet</span>
               </div>
             )}
 
             {(buffetTimes?.length ? buffetTimes : buffetTime ? [buffetTime] : []).map((time) => (
               <div key={time} className="flex items-center gap-2 text-sm text-slate-500">
-                <Clock3 className="h-4 w-4 shrink-0 text-[#c5a46d]" />
+                <Clock3 className="h-4 w-4 shrink-0 text-[#c79a45]" />
                 <span>{time}</span>
               </div>
             ))}
@@ -312,11 +312,11 @@ export default function BuffetCard({
 
                   <div className="flex items-start gap-2">
 
-                    <Utensils className="mt-0.5 h-4 w-4 shrink-0 text-[#806744]" />
+                    <Utensils className="mt-0.5 h-4 w-4 shrink-0 text-[#8b682b]" />
 
                     <div className="min-w-0">
 
-                      <p className="text-xs font-bold uppercase tracking-wide text-[#806744]">
+                      <p className="text-xs font-bold uppercase tracking-wide text-[#8b682b]">
                         Featured dish
                       </p>
 
@@ -350,7 +350,7 @@ export default function BuffetCard({
 
                 <div className="flex items-center gap-2">
 
-                  <MessageSquare className="h-4 w-4 text-[#c5a46d]" />
+                  <MessageSquare className="h-4 w-4 text-[#c79a45]" />
 
                   <span className="text-xs font-bold uppercase tracking-wide text-slate-700">
                     Guest Reviews
@@ -367,7 +367,7 @@ export default function BuffetCard({
                   communityReviewCount > 0 && (
                     <div className="flex items-center gap-1">
 
-                      <Star className="h-3.5 w-3.5 fill-[#c5a46d] text-[#c5a46d]" />
+                      <Star className="h-3.5 w-3.5 fill-[#c79a45] text-[#c79a45]" />
 
                       <span className="text-xs font-semibold text-slate-700">
                         {Number(
@@ -408,7 +408,7 @@ export default function BuffetCard({
                     {formattedLatestReviewRating && (
                       <div className="flex items-center gap-1">
 
-                        <Star className="h-3 w-3 fill-[#c5a46d] text-[#c5a46d]" />
+                        <Star className="h-3 w-3 fill-[#c79a45] text-[#c79a45]" />
 
                         <span className="text-[11px] font-semibold text-slate-600">
                           {formattedLatestReviewRating}
@@ -467,10 +467,10 @@ export default function BuffetCard({
                 }
                 className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-sm font-semibold transition ${
                   isSelectedForComparison
-                    ? "border-[#c5a46d] bg-[#c5a46d] text-[#0b1728] shadow-sm"
+                    ? "border-[#c79a45] bg-[#c79a45] text-[#0b1420] shadow-sm"
                     : compareDisabled
                       ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400"
-                      : "border-slate-200 bg-white text-slate-600 hover:border-[#c5a46d] hover:text-[#806744]"
+                      : "border-slate-200 bg-white text-slate-600 hover:border-[#c79a45] hover:text-[#8b682b]"
                 }`}
               >
 
@@ -487,7 +487,7 @@ export default function BuffetCard({
 
             <Link
               href={`/hotels/${hotelId}`}
-              className={`flex items-center justify-center gap-2 rounded-xl border border-[#c5a46d] px-3 py-2.5 text-sm font-semibold text-[#806744] transition hover:bg-[#c5a46d] hover:text-[#0b1728] ${
+              className={`flex items-center justify-center gap-2 rounded-xl border border-[#c79a45] px-3 py-2.5 text-sm font-semibold text-[#8b682b] transition hover:bg-[#c79a45] hover:text-[#0b1420] ${
                 !onToggleCompare
                   ? "col-span-2"
                   : ""
