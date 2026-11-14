@@ -1,17 +1,37 @@
 "use client";
 
-import { MapPin, Menu, Search, Settings, X } from "lucide-react";
+import { MapPin, Menu, Moon, Search, Settings, Sun, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { menuItems } from "@/components/layout/navigation";
+import { useThemePreferences } from "@/components/layout/ThemeProvider";
 
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { theme, setTheme } = useThemePreferences();
   const currentQuery = searchParams.get("q") ?? "";
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const syncResolvedTheme = () => {
+      setResolvedTheme(
+        theme === "system"
+          ? mediaQuery.matches ? "dark" : "light"
+          : theme
+      );
+    };
+
+    syncResolvedTheme();
+    if (theme !== "system") return;
+
+    mediaQuery.addEventListener("change", syncResolvedTheme);
+    return () => mediaQuery.removeEventListener("change", syncResolvedTheme);
+  }, [theme]);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -30,7 +50,7 @@ export default function Header() {
 
   return (
     <header className="relative z-40 shrink-0 border-b border-slate-200 bg-white">
-      <div className="flex h-[76px] items-center gap-3 px-4 md:gap-4 md:px-8">
+      <div className="flex h-[76px] items-center gap-2 px-3 sm:gap-3 sm:px-4 md:gap-4 md:px-8">
         <button
           type="button"
           onClick={() => setMobileNavOpen((open) => !open)}
@@ -51,7 +71,7 @@ export default function Header() {
           <span>Colombo, Sri Lanka</span>
         </div>
 
-        <form onSubmit={handleSearch} role="search" className="relative ml-auto flex-1 lg:ml-0">
+        <form onSubmit={handleSearch} role="search" className="relative ml-auto min-w-0 flex-1 lg:ml-0 xl:max-w-3xl">
           <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
           <input
             key={currentQuery}
@@ -66,6 +86,30 @@ export default function Header() {
             <Search className="h-5 w-5" aria-hidden="true" />
           </button>
         </form>
+
+        <Link
+          href="/settings"
+          aria-label="Settings"
+          title="Settings"
+          className="ui-button ui-button-secondary hidden h-10 w-10 shrink-0 items-center justify-center lg:inline-flex"
+        >
+          <Settings className="h-4 w-4" aria-hidden="true" />
+        </Link>
+
+        <button
+          type="button"
+          onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+          aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} theme`}
+          title={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} theme`}
+          className="ui-button ui-button-secondary ml-auto inline-flex h-10 shrink-0 items-center justify-center gap-1.5 px-2.5 text-xs font-semibold sm:px-3 lg:ml-0"
+        >
+          {resolvedTheme === "dark" ? (
+            <Sun className="h-4 w-4" aria-hidden="true" />
+          ) : (
+            <Moon className="h-4 w-4" aria-hidden="true" />
+          )}
+          <span>{resolvedTheme === "dark" ? "Light" : "Dark"}</span>
+        </button>
       </div>
 
       {mobileNavOpen && (

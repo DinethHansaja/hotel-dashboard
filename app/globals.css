@@ -220,6 +220,14 @@ html[data-theme="dark"] .bg-slate-300 {
   background-color: #35465a !important;
 }
 
+html[data-theme="dark"] .bg-slate-900 {
+  background-color: var(--navy) !important;
+}
+
+html[data-theme="dark"] .hover\:bg-slate-800:hover {
+  background-color: #20354f !important;
+}
+
 html[data-theme="dark"] [class*="bg-[#f8f6f1]"],
 html[data-theme="dark"] [class*="bg-[#ffffff]"] {
   background-color: #0f1b2a !important;
@@ -241,6 +249,15 @@ html[data-theme="dark"] .bg-amber-50\/70 {
 
 html[data-theme="dark"] .bg-red-50 {
   background-color: #351c22 !important;
+}
+
+html[data-theme="dark"] .text-red-900,
+html[data-theme="dark"] .text-red-700 {
+  color: #ffb4b4 !important;
+}
+
+html[data-theme="dark"] .border-red-200 {
+  border-color: #75343b !important;
 }
 
 html[data-theme="dark"] .bg-green-50,
@@ -273,6 +290,11 @@ html[data-theme="dark"] .text-slate-400 {
   color: #9ba6b3 !important;
 }
 
+html[data-theme="dark"] [class*="bg-[#c79a45]"][class*="text-[#0b1420]"],
+html[data-theme="dark"] [class*="bg-[#c79a45]"] [class*="text-[#0b1420]"] {
+  color: #0b1420 !important;
+}
+
 html[data-theme="dark"] .border-slate-100,
 html[data-theme="dark"] .border-slate-200,
 html[data-theme="dark"] .border-slate-300 {
@@ -302,6 +324,15 @@ html[data-theme="dark"] .leaflet-popup-tip {
 
 html[data-theme="dark"] .leaflet-popup-content {
   color: var(--foreground);
+}
+
+.scrollbar-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
 }
 
 html[data-reduce-motion="true"] *,

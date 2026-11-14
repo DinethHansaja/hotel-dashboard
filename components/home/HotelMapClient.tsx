@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   MapContainer,
   Marker,
@@ -42,6 +42,7 @@ const hotelIcon = L.icon({
 export default function HotelMapClient({
   hotels,
 }: HotelMapClientProps) {
+  const [tilesUnavailable, setTilesUnavailable] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(
     null
   );
@@ -81,6 +82,17 @@ export default function HotelMapClient({
       Number.isFinite(Number(hotel.longitude))
   );
 
+  if (validHotels.length === 0) {
+    return (
+      <div className="flex h-full w-full items-center justify-center bg-slate-100 p-6 text-center">
+        <div>
+          <p className="font-semibold text-slate-800">No mapped hotels</p>
+          <p className="mt-1 text-sm text-slate-500">Hotel locations are not available for these listings yet.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <MapContainer
       center={[6.9271, 79.8612]}
@@ -91,7 +103,14 @@ export default function HotelMapClient({
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        eventHandlers={{ tileerror: () => setTilesUnavailable(true) }}
       />
+
+      {tilesUnavailable && (
+        <div role="status" className="pointer-events-none absolute left-3 top-3 z-[1000] rounded-lg border border-amber-300 bg-white/95 px-3 py-2 text-xs font-medium text-slate-700 shadow-sm">
+          Map tiles could not load. The hotel list remains available below.
+        </div>
+      )}
 
       {validHotels.map((hotel) => (
         <Marker

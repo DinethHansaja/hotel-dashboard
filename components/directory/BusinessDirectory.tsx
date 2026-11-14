@@ -328,7 +328,7 @@ export default function BusinessDirectory({
                     key={business.id}
                     className="overflow-hidden rounded-2xl border border-slate-200 bg-white surface-card shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                   >
-                    <div className="relative h-40 bg-gradient-to-br from-[#0c1725] to-[#24364a]">
+                    <div className="relative aspect-[16/9] bg-[#0c1725]">
                       {business.imageUrl ? (
                         <img
                           src={business.imageUrl}
@@ -414,11 +414,11 @@ export default function BusinessDirectory({
                         </p>
                       )}
 
-                      <div className="mt-5 flex flex-wrap gap-2 border-t border-slate-100 pt-4">
+                      <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-slate-100 pt-4">
                         {business.telephone && (
                           <a
                             href={"tel:" + business.telephone}
-                            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:border-[#c79a45] hover:text-[#8b682b]"
+                            className="ui-button ui-button-primary inline-flex items-center gap-2 px-3 py-2 text-xs font-medium"
                           >
                             <Phone className="h-3.5 w-3.5" />
                             Call
@@ -428,7 +428,7 @@ export default function BusinessDirectory({
                         {business.email && (
                           <a
                             href={"mailto:" + business.email}
-                            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:border-[#c79a45] hover:text-[#8b682b]"
+                            className="inline-flex items-center gap-1.5 py-1 text-xs font-medium text-slate-600 hover:text-[#8b682b]"
                           >
                             Email
                           </a>
@@ -439,7 +439,7 @@ export default function BusinessDirectory({
                             href={getWebsiteUrl(business.website!)}
                             target="_blank"
                             rel="noreferrer"
-                            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:border-[#c79a45] hover:text-[#8b682b]"
+                            className="inline-flex items-center gap-1.5 py-1 text-xs font-medium text-slate-600 hover:text-[#8b682b]"
                           >
                             <Globe className="h-3.5 w-3.5" />
                             Website
@@ -452,7 +452,7 @@ export default function BusinessDirectory({
                             href={toExternalUrl(business.sourceUrl)!}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:border-[#c79a45] hover:text-[#8b682b]"
+                            className="inline-flex items-center gap-1.5 py-1 text-xs font-medium text-slate-600 hover:text-[#8b682b]"
                           >
                             Information source
                             <ArrowUpRight className="h-3 w-3" />
@@ -464,7 +464,7 @@ export default function BusinessDirectory({
                             href={toExternalUrl(mapUrl)!}
                             target="_blank"
                             rel="noreferrer"
-                            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:border-[#c79a45] hover:text-[#8b682b]"
+                            className="inline-flex items-center gap-1.5 py-1 text-xs font-medium text-slate-600 hover:text-[#8b682b]"
                           >
                             <MapPin className="h-3.5 w-3.5" />
                             Google Maps

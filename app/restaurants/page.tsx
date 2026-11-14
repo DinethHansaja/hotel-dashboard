@@ -1,6 +1,7 @@
 import type { DirectoryBusiness } from "@/components/directory/BusinessDirectory";
 import RestaurantDirectory from "@/components/restaurants/RestaurantDirectory";
 import { supabase } from "@/lib/supabase";
+import { isActiveColomboBusiness } from "@/lib/commercialData";
 
 export default async function RestaurantsPage({
   searchParams,
@@ -30,7 +31,14 @@ export default async function RestaurantsPage({
     );
   }
 
-  const restaurants: DirectoryBusiness[] = (data ?? []).map((row) => ({
+  const restaurants: DirectoryBusiness[] = (data ?? [])
+    .filter((row) =>
+      isActiveColomboBusiness({
+        verificationStatus: row.verification_status,
+        notes: row.notes,
+      })
+    )
+    .map((row) => ({
     id: String(row.business_id),
     name: row.restaurant_name?.trim() || "Unnamed restaurant",
     category: row.cuisine_or_category ?? null,
@@ -52,7 +60,7 @@ export default async function RestaurantsPage({
     verificationStatus: row.verification_status ?? null,
     lastChecked: row.last_checked ?? null,
     notes: row.notes ?? null,
-  }));
+    }));
 
   return <RestaurantDirectory restaurants={restaurants} initialArea={initialArea} initialSearch={initialSearch} />;
 }

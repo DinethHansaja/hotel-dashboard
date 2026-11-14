@@ -9,7 +9,7 @@ const BusinessMapClient = dynamic(
     ssr: false,
     loading: () => (
       <div className="flex h-[380px] w-full items-center justify-center rounded-2xl bg-slate-100 lg:h-[560px]">
-        <span className="text-sm text-slate-500">Loading map...</span>
+        <span role="status" aria-live="polite" aria-busy="true" className="text-sm text-slate-500">Loading locations map…</span>
       </div>
     ),
   }

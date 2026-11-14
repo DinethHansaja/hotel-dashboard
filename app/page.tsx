@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import { isActiveColomboBusiness } from "@/lib/commercialData";
 
 // This page reads live hotel, restaurant and café records from Supabase.
 export const dynamic = "force-dynamic";
@@ -69,12 +70,12 @@ export default async function HomePage() {
         .limit(6),
       supabase
         .from("restaurants")
-        .select("business_id, restaurant_name, cuisine_or_category, area, image_url, rating, review_count, price_range", { count: "exact" })
+        .select("business_id, restaurant_name, cuisine_or_category, area, image_url, rating, review_count, price_range, verification_status, notes")
         .order("rating", { ascending: false, nullsFirst: false })
         .order("review_count", { ascending: false, nullsFirst: false }),
       supabase
         .from("cafes")
-        .select("business_id, cafe_name, business_type, area, image_url, rating, review_count, price_range", { count: "exact" })
+        .select("business_id, cafe_name, business_type, area, image_url, rating, review_count, price_range, verification_status, notes")
         .order("rating", { ascending: false, nullsFirst: false })
         .order("review_count", { ascending: false, nullsFirst: false }),
       supabase.from("reviews").select("review_id", { count: "exact", head: true }),
@@ -110,8 +111,18 @@ export default async function HomePage() {
       rating: toNumber(hotel.Rating),
     }));
 
-  const restaurants = restaurantResult.data ?? [];
-  const cafes = cafeResult.data ?? [];
+  const restaurants = (restaurantResult.data ?? []).filter((place) =>
+    isActiveColomboBusiness({
+      verificationStatus: place.verification_status,
+      notes: place.notes,
+    })
+  );
+  const cafes = (cafeResult.data ?? []).filter((place) =>
+    isActiveColomboBusiness({
+      verificationStatus: place.verification_status,
+      notes: place.notes,
+    })
+  );
   const featuredPlaces: FeaturedPlace[] = [
     ...restaurants.slice(0, 2).map((place) => ({
       id: String(place.business_id),
@@ -189,8 +200,8 @@ export default async function HomePage() {
           <DirectoryTrustSection
             stats={{
               hotels: hotelResult.error ? null : hotelResult.count ?? hotels.length,
-              restaurants: restaurantResult.error ? null : restaurantResult.count ?? restaurants.length,
-              cafes: cafeResult.error ? null : cafeResult.count ?? cafes.length,
+              restaurants: restaurantResult.error ? null : restaurants.length,
+              cafes: cafeResult.error ? null : cafes.length,
               reviews: reviewResult.error ? null : reviewResult.count ?? 0,
             }}
           />

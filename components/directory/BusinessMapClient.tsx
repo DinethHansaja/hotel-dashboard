@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer, Tooltip } from "react-leaflet";
 import L from "leaflet";
 import type { DirectoryBusiness } from "@/components/directory/BusinessDirectory";
@@ -41,6 +41,7 @@ export default function BusinessMapClient({
   selectedBusinessId?: string | null;
   onSelectBusiness?: (id: string) => void;
 }) {
+  const [tilesUnavailable, setTilesUnavailable] = useState(false);
   const locatedBusinesses = useMemo(
     () =>
       businesses.filter(
@@ -81,7 +82,14 @@ export default function BusinessMapClient({
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        eventHandlers={{ tileerror: () => setTilesUnavailable(true) }}
       />
+
+      {tilesUnavailable && (
+        <div role="status" className="pointer-events-none absolute left-3 top-3 z-[1000] rounded-lg border border-amber-300 bg-white/95 px-3 py-2 text-xs font-medium text-slate-700 shadow-sm">
+          Map tiles could not load. Business listings remain available.
+        </div>
+      )}
 
       {locatedBusinesses.map((business) => {
         const mapsUrl = toExternalUrl(

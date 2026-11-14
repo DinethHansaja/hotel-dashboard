@@ -24,3 +24,21 @@ export function formatDataDate(value: string | null | undefined): string | null 
     timeZone: "Asia/Colombo",
   }).format(date);
 }
+
+/** Exclude records already marked as duplicates or closed Colombo locations. */
+export function isActiveColomboBusiness(record: {
+  verificationStatus?: string | null;
+  notes?: string | null;
+  verification_status?: string | null;
+}): boolean {
+  const verificationStatus = (record.verificationStatus ?? record.verification_status)?.toLocaleLowerCase() ?? "";
+  const notes = record.notes?.toLocaleLowerCase() ?? "";
+
+  const confirmedDuplicate =
+    verificationStatus.includes("duplicate") ||
+    notes.includes("confirmed duplicate of");
+  const closedColomboLocation =
+    notes.includes("permanently closed") || notes.includes("closed in colombo");
+
+  return !confirmedDuplicate && !closedColomboLocation;
+}

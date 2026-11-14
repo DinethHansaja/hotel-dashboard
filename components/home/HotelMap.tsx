@@ -28,9 +28,9 @@ const HotelMapClient = dynamic(
     ssr: false,
 
     loading: () => (
-      <div className="flex h-full w-full items-center justify-center bg-slate-100">
+      <div role="status" aria-live="polite" aria-busy="true" className="flex h-full w-full items-center justify-center bg-slate-100">
         <div className="text-sm text-slate-500">
-          Loading map...
+          Loading hotel map…
         </div>
       </div>
     ),

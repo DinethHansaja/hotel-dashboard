@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Coffee, Hotel, Search, UtensilsCrossed } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
+import { isActiveColomboBusiness } from "@/lib/commercialData";
 
 type SearchPageProps = { searchParams: Promise<{ q?: string | string[] }> };
 
@@ -24,8 +25,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const query = cleanQuery(rawQuery);
 
   let hotels: HotelResult[] = [];
-  let restaurants: Array<{ business_id: number; restaurant_name: string; cuisine_or_category?: string | null; area?: string | null }> = [];
-  let cafes: Array<{ business_id: number; cafe_name: string; business_type?: string | null; area?: string | null }> = [];
+  let restaurants: Array<{ business_id: number; restaurant_name: string; cuisine_or_category?: string | null; area?: string | null; verification_status?: string | null; notes?: string | null }> = [];
+  let cafes: Array<{ business_id: number; cafe_name: string; business_type?: string | null; area?: string | null; verification_status?: string | null; notes?: string | null }> = [];
   const buffetLabelsByHotel = new Map<number, string[]>();
   let dataUnavailable = false;
 
@@ -33,15 +34,15 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     const pattern = `%${query}%`;
     const [hotelRequest, restaurantRequest, cafeRequest, scheduleRequest] = await Promise.all([
       supabase.from("hotels").select("hotel_id, hotel_name, restaurant_name, location, address, image_url").or(`hotel_name.ilike.${pattern},restaurant_name.ilike.${pattern},location.ilike.${pattern},address.ilike.${pattern}`).limit(8),
-      supabase.from("restaurants").select("business_id, restaurant_name, cuisine_or_category, area").or(`restaurant_name.ilike.${pattern},cuisine_or_category.ilike.${pattern},area.ilike.${pattern},address.ilike.${pattern},signature_dishes.ilike.${pattern}`).limit(8),
-      supabase.from("cafes").select("business_id, cafe_name, business_type, area").or(`cafe_name.ilike.${pattern},business_type.ilike.${pattern},area.ilike.${pattern},address.ilike.${pattern},specialties.ilike.${pattern}`).limit(8),
+      supabase.from("restaurants").select("business_id, restaurant_name, cuisine_or_category, area, verification_status, notes").or(`restaurant_name.ilike.${pattern},cuisine_or_category.ilike.${pattern},area.ilike.${pattern},address.ilike.${pattern},signature_dishes.ilike.${pattern}`).limit(20),
+      supabase.from("cafes").select("business_id, cafe_name, business_type, area, verification_status, notes").or(`cafe_name.ilike.${pattern},business_type.ilike.${pattern},area.ilike.${pattern},address.ilike.${pattern},specialties.ilike.${pattern}`).limit(20),
       supabase.from("buffet_schedules").select("hotel_id, meal_type, buffet_name, buffet_time").or(`meal_type.ilike.${pattern},buffet_name.ilike.${pattern},buffet_time.ilike.${pattern}`).limit(12),
     ]);
 
     dataUnavailable = Boolean(hotelRequest.error || restaurantRequest.error || cafeRequest.error || scheduleRequest.error);
     hotels = (hotelRequest.data ?? []) as HotelResult[];
-    restaurants = restaurantRequest.data ?? [];
-    cafes = cafeRequest.data ?? [];
+    restaurants = (restaurantRequest.data ?? []).filter(isActiveColomboBusiness).slice(0, 8);
+    cafes = (cafeRequest.data ?? []).filter(isActiveColomboBusiness).slice(0, 8);
 
     const scheduleHotelIds = [...new Set((scheduleRequest.data ?? []).map((row) => Number(row.hotel_id)).filter(Number.isFinite))];
     for (const schedule of scheduleRequest.data ?? []) {

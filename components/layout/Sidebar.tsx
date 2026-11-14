@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, Landmark, Settings } from "lucide-react";
+import { ChevronLeft, ChevronRight, Landmark } from "lucide-react";
 import { menuItems } from "@/components/layout/navigation";
 
 export default function Sidebar() {
@@ -177,31 +177,6 @@ export default function Sidebar() {
 
       {/* BOTTOM CONTROLS */}
       <div className="shrink-0 border-t border-white/10 p-3">
-        <Link
-          href="/settings"
-          title={!expanded ? "Settings" : undefined}
-          aria-current={pathname === "/settings" ? "page" : undefined}
-          className={`mb-2 flex items-center rounded-xl transition ${pathname === "/settings" ? "bg-[#8b682b] text-white" : "text-slate-200 hover:bg-white/10"} ${
-            expanded
-              ? "gap-4 px-4 py-3"
-              : "justify-center px-3 py-3.5"
-          }`}
-        >
-          <Settings className="h-5 w-5 shrink-0" />
-
-          {expanded && (
-            <div className="whitespace-nowrap">
-              <div className="text-[15px] font-medium">
-                Settings
-              </div>
-
-              <div className="text-xs text-[#a6b2c2]">
-                Preferences
-              </div>
-            </div>
-          )}
-        </Link>
-
         <button
           type="button"
           onClick={handleToggle}

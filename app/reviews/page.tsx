@@ -82,6 +82,7 @@ export default function ReviewsPage() {
 
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [reviewsErrorMessage, setReviewsErrorMessage] = useState("");
 
   const [search, setSearch] = useState("");
   const [reviewType, setReviewType] =
@@ -98,6 +99,7 @@ export default function ReviewsPage() {
   async function loadData() {
     setLoading(true);
     setErrorMessage("");
+    setReviewsErrorMessage("");
 
     const [
       { data: hotelData, error: hotelError },
@@ -144,6 +146,7 @@ export default function ReviewsPage() {
        * reviews table cannot be read.
        */
       setReviews([]);
+      setReviewsErrorMessage("Guest reviews are temporarily unavailable.");
     } else {
       setReviews(
         (reviewData ?? []) as Review[]
@@ -379,7 +382,7 @@ export default function ReviewsPage() {
 
                 <div className="text-sm text-slate-500">
                   <span className="font-semibold text-slate-900">
-                    {hotels.length}
+                    {loading ? "Loading…" : errorMessage ? "Unavailable" : hotels.length}
                   </span>{" "}
                   hotels
                 </div>
@@ -393,13 +396,13 @@ export default function ReviewsPage() {
 
                   <span className="text-sm text-slate-500">
                     <span className="font-semibold text-slate-900">
-                      {reviews.length}
+                      {loading ? "Loading…" : reviewsErrorMessage ? "Unavailable" : reviews.length}
                     </span>{" "}
                     guest reviews
                   </span>
                 </div>
 
-                {reviews.length > 0 && (
+                {!loading && !reviewsErrorMessage && reviews.length > 0 && (
                   <>
                     <div className="hidden h-5 w-px bg-slate-200 sm:block" />
 
@@ -558,11 +561,11 @@ export default function ReviewsPage() {
             </h2>
 
             <p className="mt-1 text-sm text-slate-500">
-              {filteredHotels.length}{" "}
-              {filteredHotels.length === 1
-                ? "hotel"
-                : "hotels"}{" "}
-              available
+              {loading
+                ? "Loading hotel listings…"
+                : errorMessage
+                  ? "Hotel listings unavailable"
+                  : `${filteredHotels.length} ${filteredHotels.length === 1 ? "hotel" : "hotels"} available`}
             </p>
           </div>
         </div>
@@ -608,8 +611,15 @@ export default function ReviewsPage() {
             <p className="mt-2 text-sm text-red-700">
               {errorMessage}
             </p>
+            <button type="button" onClick={() => void loadData()} className="ui-button ui-button-primary mt-5 px-5 text-sm">Try again</button>
 
           </div>
+        )}
+
+        {!loading && reviewsErrorMessage && !errorMessage && (
+          <p role="status" className="mb-5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            {reviewsErrorMessage} Hotel listings are still available.
+          </p>
         )}
 
         {/* EMPTY */}
@@ -823,10 +833,7 @@ export default function ReviewsPage() {
                               </p>
 
                               <p className="mt-1 text-sm font-semibold text-slate-700">
-                                {
-                                  visibleReviews.length
-                                }{" "}
-                                reviews
+                                {reviewsErrorMessage ? "Unavailable" : visibleReviews.length} {reviewsErrorMessage ? "" : "reviews"}
                               </p>
 
                             </div>
@@ -877,7 +884,7 @@ export default function ReviewsPage() {
 
                         {/* COMMUNITY REVIEWS */}
 
-                        {visibleReviews.length > 0 && (
+                        {!reviewsErrorMessage && visibleReviews.length > 0 && (
                           <div className="mt-6 border-t border-slate-100 pt-5">
 
                             <div className="mb-4 flex items-center justify-between">
@@ -1001,7 +1008,7 @@ export default function ReviewsPage() {
                           </button>
 
                           <span className="text-xs text-slate-400">
-                            {visibleReviews.length >
+                            {reviewsErrorMessage ? "Guest reviews are temporarily unavailable." : visibleReviews.length >
                             0
                               ? `${visibleReviews.length} guest ${
                                   visibleReviews.length ===

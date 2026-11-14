@@ -2,6 +2,7 @@
 import CafeDirectory from "@/components/cafes/CafeDirectory";
 import type { DirectoryBusiness } from "@/components/directory/BusinessDirectory";
 import { supabase } from "@/lib/supabase";
+import { isActiveColomboBusiness } from "@/lib/commercialData";
 
 export const dynamic = "force-dynamic";
 
@@ -57,7 +58,14 @@ export default async function CafesPage({
     );
   }
 
-  const cafes: DirectoryBusiness[] = (data ?? []).map((row) => ({
+  const cafes: DirectoryBusiness[] = (data ?? [])
+    .filter((row) =>
+      isActiveColomboBusiness({
+        verificationStatus: row.verification_status,
+        notes: row.notes,
+      })
+    )
+    .map((row) => ({
     id: String(row.business_id),
     name: row.cafe_name?.trim() || "Unnamed cafe",
     category: row.business_type ?? null,
@@ -86,7 +94,7 @@ export default async function CafesPage({
     verificationStatus: row.verification_status ?? null,
     lastChecked: row.last_checked ?? null,
     notes: row.notes ?? null,
-  }));
+    }));
 
   return <CafeDirectory cafes={cafes} initialArea={initialArea} initialSearch={initialSearch} />;
 }
