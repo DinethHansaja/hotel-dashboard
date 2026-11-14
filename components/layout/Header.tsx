@@ -1,6 +1,6 @@
 "use client";
 
-import { MapPin, Menu, Moon, Search, Settings, Sun, X } from "lucide-react";
+import { MapPin, Menu, Moon, Search, Settings, Sun, SunMoon, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -14,7 +14,7 @@ export default function Header() {
   const { theme, setTheme } = useThemePreferences();
   const currentQuery = searchParams.get("q") ?? "";
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");
+  const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark" | null>(null);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -98,17 +98,22 @@ export default function Header() {
 
         <button
           type="button"
-          onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-          aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} theme`}
-          title={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} theme`}
+          onClick={() => {
+            const activeTheme = resolvedTheme ?? document.documentElement.dataset.theme ?? "light";
+            setTheme(activeTheme === "dark" ? "light" : "dark");
+          }}
+          aria-label={resolvedTheme ? `Switch to ${resolvedTheme === "dark" ? "light" : "dark"} theme` : "Toggle light and dark theme"}
+          title={resolvedTheme ? `Switch to ${resolvedTheme === "dark" ? "light" : "dark"} theme` : "Toggle light and dark theme"}
           className="ui-button ui-button-secondary ml-auto inline-flex h-10 shrink-0 items-center justify-center gap-1.5 px-2.5 text-xs font-semibold sm:px-3 lg:ml-0"
         >
-          {resolvedTheme === "dark" ? (
+          {resolvedTheme === null ? (
+            <SunMoon className="h-4 w-4" aria-hidden="true" />
+          ) : resolvedTheme === "dark" ? (
             <Sun className="h-4 w-4" aria-hidden="true" />
           ) : (
             <Moon className="h-4 w-4" aria-hidden="true" />
           )}
-          <span>{resolvedTheme === "dark" ? "Light" : "Dark"}</span>
+          <span>{resolvedTheme === null ? "Theme" : resolvedTheme === "dark" ? "Light" : "Dark"}</span>
         </button>
       </div>
 

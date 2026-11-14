@@ -151,7 +151,7 @@ export default function Sidebar() {
                 } ${
                   isActive
                     ? "bg-[#8b682b] text-white shadow-sm"
-                    : "text-slate-200 hover:bg-white/10"
+                    : "text-[#e2e8f0] hover:bg-white/10 hover:text-white"
                 }`}
               >
                 <Icon className="h-5 w-5 shrink-0" />
@@ -163,7 +163,7 @@ export default function Sidebar() {
                     </div>
 
                     {item.description && (
-                      <div className={`mt-0.5 text-xs ${isActive ? "text-white" : "text-[#a6b2c2]"}`}>
+                      <div className={`mt-0.5 text-xs ${isActive ? "text-white" : "text-[#b8c2cf]"}`}>
                         {item.description}
                       </div>
                     )}
